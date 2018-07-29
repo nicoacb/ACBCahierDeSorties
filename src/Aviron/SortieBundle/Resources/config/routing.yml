@@ -5,13 +5,6 @@ aviron_bateaux_home:
         page:           1
     requirements:
         page: \d*
-
-aviron_bateaux_voir:
-    path:     /bateaux/bateau/{id}
-    defaults:
-        _controller: AvironSortieBundle:Bateau:voir
-    requirements:
-        id: \d+
         
 aviron_bateaux_ajouter:
     path:     /bateaux/ajouter

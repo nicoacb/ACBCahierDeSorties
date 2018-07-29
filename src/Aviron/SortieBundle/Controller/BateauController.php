@@ -19,21 +19,9 @@ class BateauController extends Controller
         $listeBateaux = $this->getDoctrine()
     	->getManager()
     	->getRepository('AvironSortieBundle:Bateau')
-    	->findAll();
+    	->findBySupp(false);
 
         return $this->render('AvironSortieBundle:Bateau:index.html.twig', array('listeBateaux' => $listeBateaux));
-    }
-    
-    /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
-    public function voirAction($id)
-    {
-        $bateau = array(
-        'id' => 2,
-        'nom' => 'Test Bateau'
-        );
-        return $this->render('AvironSortieBundle:Bateau:voir.html.twig', array('bateau' => $bateau));
     }
     
     /**
@@ -102,7 +90,7 @@ class BateauController extends Controller
                 $em->flush();
 
                 // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('notice', 'Bateau bien enregistré.');
+                $request->getSession()->getFlashBag()->add('success', 'Bateau bien enregistré.');
 
                 // On redirige vers la liste des bateaux
                 return $this->redirectToRoute('aviron_bateaux_home');
@@ -115,7 +103,7 @@ class BateauController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function supprimerAction($id)
+    public function supprimerAction(Request $request, $id)
     {
         // On récupère l'entité du bateau correspondant à l'id $id
         $bateau = $this->getDoctrine()
@@ -128,7 +116,7 @@ class BateauController extends Controller
             throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
         }
 
-        $bateau->setSupp(1);
+        $bateau->setSupp(true);
 
         // On enregistre l'objet $sortie en base de données
         $em = $this->GetDoctrine()->getManager();
