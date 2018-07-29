@@ -1,0 +1,25 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Terminer la sortie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Terminer la sortie</h2>
+
+  <h3>{{ sortie.bateau.typenom }}</h3>
+  Date : {{ sortie.date | date('d/m/Y') }} <br />
+  Heure de départ : {{ sortie.hdepart | date('H:i') }} <br />
+  &Eacute;quipage : {% for athlete in sortie.athletes %}{{ athlete.prenom }} {{ athlete.nom }}{% if not loop.last %}, {% endif %}{% endfor %}
+  <br /><br />
+  {{ include("AvironSortieBundle:Sortie:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('aviron_sortie_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour au cahier de sorties
+    </a>
+  </p>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "AvironUserBundle::layout.html.twig" %}
+
+{% block title %}
+  Saisons - {{ parent() }}
+{% endblock %}
+
+{% block fos_user_content %}
+
+  <h2 class="sub-header">Type de licence</h2>
+  <p>
+    <a href="{{ path('aviron_user_typelicence_ajouter') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-plus"></i>
+      Ajouter un type de licence
+    </a>
+  </p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Type de licence</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for typelicence in listeTypesLicence %}
+                <tr>
+                  <td>{{ typelicence.nom }}</td>
+                  <td></td>
+                </tr>
+                {% else %}
+                <tr>
+                <td colspan="3">Pas encore de type de licence</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}

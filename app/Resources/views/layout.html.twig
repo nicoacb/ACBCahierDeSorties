@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Aviron Club de Bourges{% endblock %}</title>
+
+  {% block stylesheets %}
+    {# On charge le CSS de bootstrap depuis le site directement #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    {% stylesheets '@AvironSortieBundle/Resources/public/css/dashboard.css' %}
+  		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+  {% endblock %}
+
+  {% block javascripts %} 
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        setTimeout(function() {
+          $('div[name=alerte]') .fadeOut('slow');
+        }, 5000);
+      });
+    </script>
+  {% endblock %}
+</head>
+
+<body>
+  	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar">Plop</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ path('aviron_sortie_home') }}">Aviron Club de Bourges - Cahier de sorties</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        	  <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+            {% else %}
+        	  <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+            {% endif %}
+            <li><a href="#">Help</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'aviron_sortie_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_home') }}">Cahier de sorties</a></li>
+          </ul>
+
+          <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'aviron_bateaux_home' ? ' class="active"' }}><a href="{{ path('aviron_bateaux_home') }}">Bateaux</a></li>
+            <ul>
+              <li class="{{ app.request.get('_route') == 'aviron_sortie_typebateau_home' ? 'active' }}"><a href="{{ path('aviron_bateaux_ajouter') }}">Ajouter un bateau</a></li>
+              <li{{ app.request.get('_route') == 'aviron_sortie_typebateau_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_typebateau_home') }}">Types de bateau</a></li>
+            </ul>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'aviron_users_liste' ? ' class="active"' }}><a href="{{ path('aviron_users_liste') }}">Membres</a></li>
+            <ul>
+              <li{{ app.request.get('_route') == 'fos_user_registration_register' ? ' class="active"' }}><a href="{{ path('fos_user_registration_register') }}">Ajouter un membre</a></li>
+            </ul>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'aviron_sortie_saison_liste' ? ' class="active"' }}><a href="{{ path('aviron_sortie_saison_liste') }}">Saisons</a></li>
+            <li{{ app.request.get('_route') == 'aviron_user_typelicence_liste' ? ' class="active"' }}><a href="{{ path('aviron_user_typelicence_liste') }}">Type de Licence</a>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    {% else %}
+    <div class="main">
+    {% endif %}
+
+        {# On affiche les messages flash que définissent les contrôleurs des bundles #}
+        {% for key, messages in app.session.flashbag.all() %}
+        {% for message in messages %}
+          <div name="alerte" class="alert alert-{{ key }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+        {% endfor %}
+
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>

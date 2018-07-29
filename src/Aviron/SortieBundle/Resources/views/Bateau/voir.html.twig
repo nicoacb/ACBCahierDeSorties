@@ -1,0 +1,26 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  {{ bateau.nom }} - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>{{ bateau.nom }}</h2>
+
+  <p>
+    <a href="{{ path('aviron_bateaux_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('aviron_bateaux_modifier', {'id': bateau.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-pencil"></i>
+      Modifier le bateau
+    </a>
+    <a href="{{ path('aviron_bateaux_supprimer', {'id': bateau.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le bateau
+    </a>
+  </p>
+
+{% endblock %}

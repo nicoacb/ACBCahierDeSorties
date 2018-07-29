@@ -1,0 +1,126 @@
+aviron_bateaux_home:
+    path:     /bateaux/{page}
+    defaults:
+        _controller:    AvironSortieBundle:Bateau:index
+        page:           1
+    requirements:
+        page: \d*
+
+aviron_bateaux_voir:
+    path:     /bateaux/bateau/{id}
+    defaults:
+        _controller: AvironSortieBundle:Bateau:voir
+    requirements:
+        id: \d+
+        
+aviron_bateaux_ajouter:
+    path:     /bateaux/ajouter
+    defaults:
+        _controller: AvironSortieBundle:Bateau:ajouter
+        
+aviron_bateaux_modifier:
+    path:       /bateaux/modifier/{id}
+    defaults:
+        _controller: AvironSortieBundle:Bateau:modifier
+    requirements:
+        id: \d+
+        
+aviron_bateaux_supprimer:
+    path:       /bateaux/supprimer/{id}
+    defaults:
+        _controller: AvironSortieBundle:Bateau:supprimer
+    requirements:
+        id: \d+
+    
+aviron_sortie_home:
+    path:     /{page}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:index
+        page: 1
+    requirements:
+        page: \d+
+    
+aviron_sortie_ajouter:
+    path:     /sorties/ajouter/{nbrameurs}
+    defaults:
+        _controller: AvironSortieBundle:Sortie:ajouter
+        nbrameurs: 0
+    requirements:
+        nbrameurs: \d+
+    
+aviron_sortie_terminer:
+    path:     /sorties/terminer/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:terminer
+    requirements:
+        id: \d+
+        
+aviron_sortie_voir:
+    path:     /sorties/sortie/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:voir
+    requirements:
+        id: \d+
+        
+aviron_sortie_modifier:
+    path:     /sorties/modifier/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:modifier
+    requirements:
+        id: \d+
+        
+aviron_sortie_supprimer:
+    path:     /sorties/supprimer/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:supprimer
+    requirements:
+        id: \d+
+
+aviron_sortie_typebateau_home:
+    path:     /typebateau/{page}
+    defaults: 
+        _controller: AvironSortieBundle:TypeBateau:index
+        page: 1
+    requirements:
+        page: \d*
+    
+aviron_sortie_typebateau_ajouter:
+    path:     /typebateau/ajouter
+    defaults: 
+        _controller: AvironSortieBundle:TypeBateau:ajouter
+        
+aviron_sortie_typebateau_modifier:
+    path:     /typebateau/modifier/{id}
+    defaults: 
+        _controller: AvironSortieBundle:TypeBateau:modifier
+    requirements:
+        id: \d+
+        
+aviron_sortie_typebateau_supprimer:
+    path:     /typebateau/supprimer/{id}
+    defaults: 
+        _controller: AvironSortieBundle:TypeBateau:supprimer
+    requirements:
+        id: \d+
+
+aviron_sortie_saison_liste:
+    path:     /config/saison
+    defaults: { _controller: AvironSortieBundle:Saison:index }
+    
+aviron_sortie_saison_ajouter:
+    path:     /config/saison/ajouter
+    defaults: { _controller: AvironSortieBundle:Saison:ajouter }
+        
+aviron_sortie_saison_modifier:
+    path:     /config/saison/modifier/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Saison:modifier
+    requirements:
+        id: \d+
+
+aviron_sortie_saison_supprimer:
+    path:     /config/saison/supprimer/{id}
+    defaults: 
+        _controller: AvironSortieBundle:Saison:supprimer
+    requirements:
+        id: \d+

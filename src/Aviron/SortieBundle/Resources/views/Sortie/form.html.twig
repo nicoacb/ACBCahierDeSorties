@@ -1,0 +1,82 @@
+<div class="well">
+   {{ form(form) }}
+</div>
+
+<script type="text/javascript">
+    // On récupère le bateau
+    $bateau = $('select#aviron_sortiebundle_sortie_add_bateau');
+    
+    // Variable globale pour stocker l'index courrant de l'athlète
+    var index;
+
+    // On remet les labels en cas d'erreur du formulaire (en cas d'erreur nottament)
+    $(document).ready(function() {
+        $("#aviron_sortiebundle_sortie_add_athletes label").each(function(index, element){
+            if(index < $('option:selected', $bateau).attr('nbrameurs')) {
+                $(this).text("Rameur n°" + (index+1));
+            } else {
+                $(this).text("Barreur");
+            }
+            
+        });
+    });
+
+    // Action à la sélection du bateau
+    $bateau.change(function() {
+        var $container = $('div#aviron_sortiebundle_sortie_add_athletes');
+        $container.empty();
+        index = 0;
+
+        // On ajoute autant de champs qu'il y a de rameurs possibles dans le bateau
+        for (var nbrameurs = 0; nbrameurs < $('option:selected', this).attr('nbrameurs'); nbrameurs++) {
+            addRameur($container);
+        }
+
+        // On ajoute autant de champs qu'il y a de barreurs possibles dans le bateau
+        for (var nbbarreurs = 0; nbbarreurs < $('option:selected', this).attr('nbbarreurs'); nbbarreurs++) {
+            addBarreur($container);
+        }
+
+        // On force le rendu des selectpicker (sélection des rameurs et des barreurs)
+        $('.selectpicker').selectpicker('render');
+    }
+    );
+
+    // La fonction qui ajoute une combobox permettant de sélectionner un rameur
+    function addRameur($container) {
+        // Dans le contenu de l'attribut « data-prototype », on remplace :
+        // - le texte "__name__label__" qu'il contient par le label du champ
+        // - le texte "__name__" qu'il contient par le numéro du champ
+        var template = $container.attr('data-prototype')
+            .replace(/__name__label__/g, 'Rameur n°' + (index+1))
+            .replace(/__name__/g,        index)
+        ;
+
+        addAthlete($container, template);
+    }
+
+    // Fonction qui ajoute une combobox permettant de sélectionner le barreur
+    function addBarreur($container) {   
+        // Dans le contenu de l'attribut « data-prototype », on remplace :
+        // - le texte "__name__label__" qu'il contient par le label du champ
+        // - le texte "__name__" qu'il contient par le numéro du champ
+        var template = $container.attr('data-prototype')
+            .replace(/__name__label__/g, 'Barreur')
+            .replace(/__name__/g,        index)
+        ;
+
+        addAthlete($container, template);
+    }
+
+    // Fonction commune qui permet d'ajouter un rameur ou un barreur à l'interface
+    function addAthlete($container, template) {
+        // On crée un objet jquery qui contient ce template
+        var $prototype = $(template);
+
+        // On ajoute le prototype modifié à la fin de la balise <div>
+        $container.append($prototype);
+
+        // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+        index++;
+    }
+</script>
