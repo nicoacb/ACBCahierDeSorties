@@ -16,12 +16,12 @@ class BateauRepository extends \Doctrine\ORM\EntityRepository
             return $this
                 ->createQueryBuilder('b')
                 ->where('b.nbplacerameurs = :nbRameurs')
-                ->andWhere('b.supp = 0')
+                ->andWhere('b.datesupp is null')
                 ->setParameter('nbRameurs', $nbRameurs);
         } else {
             return $this
                 ->createQueryBuilder('b')
-                ->where('b.supp = 0');
+                ->where('b.datesupp is null');
         }
     }
 }

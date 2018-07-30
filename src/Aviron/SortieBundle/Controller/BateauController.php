@@ -19,7 +19,7 @@ class BateauController extends Controller
         $listeBateaux = $this->getDoctrine()
     	->getManager()
     	->getRepository('AvironSortieBundle:Bateau')
-    	->findBySupp(false);
+    	->findByDatesupp(NULL);
 
         return $this->render('AvironSortieBundle:Bateau:index.html.twig', array('listeBateaux' => $listeBateaux));
     }
@@ -116,7 +116,7 @@ class BateauController extends Controller
             throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
         }
 
-        $bateau->setSupp(true);
+        $bateau->setDatesupp(new \DateTime("now"));
 
         // On enregistre l'objet $sortie en base de données
         $em = $this->GetDoctrine()->getManager();

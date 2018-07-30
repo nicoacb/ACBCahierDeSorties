@@ -78,9 +78,14 @@ class Bateau
     private $gamme;
     
     /**
-    * @ORM\Column(name="supp", type="boolean")
+    * @ORM\Column(name="datesupp", type="date", nullable=true)
     */
-    private $supp = false;
+    private $datesupp;
+
+    /**
+     * @ORM\Column(name="datehorsservice", type="date", nullable=true)
+     */
+    private $datehorsservice;
     
     /**
      * Get id
@@ -261,30 +266,6 @@ class Bateau
     }
 
     /**
-     * Set supp
-     *
-     * @param boolean $supp
-     *
-     * @return Bateau
-     */
-    public function setSupp($supp)
-    {
-        $this->supp = $supp;
-
-        return $this;
-    }
-
-    /**
-     * Get supp
-     *
-     * @return boolean
-     */
-    public function getSupp()
-    {
-        return $this->supp;
-    }
-
-    /**
      * Set type
      *
      * @param \Aviron\SortieBundle\Entity\TypeBateau $type
@@ -313,4 +294,52 @@ class Bateau
         return $this->type->getNom().' '.$this->nom;
     }
 
+
+    /**
+     * Set datehorsservice
+     *
+     * @param \DateTime $datehorsservice
+     *
+     * @return Bateau
+     */
+    public function setDatehorsservice($datehorsservice)
+    {
+        $this->datehorsservice = $datehorsservice;
+
+        return $this;
+    }
+
+    /**
+     * Get datehorsservice
+     *
+     * @return \DateTime
+     */
+    public function getDatehorsservice()
+    {
+        return $this->datehorsservice;
+    }
+
+    /**
+     * Set datesupp
+     *
+     * @param \DateTime $datesupp
+     *
+     * @return Bateau
+     */
+    public function setDatesupp($datesupp)
+    {
+        $this->datesupp = $datesupp;
+
+        return $this;
+    }
+
+    /**
+     * Get datesupp
+     *
+     * @return \DateTime
+     */
+    public function getDatesupp()
+    {
+        return $this->datesupp;
+    }
 }
