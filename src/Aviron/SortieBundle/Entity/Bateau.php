@@ -24,7 +24,7 @@ class Bateau
 
     /**
     * @ORM\ManyToOne(targetEntity="Aviron\SortieBundle\Entity\TypeBateau", cascade={"persist"})
-    * @ORM\JoinColumn(nullable=true)
+    * @ORM\JoinColumn(nullable=false)
     */
     private $type;
     
