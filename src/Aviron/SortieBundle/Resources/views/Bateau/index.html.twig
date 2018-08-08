@@ -33,12 +33,12 @@
               Modifier
             </a>
             {% if bateau.datehorsservice is null %}
-            <a href="{{ path('aviron_bateaux_mettrehorsservice', {'id': bateau.id}) }}" class="btn btn-warning">
+            <a href="{{ path('aviron_bateaux_mettrehorsservice', {'id': bateau.id}) }}" class="btn btn-success">
               <i class="glyphicon glyphicon-wrench"></i>
               Mettre hors-service
             </a>
             {% else %}
-            <a href="{{ path('aviron_bateaux_remettreenservice', {'id': bateau.id}) }}" class="btn btn-success">
+            <a href="{{ path('aviron_bateaux_remettreenservice', {'id': bateau.id}) }}" class="btn btn-warning">
               <i class="glyphicon glyphicon-wrench"></i>
               Remettre en service
             </a>
