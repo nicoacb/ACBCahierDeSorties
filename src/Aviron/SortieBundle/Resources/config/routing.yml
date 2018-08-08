@@ -31,6 +31,13 @@ aviron_bateaux_mettrehorsservice:
         _controller: AvironSortieBundle:Bateau:mettrehorsservice
     requirements:
         id: \d+
+
+aviron_bateaux_remettreenservice:
+    path:       /bateaux/remettreenservice/{id}
+    defaults:
+        _controller: AvironSortieBundle:Bateau:remettreenservice
+    requirements:
+        id: \d+
     
 aviron_sortie_home:
     path:     /{page}
