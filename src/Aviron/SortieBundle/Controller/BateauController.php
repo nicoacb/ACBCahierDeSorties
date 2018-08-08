@@ -30,15 +30,7 @@ class BateauController extends Controller
     public function modifierAction(Request $request, $id)
     {
         // On récupère l'entité du bateau correspondant à l'id $id
-        $bateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Bateau')
-            ->find($id);
-
-        // Si $bateau est null, l'id n'existe pas
-        if(null == $bateau) {
-            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
-        }
+        $bateau = $this->getBateauById($id);
 
         // On génère le formulaire
         $form = $this->createForm(BateauType::class, $bateau);
@@ -50,10 +42,8 @@ class BateauController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $sortie en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($bateau);
-                $em->flush();
+                // On enregistre l'objet $bateau en base de données
+                $this->persistBateau($bateau);
 
                 // On affiche un message de validation
                 $request->getSession()->getFlashBag()->add('notice', 'Bateau bien enregistré.');
@@ -84,10 +74,8 @@ class BateauController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $sortie en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($bateau);
-                $em->flush();
+                // On enregistre l'objet $bateau en base de données
+                $this->persistBateau($bateau);
 
                 // On affiche un message de validation
                 $request->getSession()->getFlashBag()->add('success', 'Bateau bien enregistré.');
@@ -106,22 +94,12 @@ class BateauController extends Controller
     public function supprimerAction(Request $request, $id)
     {
         // On récupère l'entité du bateau correspondant à l'id $id
-        $bateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Bateau')
-            ->find($id);
-
-        // Si $bateau est null, l'id n'existe pas
-        if(null == $bateau) {
-            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
-        }
+        $bateau = $this->getBateauById($id);
 
         $bateau->setDatesupp(new \DateTime("now"));
 
-        // On enregistre l'objet $sortie en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($bateau);
-        $em->flush();
+        // On enregistre l'objet $bateau en base de données
+        $this->persistBateau($bateau);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Bateau bien supprimé.');
@@ -136,22 +114,12 @@ class BateauController extends Controller
     public function mettrehorsserviceAction(Request $request, $id)
     {
         // On récupère l'entité du bateau correspondant à l'id $id
-        $bateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Bateau')
-            ->find($id);
-
-        // Si $bateau est null, l'id n'existe pas
-        if(null == $bateau) {
-            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
-        }
+        $bateau = $this->getBateauById($id);
 
         $bateau->setDatehorsservice(new \DateTime("now"));
 
-        // On enregistre l'objet $sortie en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($bateau);
-        $em->flush();
+        // On enregistre l'objet $bateau en base de données
+        $this->persistBateau($bateau);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Bateau mis hors-service.');
@@ -166,27 +134,41 @@ class BateauController extends Controller
     public function remettreenserviceAction(Request $request, $id)
     {
         // On récupère l'entité du bateau correspondant à l'id $id
-        $bateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Bateau')
-            ->find($id);
-
-        // Si $bateau est null, l'id n'existe pas
-        if(null == $bateau) {
-            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
-        }
+        $bateau = $this->getBateauById($id);
 
         $bateau->setDatehorsservice(null);
 
-        // On enregistre l'objet $sortie en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($bateau);
-        $em->flush();
+        // On enregistre l'objet $bateau en base de données
+        $this->persistBateau($bateau);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Bateau mis hors-service.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');
+    }
+
+    private function getBateauById($id)
+    {
+         // On récupère l'entité du bateau correspondant à l'id $id
+         $bateau = $this->getDoctrine()
+         ->getManager()
+         ->getRepository('AvironSortieBundle:Bateau')
+         ->find($id);
+
+        // Si $bateau est null, l'id n'existe pas
+        if(null == $bateau) {
+            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
+        }
+
+        return $bateau;
+    }
+
+    private function persistBateau($bateau)
+    {
+        // On enregistre l'objet $bateau en base de données
+        $em = $this->GetDoctrine()->getManager();
+        $em->persist($bateau);
+        $em->flush();
     }
 }
