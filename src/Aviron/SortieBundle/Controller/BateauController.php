@@ -63,7 +63,7 @@ class BateauController extends Controller
             }
         }
         return $this->render('AvironSortieBundle:Bateau:modifier.html.twig',
-                                array('form' => $form->createView()));
+                                array('form' => $form->createView(), 'bateau' => $bateau));
     }
     
     /**
@@ -125,6 +125,36 @@ class BateauController extends Controller
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Bateau bien supprimé.');
+
+        // On redirige vers la liste des bateaux
+        return $this->redirectToRoute('aviron_bateaux_home');
+    }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function mettrehorsserviceAction(Request $request, $id)
+    {
+        // On récupère l'entité du bateau correspondant à l'id $id
+        $bateau = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Bateau')
+            ->find($id);
+
+        // Si $bateau est null, l'id n'existe pas
+        if(null == $bateau) {
+            throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
+        }
+
+        $bateau->setDatehorsservice(new \DateTime("now"));
+
+        // On enregistre l'objet $sortie en base de données
+        $em = $this->GetDoctrine()->getManager();
+        $em->persist($bateau);
+        $em->flush();
+
+        // On affiche un message de validation
+        $request->getSession()->getFlashBag()->add('success', 'Bateau mis hors-service.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');

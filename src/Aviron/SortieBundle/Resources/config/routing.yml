@@ -24,6 +24,13 @@ aviron_bateaux_supprimer:
         _controller: AvironSortieBundle:Bateau:supprimer
     requirements:
         id: \d+
+
+aviron_bateaux_mettrehorsservice:
+    path:       /bateaux/mettrehorsservice/{id}
+    defaults:
+        _controller: AvironSortieBundle:Bateau:mettrehorsservice
+    requirements:
+        id: \d+
     
 aviron_sortie_home:
     path:     /{page}

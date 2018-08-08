@@ -30,11 +30,14 @@
           <td>{{ bateau.nom }}</td>
           <td><a href="{{ path('aviron_bateaux_modifier', {'id': bateau.id}) }}" class="btn btn-primary" title="Modifier le bateau">
               <i class="glyphicon glyphicon-pencil"></i>
+              Modifier
             </a>
-            <a href="{{ path('aviron_bateaux_supprimer', {'id': bateau.id}) }}" class="btn btn-danger">
-              <i class="glyphicon glyphicon-trash"></i>
-              Supprimer le bateau
+            {% if bateau.datehorsservice == null %}
+            <a href="{{ path('aviron_bateaux_mettrehorsservice', {'id': bateau.id}) }}" class="btn btn-warning">
+              <i class="glyphicon glyphicon-wrench"></i>
+              Mettre hors-service
             </a>
+            {% endif %}
           </td>
         </tr>
         {% else %}
