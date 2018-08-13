@@ -4,22 +4,88 @@
   Terminer la sortie - {{ parent() }}
 {% endblock %}
 
+  {% form_theme form _self %}
+
+  {% block _sortie_end_kmparcourus_widget %}
+      <div class="text_widget number-spinner">
+        <button type="button" style="float: left;" class="btn btn-default btn-info" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
+        <input type="number"  style="float: left; width: 51px; margin-left:1px; margin-right: 1px;" class="form-control" {{ block('widget_attributes') }}>
+        <button type="button" style="float: left;" class="btn btn-default btn-info" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+      </div>
+  {% endblock %}
+
+
 {% block body %}
 
   <h2>Terminer la sortie</h2>
 
   <h3>{{ sortie.bateau.typenom }}</h3>
+  
   Date : {{ sortie.date | date('d/m/Y') }} <br />
   Heure de départ : {{ sortie.hdepart | date('H:i') }} <br />
   &Eacute;quipage : {% for athlete in sortie.athletes %}{{ athlete.prenom }} {{ athlete.nom }}{% if not loop.last %}, {% endif %}{% endfor %}
   <br /><br />
-  {{ include("AvironSortieBundle:Sortie:form.html.twig") }}
+  <div style="clear: right">
+    <div class="well">
+      {{ form_start(form) }}
 
-  <p>
-    <a href="{{ path('aviron_sortie_home') }}" class="btn btn-default">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Retour au cahier de sorties
-    </a>
-  </p>
+      {# Les erreurs générales du formulaire. #}
+      {{ form_errors(form) }}
 
+      {# Génération du label + error + widget pour le champ heure de retour. #}
+      {{ form_row(form.hretour) }}
+
+      <div class="form-group">
+        {# Génération du label pour le champ kilomètres parcourus. #}
+        {{ form_label(form.kmparcourus) }}
+
+        {# Affichage des erreurs pour ce champ. #}
+        {{ form_errors(form.kmparcourus) }}
+
+        <div class="col-sm-10">
+          {# Génération de l'input. #}
+          {{ form_widget(form.kmparcourus) }}
+        </div>
+      </div>
+
+      {# Génération du label + error + widget pour le champ observations. #}
+      {{ form_row(form.observations) }}
+
+      {{ form_rest(form) }}
+
+      {# Fermeture de la balise <form> du formulaire HTML #}
+      {{ form_end(form) }}
+    </div>
+
+    <p>
+      <a href="{{ path('aviron_sortie_home') }}" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Retour au cahier de sorties
+      </a>
+    </p>
+  </div>
+
+<script type="text/javascript">
+  $(function() {
+    var action;
+    $(".number-spinner button").mousedown(function () {
+        btn = $(this);
+        input = btn.closest('.number-spinner').find('input');
+
+    	if (btn.attr('data-dir') == 'up') {
+        if (input.val().length == 0) {
+          input.val(1);
+        } else if ( input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max')) ) {
+          input.val(parseInt(input.val())+1);
+        }
+    	} else {
+        if (input.val().length == 0) {
+          input.val(-1);
+        } else if ( input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min')) ) {
+          input.val(parseInt(input.val())-1);
+        }
+    	}
+    });
+});
+</script>
 {% endblock %}
