@@ -24,3 +24,49 @@
     </select>
     {% endspaceless %}
 {% endblock %}
+
+{% block _sortie_end_kmparcourus_row %}
+<div class="form-group">
+  {# Génération du label pour le champ kilomètres parcourus. #}
+  {{ form_label(form) }}
+
+  {# Affichage des erreurs pour ce champ. #}
+  {{ form_errors(form) }}
+
+  <div class="col-sm-10">
+    <div class="text_widget number-spinner">
+      <button type="button" style="float: left;" class="btn btn-default btn-primary" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
+      {{ form_widget(form, {'attr': {'style': 'float: left; width: 51px; margin-left:1px; margin-right: 1px;'}}) }}
+      <button type="button" style="float: left;" class="btn btn-default btn-primary" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+    </div>
+  </div>
+  <div class="col-sm-10">
+    <div class="row" style="margin-top: 5px">
+      <div class="col-md-3">
+        <a href="#" onclick="setKilometres(4)" class="btn btn-primary btn-lg btn-block">
+          1 aller-retour<br />
+          4km
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" onclick="setKilometres(8)" class="btn btn-primary btn-lg btn-block">
+          2 allers-retours<br />
+          8km
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" onclick="setKilometres(12)" class="btn btn-primary btn-lg btn-block">
+          3 allers-retours<br />
+          12km
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" onclick="setKilometres(16)" class="btn btn-primary btn-lg btn-block">
+          4 allers-retours<br />
+          16km
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
