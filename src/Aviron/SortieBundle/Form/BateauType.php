@@ -19,17 +19,34 @@ class BateauType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', TextType::class)
-            ->add('datefabrication', DateType::class, array('required' => false))
-            ->add('dateachat', DateType::class, array('required' => false))
-            ->add('fabriquant', TextType::class, array('required' => false))
-            ->add('gamme', TextType::class, array('required' => false))
+            ->add('nom', TextType::class, array(
+                'label'         => 'Nom du bateau'
+            ))
             ->add('type', EntityType::class, array(
                 'class'         => 'AvironSortieBundle:TypeBateau',
                 'choice_label'  => 'nom',
-                'multiple'      => false
+                'multiple'      => false,
+                'label'         => 'Type de bateau'
             ))
-            ->add('save', SubmitType::class);
+            ->add('fabriquant', TextType::class, array(
+                'required' => false,
+                'label'         => 'Fabriquant'
+            ))
+            ->add('gamme', TextType::class, array(
+                'required' => false,
+                'label'         => 'Gamme'
+            ))
+            ->add('datefabrication', DateType::class, array(
+                'required' => false,
+                'label'         => 'Date de fabrication'
+            ))
+            ->add('dateachat', DateType::class, array(
+                'required' => false, 
+                'label'         => 'Date d\'achat'
+            ))
+            ->add('save', SubmitType::class, array(
+                'label'         => 'Enregistrer'
+            ));
     }
     
     /**
