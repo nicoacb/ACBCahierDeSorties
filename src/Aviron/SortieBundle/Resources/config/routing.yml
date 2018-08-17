@@ -40,7 +40,7 @@ aviron_bateaux_remettreenservice:
         id: \d+
     
 aviron_sortie_home:
-    path:     /{page}
+    path:     /sorties/{page}
     defaults: 
         _controller: AvironSortieBundle:Sortie:index
         page: 1
