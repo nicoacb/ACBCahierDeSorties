@@ -15,7 +15,8 @@ class BateauRepository extends \Doctrine\ORM\EntityRepository
         if ($nbRameurs != 0) {
             return $this
                 ->createQueryBuilder('b')
-                ->where('b.nbplacerameurs = :nbRameurs')
+                ->join('b.type', 'type')
+                ->where('type.nbplacerameurs = :nbRameurs')
                 ->andWhere('b.datesupp is null')
                 ->setParameter('nbRameurs', $nbRameurs);
         } else {

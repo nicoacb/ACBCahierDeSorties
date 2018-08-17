@@ -4,6 +4,7 @@ namespace Aviron\SortieBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,9 +18,19 @@ class TypeBateauType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', TextType::class)
+            ->add('nom', TextType::class, array(
+                'label'         => 'Type de bateau'
+            ))
+            ->add('nbplacerameurs', IntegerType::class, array(
+                'label'         => 'Nombre de places de rameur'
+            ))
+            ->add('nbplacebarreurs', IntegerType::class, array(
+                'label'         => 'Nombre de places de barreur'
+            ))
             ->add('supp', CheckboxType::class, array('required' => false))
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class, array(
+                'label'         => 'Enregistrer'
+            ));
     }
     
     /**

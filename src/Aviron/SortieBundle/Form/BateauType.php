@@ -20,8 +20,6 @@ class BateauType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class)
-            ->add('nbplacerameurs', IntegerType::class)
-            ->add('nbplacebarreurs', IntegerType::class)
             ->add('datefabrication', DateType::class, array('required' => false))
             ->add('dateachat', DateType::class, array('required' => false))
             ->add('fabriquant', TextType::class, array('required' => false))

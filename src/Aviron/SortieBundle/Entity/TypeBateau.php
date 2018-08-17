@@ -28,6 +28,20 @@ class TypeBateau
      */
     private $nom;
 
+     /**
+     * @var int
+     *
+     * @ORM\Column(name="nbplacerameurs", type="integer")
+     */
+    private $nbplacerameurs;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbplacebarreurs", type="integer")
+     */
+    private $nbplacebarreurs;
+   
     /**
      * @var bool
      *
@@ -92,5 +106,53 @@ class TypeBateau
     public function getSupp()
     {
         return $this->supp;
+    }
+
+    /**
+     * Set nbplacerameurs
+     *
+     * @param integer $nbplacerameurs
+     *
+     * @return TypeBateau
+     */
+    public function setNbplacerameurs($nbplacerameurs)
+    {
+        $this->nbplacerameurs = $nbplacerameurs;
+
+        return $this;
+    }
+
+    /**
+     * Get nbplacerameurs
+     *
+     * @return integer
+     */
+    public function getNbplacerameurs()
+    {
+        return $this->nbplacerameurs;
+    }
+
+    /**
+     * Set nbplacebarreurs
+     *
+     * @param integer $nbplacebarreurs
+     *
+     * @return TypeBateau
+     */
+    public function setNbplacebarreurs($nbplacebarreurs)
+    {
+        $this->nbplacebarreurs = $nbplacebarreurs;
+
+        return $this;
+    }
+
+    /**
+     * Get nbplacebarreurs
+     *
+     * @return integer
+     */
+    public function getNbplacebarreurs()
+    {
+        return $this->nbplacebarreurs;
     }
 }

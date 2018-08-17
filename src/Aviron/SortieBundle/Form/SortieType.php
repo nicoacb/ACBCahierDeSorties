@@ -31,8 +31,8 @@ class SortieType extends AbstractType
                 'choice_label'  => 'typenom',
                 'multiple'      => false,
                 'choice_attr'   => function($val, $key,$index) {
-                    return ['nbrameurs' => $val->getNbplacerameurs(), 
-                            'nbbarreurs' => $val->getNbplacebarreurs()];
+                    return ['nbrameurs' => $val->getType()->getNbplacerameurs(), 
+                            'nbbarreurs' => $val->getType()->getNbplacebarreurs()];
                 },
                 'attr'          => array(
                     'class' => 'selectpicker',

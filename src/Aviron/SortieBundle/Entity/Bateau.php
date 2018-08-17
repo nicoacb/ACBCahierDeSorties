@@ -36,20 +36,6 @@ class Bateau
     private $nom;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="nbplacerameurs", type="integer")
-     */
-    private $nbplacerameurs;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="nbplacebarreurs", type="integer")
-     */
-    private $nbplacebarreurs;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="datefabrication", type="date", nullable=true)
@@ -120,55 +106,7 @@ class Bateau
     {
         return $this->nom;
     }
-
-    /**
-     * Set nbplacerameurs
-     *
-     * @param integer $nbplacerameurs
-     *
-     * @return Bateau
-     */
-    public function setNbplacerameurs($nbplacerameurs)
-    {
-        $this->nbplacerameurs = $nbplacerameurs;
-
-        return $this;
-    }
-
-    /**
-     * Get nbplacerameurs
-     *
-     * @return integer
-     */
-    public function getNbplacerameurs()
-    {
-        return $this->nbplacerameurs;
-    }
-
-    /**
-     * Set nbplacebarreurs
-     *
-     * @param integer $nbplacebarreurs
-     *
-     * @return Bateau
-     */
-    public function setNbplacebarreurs($nbplacebarreurs)
-    {
-        $this->nbplacebarreurs = $nbplacebarreurs;
-
-        return $this;
-    }
-
-    /**
-     * Get nbplacebarreurs
-     *
-     * @return integer
-     */
-    public function getNbplacebarreurs()
-    {
-        return $this->nbplacebarreurs;
-    }
-
+    
     /**
      * Set datefabrication
      *
