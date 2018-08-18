@@ -48,13 +48,11 @@ class TypeBateauController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $sortie en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($typebateau);
-                $em->flush();
+                // On enregistre l'objet $typebateau en base de données
+                $this->persistTypeBateau($typebateau);
 
                 // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('notice', 'Type de bateau bien enregistré.');
+                $request->getSession()->getFlashBag()->add('success', 'Type de bateau bien ajouté.');
 
                 // On redirige vers les types de bateaux
                 return $this->redirectToRoute('aviron_sortie_typebateau_home');
@@ -93,27 +91,24 @@ class TypeBateauController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $typebateau en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($typebateau);
-                $em->flush();
+                $this->persistTypeBateau($typebateau);
 
                 // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('notice', 'Type de bateau bien enregistré.');
+                $request->getSession()->getFlashBag()->add('success', 'Type de bateau bien enregistré.');
 
                 // On redirige vers les types de bateaux
                 return $this->redirectToRoute('aviron_sortie_typebateau_home');
             }
         }
-
+ 
         return $this->render('AvironSortieBundle:TypeBateau:modifier.html.twig', 
                         array('form' => $form->createView()));
     }
-    
-    /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
-    public function deleteAction($id)
+
+    private function persistTypeBateau($typebateau)
     {
-        return $this->render('AvironSortieBundle:TypeBateau:supprimer.html.twig');
+        $em = $this->GetDoctrine()->getManager();
+        $em->persist($typebateau);
+        $em->flush();
     }
 }
