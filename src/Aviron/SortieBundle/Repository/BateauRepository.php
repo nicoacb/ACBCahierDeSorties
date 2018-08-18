@@ -18,11 +18,13 @@ class BateauRepository extends \Doctrine\ORM\EntityRepository
                 ->join('b.type', 'type')
                 ->where('type.nbplacerameurs = :nbRameurs')
                 ->andWhere('b.datesupp is null')
+                ->orderBy('b.nom')
                 ->setParameter('nbRameurs', $nbRameurs);
         } else {
             return $this
                 ->createQueryBuilder('b')
-                ->where('b.datesupp is null');
+                ->where('b.datesupp is null')
+                ->orderBy('b.nom');
         }
     }
 }
