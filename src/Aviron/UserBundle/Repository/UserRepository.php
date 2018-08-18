@@ -23,6 +23,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     public function getMembres($page, $nbParPage)
     {
         $query = $this->createQueryBuilder('u')
+                    ->orderBy('u.prenom')
                     ->setFirstResult(($page-1)*$nbParPage)
                     ->setMaxResults($nbParPage);
 
