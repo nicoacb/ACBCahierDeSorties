@@ -24,6 +24,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     {
         $query = $this->createQueryBuilder('u')
                     ->orderBy('u.prenom')
+                    ->addOrderBy('u.nom')
                     ->setFirstResult(($page-1)*$nbParPage)
                     ->setMaxResults($nbParPage);
 
