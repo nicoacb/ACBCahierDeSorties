@@ -19,7 +19,7 @@ class BateauController extends Controller
         $listeBateaux = $this->getDoctrine()
     	->getManager()
     	->getRepository('AvironSortieBundle:Bateau')
-    	->findByDatesupp(NULL);
+        ->getListeBateaux();
 
         return $this->render('AvironSortieBundle:Bateau:index.html.twig', array('listeBateaux' => $listeBateaux));
     }

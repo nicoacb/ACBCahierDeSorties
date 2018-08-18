@@ -27,4 +27,18 @@ class BateauRepository extends \Doctrine\ORM\EntityRepository
                 ->orderBy('b.nom');
         }
     }
+
+    public function getListeBateaux()
+    {
+        $qb = $this
+            ->createQueryBuilder('b')
+            ->join('b.type', 'type')
+            ->where('b.datesupp is null')
+            ->orderBy('type.nom')
+            ->addOrderBy('b.nom');
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
 }
