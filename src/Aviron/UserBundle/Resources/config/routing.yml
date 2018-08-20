@@ -42,3 +42,7 @@ aviron_user_typelicence_liste:
 aviron_user_typelicence_ajouter:
     path:     /config/typelicence/ajouter
     defaults: { _controller: AvironUserBundle:TypeLicence:ajouter }
+
+fos_user_change_password:
+    path: /moncompte/motdepasse
+    defaults: { _controller: fos_user.change_password.controller:changePasswordAction }

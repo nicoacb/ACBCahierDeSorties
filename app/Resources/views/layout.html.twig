@@ -49,7 +49,6 @@
             {% else %}
         	  <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
             {% endif %}
-            <li><a href="#">Help</a></li>
           </ul>
         </div>
       </div>
@@ -60,13 +59,20 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'fos_user_profile_show' ? ' class="active"' }}><a href="{{ path('fos_user_profile_show') }}">Mon compte</a></li>
+            <ul>
+              <li{{ app.request.get('_route') == 'fos_user_change_password' ? ' class="active"' }}><a href="{{ path('fos_user_change_password') }}">Changer de mot de passe</a></li>
+            </ul>
+          </ul>
+
+          <ul class="nav nav-sidebar">
             <li{{ app.request.get('_route') == 'aviron_sortie_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_home') }}">Cahier de sorties</a></li>
           </ul>
 
           <ul class="nav nav-sidebar">
             <li{{ app.request.get('_route') == 'aviron_bateaux_home' ? ' class="active"' }}><a href="{{ path('aviron_bateaux_home') }}">Bateaux</a></li>
             <ul>
-              <li class="{{ app.request.get('_route') == 'aviron_sortie_typebateau_home' ? 'active' }}"><a href="{{ path('aviron_bateaux_ajouter') }}">Ajouter un bateau</a></li>
+              <li{{ app.request.get('_route') == 'aviron_bateaux_ajouter' ? ' class="active"' }}><a href="{{ path('aviron_bateaux_ajouter') }}">Ajouter un bateau</a></li>
               <li{{ app.request.get('_route') == 'aviron_sortie_typebateau_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_typebateau_home') }}">Types de bateau</a></li>
             </ul>
           </ul>
