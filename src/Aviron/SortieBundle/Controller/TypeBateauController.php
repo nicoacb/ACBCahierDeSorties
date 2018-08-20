@@ -23,9 +23,9 @@ class TypeBateauController extends Controller
         }
 
         $typesbateau = $this->getDoctrine()
-    	->getManager()
-    	->getRepository('AvironSortieBundle:TypeBateau')
-    	->findAll();
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:TypeBateau')
+    	    ->getListeTypesBateau();
 
         return $this->render('AvironSortieBundle:TypeBateau:index.html.twig', array('listTypesBateau' => $typesbateau));
     }

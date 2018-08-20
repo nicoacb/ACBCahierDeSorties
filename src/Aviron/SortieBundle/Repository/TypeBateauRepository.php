@@ -10,4 +10,14 @@ namespace Aviron\SortieBundle\Repository;
  */
 class TypeBateauRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getListeTypesBateau()
+    {
+        $qb = $this
+            ->createQueryBuilder('t')
+            ->orderBy('t.nom');
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
 }
