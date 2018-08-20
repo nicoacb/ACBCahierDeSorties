@@ -46,3 +46,7 @@ aviron_user_typelicence_ajouter:
 fos_user_change_password:
     path: /moncompte/motdepasse
     defaults: { _controller: fos_user.change_password.controller:changePasswordAction }
+
+fos_user_security_login:
+    path: /
+    defaults: { _controller: fos_user.security.controller:loginAction }
