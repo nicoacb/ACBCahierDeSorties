@@ -33,7 +33,8 @@
 		"leafo/scssphp" : "~0.6",
 		"patchwork/jsqueeze" : "~1.0",
 		"coresphere/console-bundle": "~0.4",
-        "phpunit/phpunit": "5.7.*"
+        "phpunit/phpunit": "5.7.*",
+		"voku/urlify": "^4.0"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "^3.0",

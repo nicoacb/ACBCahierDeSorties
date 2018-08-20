@@ -6,6 +6,11 @@ aviron_users_liste:
     requirements:
         page: \d+
 
+aviron_users_ajouter:
+    path:       /membres/ajouter
+    defaults: 
+        _controller: AvironUserBundle:User:ajouter
+
 aviron_users_modifier:
     path:       /membres/modifier/{id}
     defaults: 

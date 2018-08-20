@@ -73,7 +73,7 @@
           <ul class="nav nav-sidebar">
             <li{{ app.request.get('_route') == 'aviron_users_liste' ? ' class="active"' }}><a href="{{ path('aviron_users_liste') }}">Membres</a></li>
             <ul>
-              <li{{ app.request.get('_route') == 'fos_user_registration_register' ? ' class="active"' }}><a href="{{ path('fos_user_registration_register') }}">Ajouter un membre</a></li>
+              <li{{ app.request.get('_route') == 'aviron_users_ajouter' ? ' class="active"' }}><a href="{{ path('aviron_users_ajouter') }}">Ajouter un membre</a></li>
             </ul>
           </ul>
           {% if (app.environment == 'dev') %}

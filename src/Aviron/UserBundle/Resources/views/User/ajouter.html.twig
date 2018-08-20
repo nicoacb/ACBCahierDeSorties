@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Ajouter un membre - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2 class="page-header">Ajouter un membre</h2>
+
+  {{ include("AvironUserBundle:User:form.html.twig") }}
+  
+  <p>
+    <a href="{{ path('aviron_users_liste') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste des membres
+    </a>
+  </p>
+
+{% endblock %}

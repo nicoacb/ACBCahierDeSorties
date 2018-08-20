@@ -16,8 +16,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this
             ->createQueryBuilder('u')
-            ->where('u.canrow = 1')
-            ->orderBy('u.prenom');
+            ->orderBy('u.prenom')
+            ->addOrderBy('u.nom');
     }
 
     public function getMembres($page, $nbParPage)

@@ -12,15 +12,6 @@ class RegistrationType extends AbstractType
     {
         $builder->add('nom', TextType::class);
         $builder->add('prenom', TextType::class);
-        $builder->add('datedenaissance');
-        $builder->add('nationalite', TextType::class);
-        $builder->add('adresse');
-        $builder->add('adresse2');
-        $builder->add('ville', TextType::class);
-        $builder->add('codepostal');
-        $builder->add('etablissementscolaire');
-        $builder->add('classe');
-        $builder->add('canrow');
     }
 
     public function getParent()
