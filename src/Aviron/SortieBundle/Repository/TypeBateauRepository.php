@@ -12,12 +12,15 @@ class TypeBateauRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getListeTypesBateau()
     {
-        $qb = $this
-            ->createQueryBuilder('t')
-            ->orderBy('t.nom');
-
-        return $qb
+        return $this->getListeTypesBateauQueryBuilder()
             ->getQuery()
             ->getResult();
+    }
+
+    public function getListeTypesBateauQueryBuilder()
+    {
+        return $this
+            ->createQueryBuilder('t')
+            ->orderBy('t.nom');
     }
 }

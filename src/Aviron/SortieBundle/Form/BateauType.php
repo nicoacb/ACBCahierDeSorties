@@ -2,6 +2,7 @@
 
 namespace Aviron\SortieBundle\Form;
 
+use Aviron\SortieBundle\Repository\TypeBateauRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -26,7 +27,10 @@ class BateauType extends AbstractType
                 'class'         => 'AvironSortieBundle:TypeBateau',
                 'choice_label'  => 'nom',
                 'multiple'      => false,
-                'label'         => 'Type de bateau'
+                'label'         => 'Type de bateau',
+                'query_builder' => function(TypeBateauRepository $tbrepository) {
+                    return $tbrepository->getListeTypesBateauQueryBuilder();
+                }
             ))
             ->add('fabriquant', TextType::class, array(
                 'required' => false,
