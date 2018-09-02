@@ -86,7 +86,6 @@
           {% if (app.environment == 'dev') %}
           <ul class="nav nav-sidebar">
             <li{{ app.request.get('_route') == 'aviron_sortie_saison_liste' ? ' class="active"' }}><a href="{{ path('aviron_sortie_saison_liste') }}">Saisons</a></li>
-            <li{{ app.request.get('_route') == 'aviron_user_typelicence_liste' ? ' class="active"' }}><a href="{{ path('aviron_user_typelicence_liste') }}">Type de Licence</a>
           </ul>
           {% endif %}
         </div>
