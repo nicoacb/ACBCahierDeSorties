@@ -17,6 +17,8 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.hretour IS NOT NULL')
+            ->orderBy('s.date')
+            ->addOrderBy('s.hdepart')
             ->getQuery()
             ->getResult();
     }
@@ -26,6 +28,7 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('s')
                     ->where('s.hretour IS NOT NULL')
                     ->orderBy('s.date', 'DESC')
+                    ->addOrderBy('s.hretour', 'DESC')
                     ->setFirstResult(($page-1)*$nbParPage)
                     ->setMaxResults($nbParPage);
 
