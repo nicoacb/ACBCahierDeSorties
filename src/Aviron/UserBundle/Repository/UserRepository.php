@@ -16,6 +16,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this
             ->createQueryBuilder('u')
+            ->where('u.datesupp is null')
             ->orderBy('u.prenom')
             ->addOrderBy('u.nom');
     }
@@ -23,6 +24,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     public function getMembres($page, $nbParPage)
     {
         $query = $this->createQueryBuilder('u')
+                    ->where('u.datesupp is null')
                     ->orderBy('u.prenom')
                     ->addOrderBy('u.nom')
                     ->setFirstResult(($page-1)*$nbParPage)

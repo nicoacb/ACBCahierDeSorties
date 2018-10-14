@@ -52,6 +52,11 @@ class User extends BaseUser
     private $prenom;
 
     /**
+    * @ORM\Column(name="datesupp", type="date", nullable=true)
+    */
+    private $datesupp;
+
+    /**
      * Set nom
      *
      * @param string $nom
@@ -107,5 +112,29 @@ class User extends BaseUser
     public function getPrenomNom()
     {
         return $this->prenom.' '.$this->nom;
+    }
+
+    /**
+     * Set datesupp
+     *
+     * @param \DateTime $datesupp
+     *
+     * @return User
+     */
+    public function setDatesupp($datesupp)
+    {
+        $this->datesupp = $datesupp;
+
+        return $this;
+    }
+
+    /**
+     * Get datesupp
+     *
+     * @return \DateTime
+     */
+    public function getDatesupp()
+    {
+        return $this->datesupp;
     }
 }

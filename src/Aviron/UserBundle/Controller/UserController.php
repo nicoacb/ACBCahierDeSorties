@@ -94,15 +94,7 @@ class UserController extends Controller
     public function modifierAction(Request $request, $id)
     {
         // On récupère l'entité du membre correspondante à l'id $id
-        $user = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironUserBundle:User')
-            ->find($id);
-
-        // Si $user est null, l'id n'existe pas
-        if(null == $user) {
-            throw new NotFoundHttpException("Le membre d'id ".$id." n'existe pas.");
-        }
+        $user = $this->getUserById($id);
 
         // On génère le formulaire
         $form = $this->createForm(UserType::class, $user);
@@ -115,9 +107,7 @@ class UserController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $user en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+                $this->persistUser($user);
 
                 // On affiche un message de validation
                 $request->getSession()->getFlashBag()->add('success', 'Membre bien modifié.');
@@ -129,5 +119,49 @@ class UserController extends Controller
 
         return $this->render('AvironUserBundle:User:modifier.html.twig',
                                 array('form' => $form->createView()));
+    }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function supprimerAction(Request $request, $id)
+    {
+        // On récupère l'entité de l'utilisateur correspondant à l'id $id
+        $user = $this->getUserById($id);
+
+        $user->setDatesupp(new \DateTime("now"));
+
+        // On enregistre l'objet $user en base de données
+        $this->persistUser($user);
+
+        // On affiche un message de validation
+        $request->getSession()->getFlashBag()->add('success', 'Membre bien supprimé.');
+
+        // On redirige vers la liste des membres
+        return $this->redirectToRoute('aviron_users_liste');
+    }
+
+    private function getUserById($id)
+    {
+        // On récupère l'entité du membre correspondante à l'id $id
+        $user = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironUserBundle:User')
+            ->find($id);
+
+        // Si $user est null, l'id n'existe pas
+        if(null == $user) {
+            throw new NotFoundHttpException("Le membre d'id ".$id." n'existe pas.");
+        }
+
+        return $user;
+    }
+
+    private function persistUser($user)
+    {
+        // On enregistre l'objet $user en base de données
+        $em = $this->GetDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
     }
 }
