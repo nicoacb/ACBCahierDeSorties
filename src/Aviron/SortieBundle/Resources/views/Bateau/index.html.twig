@@ -20,6 +20,9 @@
         <tr>
           <th>Type</th>
           <th>Nom</th>
+          <th>Fabricant</th>
+          <th>Année de fabrication</th>
+          <th>Année d'achat</th>
           <th></th>
         </tr>
       </thead>
@@ -28,6 +31,17 @@
         <tr>
           <td>{{ bateau.type.nom }}</td>
           <td>{{ bateau.nom }}</td>
+          <td>{{ bateau.fabriquant }}</td>
+          <td>
+            {% if bateau.datefabrication is not null %}
+              {{ bateau.datefabrication | date('d/m/Y') }}
+            {% endif %}  
+          </td>
+          <td>
+            {% if bateau.dateachat is not null %}
+              {{ bateau.dateachat | date('d/m/Y') }}
+            {% endif %}
+          </td>
           <td><a href="{{ path('aviron_bateaux_modifier', {'id': bateau.id}) }}" class="btn btn-primary" title="Modifier le bateau">
               <i class="glyphicon glyphicon-pencil"></i>
               Modifier
