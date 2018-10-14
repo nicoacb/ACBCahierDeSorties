@@ -31,7 +31,7 @@ class SortieController extends Controller
             $listsorties = $this->getDoctrine()
     	        ->getManager()
     	        ->getRepository('AvironSortieBundle:Sortie')
-                ->findByHretour(NULL);
+                ->getSortiesEnCours();
         }
         
         // On récupère la liste des sorties terminées
@@ -197,16 +197,13 @@ class SortieController extends Controller
     */
     public function supprimerAction(Request $request, $id)
     {
-        // On récupère l'entité de la sortie correspondante à l'id $id
-        $sortie = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Sortie')
-            ->find($id);
+        // On récupère l'entité du sortie correspondant à l'id $id
+        $sortie = $this->getSortieById($id);
+
+        $sortie->setDatesupp(new \DateTime("now"));
 
         // On enregistre l'objet $sortie en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->remove($sortie);
-        $em->flush();
+        $this->persistSortie($sortie);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Sortie bien supprimée.');

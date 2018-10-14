@@ -73,13 +73,11 @@ class Sortie
      * @ORM\Column(name="observations", type="text", nullable=true)
      */
     private $observations;
-
+    
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="deleted", type="boolean")
-     */
-    private $deleted = false;
+    * @ORM\Column(name="datesupp", type="date", nullable=true)
+    */
+    private $datesupp;
 
     /**
      * Get id
@@ -210,31 +208,7 @@ class Sortie
     {
         return $this->observations;
     }
-
-    /**
-     * Set deleted
-     *
-     * @param boolean $deleted
-     *
-     * @return Sortie
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get deleted
-     *
-     * @return boolean
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
+    
     /**
      * Set bateau
      *
@@ -321,5 +295,29 @@ class Sortie
                 array_push($ids, $athlete->getId());
             }
         }
+    }
+
+    /**
+     * Set datesupp
+     *
+     * @param \DateTime $datesupp
+     *
+     * @return Sortie
+     */
+    public function setDatesupp($datesupp)
+    {
+        $this->datesupp = $datesupp;
+
+        return $this;
+    }
+
+    /**
+     * Get datesupp
+     *
+     * @return \DateTime
+     */
+    public function getDatesupp()
+    {
+        return $this->datesupp;
     }
 }

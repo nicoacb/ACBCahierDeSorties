@@ -13,20 +13,22 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class SortieRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findSortiesTerminees()
+    public function getSortiesEnCours()
     {
         return $this->createQueryBuilder('s')
-            ->where('s.hretour IS NOT NULL')
-            ->orderBy('s.date')
-            ->addOrderBy('s.hdepart')
-            ->getQuery()
-            ->getResult();
+                    ->where('s.hretour IS NULL')
+                    ->andWhere('s.datesupp IS NULL')
+                    ->orderBy('s.date', 'DESC')
+                    ->addOrderBy('s.hdepart')
+                    ->getQuery()
+                    ->getResult();
     }
 
     public function getSortiesTerminees($page, $nbParPage)
     {
         $query = $this->createQueryBuilder('s')
                     ->where('s.hretour IS NOT NULL')
+                    ->andWhere('s.datesupp IS NULL')
                     ->orderBy('s.date', 'DESC')
                     ->addOrderBy('s.hretour', 'DESC')
                     ->setFirstResult(($page-1)*$nbParPage)
