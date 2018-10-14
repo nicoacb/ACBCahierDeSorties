@@ -71,8 +71,7 @@ class SortieType extends AbstractType
             ))
             ->add('save', SubmitType::class, array(
                 'label'         => 'Enregistrer'
-            ))
-            ->get('athletes')->resetViewTransformers();            
+            ));
     }
     
     /**

@@ -163,9 +163,33 @@ class SortieController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */    
-    public function editAction($id)
+    public function modifierAction(Request $request, $id)
     {
-        return $this->render('AvironSortieBundle:Sortie:edit.html.twig');
+        // On récupère l'entité du sortie correspondant à l'id $id
+        $sortie = $this->getSortieById($id);
+
+        // On génère le formulaire
+        $form = $this->createForm(SortieType::class, $sortie);
+
+        // Si la requête est en POST, c'est qu'on veut enregistrer le sortie
+        if($request->isMethod('POST')) {
+            // On fait le lien Requête <-> Formulaire
+            $form->handleRequest($request);
+
+            // On vérifie que les valeurs entrées sont correctes
+            if($form->isValid()) {
+                // On enregistre l'objet $sortie en base de données
+                $this->persistSortie($sortie);
+
+                // On affiche un message de validation
+                $request->getSession()->getFlashBag()->add('success', 'Sortie bien modifiée.');
+
+                // On redirige vers le cahier de sortie
+                return $this->redirectToRoute('aviron_sortie_home');
+            }
+        }
+        return $this->render('AvironSortieBundle:Sortie:modifier.html.twig',
+                                array('form' => $form->createView(), 'sortie' => $sortie));
     }
     
     /**
@@ -189,6 +213,22 @@ class SortieController extends Controller
 
         // On redirige vers le cahier de sortie
         return $this->redirectToRoute('aviron_sortie_home');
+    }
+
+    private function getSortieById($id)
+    {
+        return $this->getDoctrine()
+        ->getManager()
+        ->getRepository('AvironSortieBundle:Sortie')
+        ->find($id);
+    }
+
+    private function persistSortie($sortie)
+    {
+        // On enregistre l'objet $sortie en base de données
+        $em = $this->GetDoctrine()->getManager();
+        $em->persist($sortie);
+        $em->flush();
     }
 
     private function upMinutesTime($datetime, $interval)

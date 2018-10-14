@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Modifier une sortie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier une sortie</h2>
+
+  {{ include("AvironSortieBundle:Sortie:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('aviron_sortie_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour au cahier de sorties
+    </a>
+  </p>
+
+{% endblock %}
