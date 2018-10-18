@@ -91,7 +91,35 @@ class SortieController extends Controller
             ));
     }
 
-    
+    public function statistiquesBateauxAction()
+    {
+        // On récupère la liste des sorties terminées
+        $listSortiesTerminees = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesTermineesStatistiques();
+
+        $statistiques = array();
+        $max = 0;
+        foreach ($listSortiesTerminees as $sortie)
+        {
+            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
+            {
+                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getTypeNom());
+            }
+            $statistiques[$sortie->getBateau()->getId()]->ajouterKmParcourus($sortie-> getKmparcourus());
+            if ($statistiques[$sortie->getBateau()->getId()]->getKmParcourus() > $max)
+            {
+                $max = $statistiques[$sortie->getBateau()->getId()]->getKmParcourus();
+            }
+        }     
+        
+        return $this->render('AvironSortieBundle:Sortie:statistiquesbateaux.html.twig', 
+            array(
+                'statistiques' => $statistiques,
+                'max' => $max
+            ));
+    }
     
     public function ajouterAction(Request $request, $nbrameurs)
     {

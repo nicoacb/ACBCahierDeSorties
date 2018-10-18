@@ -88,6 +88,11 @@ aviron_sortie_statistiques_membres:
     defaults: 
         _controller: AvironSortieBundle:Sortie:statistiquesMembres
 
+aviron_sortie_statistiques_bateaux:
+    path:     /sorties/statistiques/bateaux
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:statistiquesBateaux
+
 aviron_sortie_typebateau_home:
     path:     /typebateau/{page}
     defaults: 
