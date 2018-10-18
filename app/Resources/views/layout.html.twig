@@ -67,6 +67,9 @@
 
           <ul class="nav nav-sidebar">
             <li{{ app.request.get('_route') == 'aviron_sortie_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_home') }}">Cahier de sorties</a></li>
+            <ul>
+              <li{{ app.request.get('_route') == 'aviron_sortie_statistiques_membres' ? ' class="active"' }}><a href="{{ path('aviron_sortie_statistiques_membres') }}">Statistiques membres</a></li>
+            </ul>
           </ul>
 
           <ul class="nav nav-sidebar">

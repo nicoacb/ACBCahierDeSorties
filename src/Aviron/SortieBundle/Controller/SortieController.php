@@ -57,6 +57,41 @@ class SortieController extends Controller
                 'page' => $page
             ));
     }
+
+    public function statistiquesMembresAction()
+    {
+        // On récupère la liste des sorties terminées
+        $listSortiesTerminees = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesTermineesStatistiques();
+
+        $statistiques = array();
+        $max = 0;
+        foreach ($listSortiesTerminees as $sortie)
+        {
+            foreach  ($sortie->getAthletes() as $athlete)
+            {
+                if (!array_key_exists($athlete->getId(), $statistiques))
+                {
+                    $statistiques[$athlete->getId()] = new Statistique($athlete->getPrenomNom());
+                }
+                $statistiques[$athlete->getId()]->ajouterKmParcourus($sortie-> getKmparcourus());
+                if ($statistiques[$athlete->getId()]->getKmParcourus() > $max)
+                {
+                    $max = $statistiques[$athlete->getId()]->getKmParcourus();
+                }
+            }
+        }     
+        
+        return $this->render('AvironSortieBundle:Sortie:statistiquesmembres.html.twig', 
+            array(
+                'statistiques' => $statistiques,
+                'max' => $max
+            ));
+    }
+
+    
     
     public function ajouterAction(Request $request, $nbrameurs)
     {
@@ -249,5 +284,32 @@ class SortieController extends Controller
         }
 
         return $datetime;
+    }
+}
+
+class Statistique
+{
+    private $kmParcourus;
+    private $label;
+
+    function __construct($pLabel)
+    {
+            $this->label = $pLabel;
+            $this->kmParcourus = 0;
+    }
+
+    function ajouterKmParcourus($pKmParcourus)
+    {
+        $this->kmParcourus += $pKmParcourus;
+    }
+
+    function getLabel()
+    {
+        return $this->label;
+    }
+
+    function getKmParcourus()
+    {
+        return $this->kmParcourus;
     }
 }
