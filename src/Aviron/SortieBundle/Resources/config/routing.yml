@@ -84,9 +84,14 @@ aviron_sortie_supprimer:
         id: \d+
 
 aviron_sortie_statistiques_membres:
-    path:     /sorties/statistiques/membres
+    path:     /sorties/statistiques/membres/kilometresparcourus
     defaults: 
         _controller: AvironSortieBundle:Sortie:statistiquesMembres
+
+aviron_sortie_statistiques_nombre_sorties_membres:
+    path:     /sorties/statistiques/membres/nombredesorties
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:statistiquesNombreDeSortiesMembres
 
 aviron_sortie_statistiques_bateaux:
     path:     /sorties/statistiques/bateaux/kilometresparcourus
