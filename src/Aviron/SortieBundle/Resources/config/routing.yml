@@ -89,9 +89,14 @@ aviron_sortie_statistiques_membres:
         _controller: AvironSortieBundle:Sortie:statistiquesMembres
 
 aviron_sortie_statistiques_bateaux:
-    path:     /sorties/statistiques/bateaux
+    path:     /sorties/statistiques/bateaux/kilometresparcourus
     defaults: 
         _controller: AvironSortieBundle:Sortie:statistiquesBateaux
+
+aviron_sortie_statistiques_nombre_sorties_bateaux:
+    path:     /sorties/statistiques/bateaux/nombredesorties
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:statistiquesNombreDeSortiesBateaux
 
 aviron_sortie_typebateau_home:
     path:     /typebateau/{page}

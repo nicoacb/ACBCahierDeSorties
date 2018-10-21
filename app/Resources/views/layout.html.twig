@@ -69,7 +69,8 @@
             <li{{ app.request.get('_route') == 'aviron_sortie_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_home') }}">Cahier de sorties</a></li>
             <ul>
               <li{{ app.request.get('_route') == 'aviron_sortie_statistiques_membres' ? ' class="active"' }}><a href="{{ path('aviron_sortie_statistiques_membres') }}">Statistiques membres</a></li>
-              <li{{ app.request.get('_route') == 'aviron_sortie_statistiques_bateaux' ? ' class="active"' }}><a href="{{ path('aviron_sortie_statistiques_bateaux') }}">Statistiques bateaux</a></li>
+              <li{{ app.request.get('_route') == 'aviron_sortie_statistiques_bateaux' ? ' class="active"' }}><a href="{{ path('aviron_sortie_statistiques_bateaux') }}">Nombre de kilomètres parcourus par bateaux</a></li>
+              <li{{ app.request.get('_route') == 'aviron_sortie_statistiques_nombre_sorties_bateaux' ? ' class="active"' }}><a href="{{ path('aviron_sortie_statistiques_nombre_sorties_bateaux') }}">Nombre de sorties par bateaux</a></li>
             </ul>
           </ul>
 

@@ -120,6 +120,36 @@ class SortieController extends Controller
                 'max' => $max
             ));
     }
+
+    public function statistiquesNombreDeSortiesBateauxAction()
+    {
+        // On récupère la liste des sorties terminées
+        $listSortiesTerminees = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesTermineesStatistiques();
+
+        $statistiques = array();
+        $max = 0;
+        foreach ($listSortiesTerminees as $sortie)
+        {
+            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
+            {
+                $statistiques[$sortie->getBateau()->getId()] = new StatistiqueNombreDeSorties($sortie->getBateau()->getTypeNom());
+            }
+            $statistiques[$sortie->getBateau()->getId()]->ajouterSortie();
+            if ($statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties() > $max)
+            {
+                $max = $statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties();
+            }
+        }     
+        
+        return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesbateaux.html.twig', 
+            array(
+                'statistiques' => $statistiques,
+                'max' => $max
+            ));
+    }
     
     public function ajouterAction(Request $request, $nbrameurs)
     {
@@ -339,5 +369,32 @@ class Statistique
     function getKmParcourus()
     {
         return $this->kmParcourus;
+    }
+}
+
+class StatistiqueNombreDeSorties
+{
+    private $nombreDeSorties;
+    private $label;
+
+    function __construct($pLabel)
+    {
+            $this->label = $pLabel;
+            $this->nombreDeSorties = 0;
+    }
+
+    function ajouterSortie()
+    {
+        $this->nombreDeSorties++;
+    }
+
+    function getLabel()
+    {
+        return $this->label;
+    }
+
+    function getNombreDeSorties()
+    {
+        return $this->nombreDeSorties;
     }
 }
