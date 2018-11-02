@@ -17,3 +17,8 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: form.type, alias: sortie_athletes }
+
+    twig.extension.sortbyfield:
+        class: Snilius\Twig\SortByFieldExtension
+        tags:
+            - { name: twig.extension }
