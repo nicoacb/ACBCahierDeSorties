@@ -60,127 +60,41 @@ class SortieController extends Controller
 
     public function statistiquesMembresAction()
     {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('AvironSortieBundle:Sortie')
-            ->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $max = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            foreach  ($sortie->getAthletes() as $athlete)
-            {
-                if (!array_key_exists($athlete->getId(), $statistiques))
-                {
-                    $statistiques[$athlete->getId()] = new Statistique($athlete->getPrenomNom());
-                }
-                $statistiques[$athlete->getId()]->ajouterKmParcourus($sortie-> getKmparcourus());
-                if ($statistiques[$athlete->getId()]->getKmParcourus() > $max)
-                {
-                    $max = $statistiques[$athlete->getId()]->getKmParcourus();
-                }
-            }
-        }     
+        $modeleStatistiques = $this->getStatistiquesParMembre();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesmembres.html.twig', 
             array(
-                'statistiques' => $statistiques,
-                'max' => $max
+                'modele' => $modeleStatistiques
             ));
     }
 
     public function statistiquesNombreDeSortiesMembresAction()
     {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('AvironSortieBundle:Sortie')
-            ->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $max = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            foreach  ($sortie->getAthletes() as $athlete)
-            {
-                if (!array_key_exists($athlete->getId(), $statistiques))
-                {
-                    $statistiques[$athlete->getId()] = new StatistiqueNombreDeSorties($athlete->getPrenomNom());
-                }
-                $statistiques[$athlete->getId()]->ajouterSortie();
-                if ($statistiques[$athlete->getId()]->getNombreDeSorties() > $max)
-                {
-                    $max = $statistiques[$athlete->getId()]->getNombreDeSorties();
-                }
-            }
-        }     
+        $modeleStatistiques = $this->getStatistiquesParMembre();
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesmembres.html.twig', 
             array(
-                'statistiques' => $statistiques,
-                'max' => $max
+                'modele' => $modeleStatistiques
             ));
     }
 
     public function statistiquesBateauxAction()
     {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('AvironSortieBundle:Sortie')
-            ->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $max = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
-            {
-                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getTypeNom());
-            }
-            $statistiques[$sortie->getBateau()->getId()]->ajouterKmParcourus($sortie-> getKmparcourus());
-            if ($statistiques[$sortie->getBateau()->getId()]->getKmParcourus() > $max)
-            {
-                $max = $statistiques[$sortie->getBateau()->getId()]->getKmParcourus();
-            }
-        }     
+        $modeleStatistiques = $this->getStatistiquesParBateau();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesbateaux.html.twig', 
             array(
-                'statistiques' => $statistiques,
-                'max' => $max
+                'modele' => $modeleStatistiques
             ));
     }
 
     public function statistiquesNombreDeSortiesBateauxAction()
     {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('AvironSortieBundle:Sortie')
-            ->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $max = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
-            {
-                $statistiques[$sortie->getBateau()->getId()] = new StatistiqueNombreDeSorties($sortie->getBateau()->getTypeNom());
-            }
-            $statistiques[$sortie->getBateau()->getId()]->ajouterSortie();
-            if ($statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties() > $max)
-            {
-                $max = $statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties();
-            }
-        }     
+        $modeleStatistiques = $this->getStatistiquesParBateau();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesbateaux.html.twig', 
             array(
-                'statistiques' => $statistiques,
-                'max' => $max
+                'modele' => $modeleStatistiques
             ));
     }
     
@@ -376,21 +290,109 @@ class SortieController extends Controller
 
         return $datetime;
     }
+
+    private function getStatistiquesParBateau()
+    {
+        // On récupère la liste des sorties terminées
+        $listSortiesTerminees = $this->getSortiesTermineesStatistiques();
+
+        $statistiques = array();
+        $maxSorties = 0;
+        $maxKmParcourus = 0;
+        foreach ($listSortiesTerminees as $sortie)
+        {
+            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
+            {
+                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getTypeNom());
+            }
+            $statistiques[$sortie->getBateau()->getId()]->ajouterSortie($sortie-> getKmparcourus());
+            $maxKmParcourus = max($statistiques[$sortie->getBateau()->getId()]->getKmParcourus(), $maxKmParcourus);
+            $maxSorties = max($statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties(), $maxSorties);
+        }
+
+        return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
+    }
+
+    private function getStatistiquesParMembre()
+    {
+        // On récupère la liste des sorties terminées
+        $listSortiesTerminees = $this->getSortiesTermineesStatistiques();
+
+        $statistiques = array();
+        $maxSorties = 0;
+        $maxKmParcourus = 0;
+        foreach ($listSortiesTerminees as $sortie)
+        {
+            foreach  ($sortie->getAthletes() as $athlete)
+            {
+                if (!array_key_exists($athlete->getId(), $statistiques))
+                {
+                    $statistiques[$athlete->getId()] = new Statistique($athlete->getPrenomNom());
+                }
+                $statistiques[$athlete->getId()]->ajouterSortie($sortie-> getKmparcourus());
+                $maxKmParcourus = max($statistiques[$athlete->getId()]->getKmParcourus(), $maxKmParcourus);
+                $maxSorties = max($statistiques[$athlete->getId()]->getNombreDeSorties(), $maxSorties);
+            }
+        }
+
+        return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
+    }
+
+    private function getSortiesTermineesStatistiques()
+    {
+        // On récupère la liste des sorties terminées
+        return $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesTermineesStatistiques();
+    }
+}
+
+class ModeleStatistiques
+{
+    private $statistiques;
+    private $maxSorties;
+    private $maxKmParcourus;
+
+    function __construct($pStatistiques, $pMaxSorties, $pMaxKmParcourus)
+    {
+        $this->statistiques = $pStatistiques;
+        $this->maxSorties = $pMaxSorties;
+        $this->maxKmParcourus = $pMaxKmParcourus;
+    }
+
+    function getStatistiques()
+    {
+        return $this->statistiques;
+    }
+
+    function getMaxSorties()
+    {
+        return $this->maxSorties;
+    }
+
+    function getMaxKmParcourus()
+    {
+        return $this->maxKmParcourus;
+    }
 }
 
 class Statistique
 {
     private $kmParcourus;
     private $label;
+    private $nombreDeSorties;
 
     function __construct($pLabel)
     {
-            $this->label = $pLabel;
-            $this->kmParcourus = 0;
+        $this->label = $pLabel;
+        $this->kmParcourus = 0;
+        $this->nombreDeSorties = 0;
     }
 
-    function ajouterKmParcourus($pKmParcourus)
+    function ajouterSortie($pKmParcourus)
     {
+        $this->nombreDeSorties++;
         $this->kmParcourus += $pKmParcourus;
     }
 
@@ -402,28 +404,6 @@ class Statistique
     function getKmParcourus()
     {
         return $this->kmParcourus;
-    }
-}
-
-class StatistiqueNombreDeSorties
-{
-    private $nombreDeSorties;
-    private $label;
-
-    function __construct($pLabel)
-    {
-            $this->label = $pLabel;
-            $this->nombreDeSorties = 0;
-    }
-
-    function ajouterSortie()
-    {
-        $this->nombreDeSorties++;
-    }
-
-    function getLabel()
-    {
-        return $this->label;
     }
 
     function getNombreDeSorties()

@@ -1,33 +1,35 @@
 {% extends "::layout.html.twig" %}
 
 {% block title %}
-    Sorties - Statistiques membres - {{ parent() }}
+    Sorties - Nombre de kilomètres parcourus par membre - {{ parent() }}
 {% endblock %}
 
 {% block body %}
-    <h2>Sorties - Statistiques membres</h2>
+    <h2>Sorties - Nombre de kilomètres parcourus par membre</h2>
 
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
               <tr>
-                <th style="width: 25%">Rameur</th>
-                <th style="width: 75%">Kilomètres parcourus</th>
+                <th style="width: 20%">Membre</th>
+                <th style="width: 65%">Kilomètres parcourus</th>
+                <th style="width: 15%"></th>
               </tr>
             </thead>
             <tbody>
-            {% for stat in statistiques | sort | reverse %}
+            {% for stat in modele.statistiques | sortbyfield('kmParcourus') | reverse %}
             <tr>
                 <td>{{ stat.label }}</td>
                 <td>
                     <div class="progress" style="margin-bottom: 0px">
-                        <div class="progress-bar" style="width: {{ stat.kmparcourus * 100 / max }}%">{{ stat.kmparcourus }} km</div>
+                        <div class="progress-bar" style="width: {{ stat.kmparcourus * 100 / modele.maxkmparcourus }}%">{{ stat.kmparcourus }} km</div>
                     </div>
                 </td>
+                <td>en {{ stat.nombredesorties }} sortie{% if stat.nombredesorties > 1 %}s{% endif %}</td>
             </tr>             
             {% else %}
             <tr>
-                <td colspan="2">Aucune données disponibles pour cette période</td>
+                <td colspan="3">Aucune données disponibles pour cette période</td>
             </tr>
             {% endfor %}
             </tbody>
