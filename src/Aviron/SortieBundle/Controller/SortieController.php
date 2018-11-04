@@ -97,6 +97,35 @@ class SortieController extends Controller
                 'modele' => $modeleStatistiques
             ));
     }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function membreAction(Request $request, $idmembre)
+    {
+        // On récupère l'entité du membre correspondante à l'id $idmembre
+        $membre = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironUserBundle:User')
+            ->find($idmembre);
+
+        // Si $membre est null, l'id n'existe pas
+        if(null == $membre) {
+            throw new NotFoundHttpException("Le membre d'id ".$idmembre." n'existe pas.");
+        }
+
+        // On récupère la liste des sorties terminées
+        $sorties = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesMembre($idmembre);
+
+        return $this->render('AvironSortieBundle:Sortie:membre.html.twig',
+            array(
+                'membre'    => $membre,
+                'sorties'   => $sorties
+                ));
+    }
     
     public function ajouterAction(Request $request, $nbrameurs)
     {
@@ -303,7 +332,7 @@ class SortieController extends Controller
         {
             if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
             {
-                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getTypeNom());
+                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getId(), $sortie->getBateau()->getTypeNom());
             }
             $statistiques[$sortie->getBateau()->getId()]->ajouterSortie($sortie-> getKmparcourus());
             $maxKmParcourus = max($statistiques[$sortie->getBateau()->getId()]->getKmParcourus(), $maxKmParcourus);
@@ -327,7 +356,7 @@ class SortieController extends Controller
             {
                 if (!array_key_exists($athlete->getId(), $statistiques))
                 {
-                    $statistiques[$athlete->getId()] = new Statistique($athlete->getPrenomNom());
+                    $statistiques[$athlete->getId()] = new Statistique($athlete->getId(), $athlete->getPrenomNom());
                 }
                 $statistiques[$athlete->getId()]->ajouterSortie($sortie-> getKmparcourus());
                 $maxKmParcourus = max($statistiques[$athlete->getId()]->getKmParcourus(), $maxKmParcourus);
@@ -379,12 +408,14 @@ class ModeleStatistiques
 
 class Statistique
 {
+    private $id;
     private $kmParcourus;
     private $label;
     private $nombreDeSorties;
 
-    function __construct($pLabel)
+    function __construct($pId, $pLabel)
     {
+        $this->id = $pId;
         $this->label = $pLabel;
         $this->kmParcourus = 0;
         $this->nombreDeSorties = 0;
@@ -394,6 +425,11 @@ class Statistique
     {
         $this->nombreDeSorties++;
         $this->kmParcourus += $pKmParcourus;
+    }
+
+    function getId()
+    {
+        return $this->id;
     }
 
     function getLabel()

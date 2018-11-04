@@ -83,6 +83,13 @@ aviron_sortie_supprimer:
     requirements:
         id: \d+
 
+aviron_sortie_membre:
+    path:     /sorties/membre/{idmembre}
+    defaults: 
+        _controller: AvironSortieBundle:Sortie:membre
+    requirements:
+        id: \d+
+
 aviron_sortie_statistiques_membres:
     path:     /sorties/statistiques/membres/kilometresparcourus
     defaults: 

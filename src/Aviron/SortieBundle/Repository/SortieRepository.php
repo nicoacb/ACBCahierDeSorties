@@ -46,4 +46,17 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
                     ->getQuery()
                     ->getResult();
     }
+
+    public function getSortiesMembre($idMembre)
+    {
+        return $this->createQueryBuilder('s')
+                    ->join('s.athletes', 'a')
+                    ->where('a.id = :idMembre')
+                    ->andWhere('s.hretour IS NOT NULL')
+                    ->andWhere('s.datesupp IS NULL')
+                    ->orderBy('s.date', 'DESC')
+                    ->setParameter('idMembre', $idMembre)
+                    ->getQuery()
+                    ->getResult();
+    }
 }
