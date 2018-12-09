@@ -10,6 +10,8 @@ parameters:
     locale: fr
     nbsortiesparpage: 25
     nbUsersParPage: 50
+    nbPagesDebutEtFinPagination: 3
+    nbPagesAutourPageCourrante: 4
 
 framework:
     #esi:             ~
@@ -42,6 +44,10 @@ twig:
     form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
         - 'form/fields.html.twig'
+    globals:
+        nbPagesDebutEtFinPagination: '%nbPagesDebutEtFinPagination%'
+        nbPagesAutourPageCourrante: '%nbPagesAutourPageCourrante%'
+
 
 # Doctrine Configuration
 doctrine:

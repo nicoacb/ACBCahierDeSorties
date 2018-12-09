@@ -144,17 +144,57 @@
         </table>
 
         <ul class="pagination">
-        {% if nbPages != 0 %}
-          {% for p in range(1, nbPages) %}
-            <li{% if p == page %} class="active"{% endif %}>
-              <a href="{{ path('aviron_sortie_home', {'page': p}) }}">{{ p }}</a>
-            </li>
-          {% endfor %}
-        {% else %}
-          <li class="active">
-            <a href="{{ path('aviron_sortie_home', {'page': 1}) }}">{{ 1 }}</a>
+        {% if page > 1 %}
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': page - 1}) }}">Précédent</a>
           </li>
+
+          {% for i in range(1, nbPagesDebutEtFinPagination) if ( i < page - nbPagesAutourPageCourrante ) %}
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': i}) }}">{{ i }}</a>
+          </li>
+          {% endfor %}
+
+          {% if nbPagesDebutEtFinPagination + 1 < page - nbPagesAutourPageCourrante %}
+          <li class="disabled">
+            <a href="#">...</a>
+          </li>
+          {% endif %}
+
+          {% for i in range(page - nbPagesAutourPageCourrante, page - 1) if ( i > 0 ) %}
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': i}) }}">{{ i }}</a>
+          </li>
+          {% endfor %}
         {% endif %}
+
+          <li class="active">
+          <a href="{{ path('aviron_sortie_home', {'page': page}) }}">{{ page }}</a>
+          </li>
+
+        {% if page < nbPages %}
+          {% for i in range(page + 1, page + nbPagesAutourPageCourrante) if ( i <= nbPages ) %}
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': i}) }}">{{ i }}</a>
+          </li>
+          {% endfor %}
+
+          {% if  (nbPages - nbPagesDebutEtFinPagination) > (page + nbPagesAutourPageCourrante) %}
+          <li class="disabled">
+            <a href="#">...</a>
+          </li>
+          {% endif %}
+
+          {% for i in range(nbPages - nbPagesDebutEtFinPagination + 1, nbPages) if ( i > page + nbPagesAutourPageCourrante ) %}
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': i}) }}">{{ i }}</a>
+          </li>
+          {% endfor %}
+
+          <li>
+            <a href="{{ path('aviron_sortie_home', {'page': page + 1}) }}">Suivant</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
