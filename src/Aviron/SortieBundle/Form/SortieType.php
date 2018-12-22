@@ -36,7 +36,8 @@ class SortieType extends AbstractType
                 },
                 'attr'          => array(
                     'class' => 'selectpicker',
-                    'data-live-search' => 'true'
+                    'data-live-search' => 'true',
+                    'data-live-search-normalize' => 'true'
                 ),
                 'query_builder' => function(BateauRepository $brepository) use($pattern) {
                       return $brepository->getNbRameursQueryBuilder($pattern);

@@ -25,7 +25,8 @@ class AthleteType extends AbstractType
             },
             'attr'          => array(
                 'class' => 'selectpicker',
-                'data-live-search' => 'true'
+                'data-live-search' => 'true',
+                'data-live-search-normalize' => 'true'
             ),
             'placeholder'   => 'Sélectionnez les membres de votre équipage',
             'validation_groups' => false,
