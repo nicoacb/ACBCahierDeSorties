@@ -6,6 +6,7 @@ use Aviron\SortieBundle\Entity\Sortie;
 use Aviron\SortieBundle\Form\SortieType;
 use Aviron\SortieBundle\Form\SortieAddType;
 use Aviron\SortieBundle\Form\SortieEndType;
+use Aviron\SortieBundle\Statistiques\StatistiquesSorties;
 use Aviron\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -60,7 +61,8 @@ class SortieController extends Controller
 
     public function statistiquesMembresAction()
     {
-        $modeleStatistiques = $this->getStatistiquesParMembre();     
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
+        $modeleStatistiques = $statistiques->getStatistiquesParMembre();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesmembres.html.twig', 
             array(
@@ -70,7 +72,8 @@ class SortieController extends Controller
 
     public function statistiquesNombreDeSortiesMembresAction()
     {
-        $modeleStatistiques = $this->getStatistiquesParMembre();
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
+        $modeleStatistiques = $statistiques->getStatistiquesParMembre();
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesmembres.html.twig', 
             array(
@@ -80,7 +83,8 @@ class SortieController extends Controller
 
     public function statistiquesBateauxAction()
     {
-        $modeleStatistiques = $this->getStatistiquesParBateau();     
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
+        $modeleStatistiques = $statistiques->getStatistiquesParBateau();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesbateaux.html.twig', 
             array(
@@ -90,7 +94,8 @@ class SortieController extends Controller
 
     public function statistiquesNombreDeSortiesBateauxAction()
     {
-        $modeleStatistiques = $this->getStatistiquesParBateau();     
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
+        $modeleStatistiques = $statistiques->getStatistiquesParBateau();     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesbateaux.html.twig', 
             array(
@@ -126,7 +131,7 @@ class SortieController extends Controller
                 'sorties'   => $sorties
                 ));
     }
-    
+   
     public function ajouterAction(Request $request, $nbrameurs)
     {
         // On créé un objet Sortie
@@ -318,132 +323,5 @@ class SortieController extends Controller
         }
 
         return $datetime;
-    }
-
-    private function getStatistiquesParBateau()
-    {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $maxSorties = 0;
-        $maxKmParcourus = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            if (!array_key_exists($sortie->getBateau()->getId(), $statistiques))
-            {
-                $statistiques[$sortie->getBateau()->getId()] = new Statistique($sortie->getBateau()->getId(), $sortie->getBateau()->getTypeNom());
-            }
-            $statistiques[$sortie->getBateau()->getId()]->ajouterSortie($sortie-> getKmparcourus());
-            $maxKmParcourus = max($statistiques[$sortie->getBateau()->getId()]->getKmParcourus(), $maxKmParcourus);
-            $maxSorties = max($statistiques[$sortie->getBateau()->getId()]->getNombreDeSorties(), $maxSorties);
-        }
-
-        return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
-    }
-
-    private function getStatistiquesParMembre()
-    {
-        // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getSortiesTermineesStatistiques();
-
-        $statistiques = array();
-        $maxSorties = 0;
-        $maxKmParcourus = 0;
-        foreach ($listSortiesTerminees as $sortie)
-        {
-            foreach  ($sortie->getAthletes() as $athlete)
-            {
-                if (!array_key_exists($athlete->getId(), $statistiques))
-                {
-                    $statistiques[$athlete->getId()] = new Statistique($athlete->getId(), $athlete->getPrenomNom());
-                }
-                $statistiques[$athlete->getId()]->ajouterSortie($sortie-> getKmparcourus());
-                $maxKmParcourus = max($statistiques[$athlete->getId()]->getKmParcourus(), $maxKmParcourus);
-                $maxSorties = max($statistiques[$athlete->getId()]->getNombreDeSorties(), $maxSorties);
-            }
-        }
-
-        return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
-    }
-
-    private function getSortiesTermineesStatistiques()
-    {
-        // On récupère la liste des sorties terminées
-        return $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('AvironSortieBundle:Sortie')
-            ->getSortiesTermineesStatistiques();
-    }
-}
-
-class ModeleStatistiques
-{
-    private $statistiques;
-    private $maxSorties;
-    private $maxKmParcourus;
-
-    function __construct($pStatistiques, $pMaxSorties, $pMaxKmParcourus)
-    {
-        $this->statistiques = $pStatistiques;
-        $this->maxSorties = $pMaxSorties;
-        $this->maxKmParcourus = $pMaxKmParcourus;
-    }
-
-    function getStatistiques()
-    {
-        return $this->statistiques;
-    }
-
-    function getMaxSorties()
-    {
-        return $this->maxSorties;
-    }
-
-    function getMaxKmParcourus()
-    {
-        return $this->maxKmParcourus;
-    }
-}
-
-class Statistique
-{
-    private $id;
-    private $kmParcourus;
-    private $label;
-    private $nombreDeSorties;
-
-    function __construct($pId, $pLabel)
-    {
-        $this->id = $pId;
-        $this->label = $pLabel;
-        $this->kmParcourus = 0;
-        $this->nombreDeSorties = 0;
-    }
-
-    function ajouterSortie($pKmParcourus)
-    {
-        $this->nombreDeSorties++;
-        $this->kmParcourus += $pKmParcourus;
-    }
-
-    function getId()
-    {
-        return $this->id;
-    }
-
-    function getLabel()
-    {
-        return $this->label;
-    }
-
-    function getKmParcourus()
-    {
-        return $this->kmParcourus;
-    }
-
-    function getNombreDeSorties()
-    {
-        return $this->nombreDeSorties;
     }
 }
