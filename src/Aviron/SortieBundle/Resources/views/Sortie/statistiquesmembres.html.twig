@@ -7,6 +7,10 @@
 {% block body %}
     <h2>Sorties - Nombre de kilomètres parcourus par membre</h2>
 
+    <a href="{{ path('aviron_sortie_excel') }}" class="pull-right">
+        <i class="glyphicon glyphicon-download-alt"></i> Exporter au format Excel (XLSX)
+    </a>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>

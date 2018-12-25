@@ -158,3 +158,8 @@ aviron_sortie_saison_supprimer:
         _controller: AvironSortieBundle:Saison:supprimer
     requirements:
         id: \d+
+
+aviron_sortie_excel:
+    path:     /export/membres/kilometresparcourus
+    defaults: 
+        _controller: AvironSortieBundle:ExportExcel:exportKmParcourusParMembre
