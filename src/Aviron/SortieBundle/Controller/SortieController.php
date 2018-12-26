@@ -59,6 +59,9 @@ class SortieController extends Controller
             ));
     }
 
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function statistiquesMembresAction()
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
@@ -70,6 +73,9 @@ class SortieController extends Controller
             ));
     }
 
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function statistiquesNombreDeSortiesMembresAction()
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
@@ -81,6 +87,9 @@ class SortieController extends Controller
             ));
     }
 
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function statistiquesBateauxAction()
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
@@ -92,6 +101,9 @@ class SortieController extends Controller
             ));
     }
 
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function statistiquesNombreDeSortiesBateauxAction()
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
