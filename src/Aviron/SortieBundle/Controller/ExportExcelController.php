@@ -5,6 +5,7 @@ namespace Aviron\SortieBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Request;
 use Aviron\SortieBundle\Statistiques\StatistiquesSorties;
 
 // Include PhpSpreadsheet required namespaces
@@ -16,7 +17,7 @@ class ExportExcelController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function exportKmParcourusParMembreAction()
+    public function exportKmParcourusParMembreAction(Request $request, $annee, $mois)
     {
         $spreadsheet = new Spreadsheet();
         
@@ -28,7 +29,7 @@ class ExportExcelController extends Controller
         $sheet->setCellValue('C1', 'Nombre de sorties');
 
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $listeStatistiques = $statistiques->getStatistiquesParMembre()->getStatistiques();        
+        $listeStatistiques = $statistiques->getStatistiquesParMembre($annee, $mois)->getStatistiques();        
 
         usort($listeStatistiques, array($this, "triKmParcourusDesc"));
 

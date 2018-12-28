@@ -37,12 +37,24 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
         return new Paginator($query, true);
     }
 
-    public function getSortiesTermineesStatistiques()
+    public function getSortiesTermineesStatistiques($annee, $mois)
     {
-        return $this->createQueryBuilder('s')
+        $query =  $this->createQueryBuilder('s')
                     ->where('s.hretour IS NOT NULL')
-                    ->andWhere('s.datesupp IS NULL')
-                    ->orderBy('s.date', 'DESC')
+                    ->andWhere('s.datesupp IS NULL');
+
+        if ($annee > 0)
+        {
+            $query = $query->andWhere('YEAR(s.date) = :annee')
+                        ->setParameter('annee', $annee);
+            if ($mois > 0)
+            {
+                $query = $query->andWhere('MONTH(s.date) = :mois')
+                ->setParameter('mois', $mois);
+            }
+        }            
+
+        return $query->orderBy('s.date', 'DESC')
                     ->getQuery()
                     ->getResult();
     }

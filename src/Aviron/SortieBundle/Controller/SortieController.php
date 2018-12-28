@@ -62,24 +62,26 @@ class SortieController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function statistiquesMembresAction()
+    public function statistiquesMembresAction(Request $request, $annee, $mois)
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $modeleStatistiques = $statistiques->getStatistiquesParMembre();     
+        $modeleStatistiques = $statistiques->getStatistiquesParMembre($annee, $mois);     
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesmembres.html.twig', 
             array(
-                'modele' => $modeleStatistiques
+                'modele' => $modeleStatistiques,
+                'annee' => $annee,
+                'mois' => $mois
             ));
     }
 
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function statistiquesNombreDeSortiesMembresAction()
+    public function statistiquesNombreDeSortiesMembresAction(Request $request, $annee, $mois)
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $modeleStatistiques = $statistiques->getStatistiquesParMembre();
+        $modeleStatistiques = $statistiques->getStatistiquesParMembre($annee, $mois);
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesmembres.html.twig', 
             array(
@@ -90,10 +92,10 @@ class SortieController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function statistiquesBateauxAction()
+    public function statistiquesBateauxAction(Request $request, $annee, $mois)
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $modeleStatistiques = $statistiques->getStatistiquesParBateau();     
+        $modeleStatistiques = $statistiques->getStatistiquesParBateau($annee, $mois);
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesbateaux.html.twig', 
             array(
@@ -104,10 +106,10 @@ class SortieController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function statistiquesNombreDeSortiesBateauxAction()
+    public function statistiquesNombreDeSortiesBateauxAction(Request $request, $annee, $mois)
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $modeleStatistiques = $statistiques->getStatistiquesParBateau();     
+        $modeleStatistiques = $statistiques->getStatistiquesParBateau($annee, $mois);
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesbateaux.html.twig', 
             array(

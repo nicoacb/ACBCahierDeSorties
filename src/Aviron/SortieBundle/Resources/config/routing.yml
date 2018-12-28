@@ -91,24 +91,44 @@ aviron_sortie_membre:
         id: \d+
 
 aviron_sortie_statistiques_membres:
-    path:     /sorties/statistiques/membres/kilometresparcourus
-    defaults: 
+    path:     /sorties/statistiques/membres/kilometresparcourus/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
         _controller: AvironSortieBundle:Sortie:statistiquesMembres
+    requirements:
+        annee: \d+
+        mois: \d+
 
 aviron_sortie_statistiques_nombre_sorties_membres:
-    path:     /sorties/statistiques/membres/nombredesorties
-    defaults: 
+    path:     /sorties/statistiques/membres/nombredesorties/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
         _controller: AvironSortieBundle:Sortie:statistiquesNombreDeSortiesMembres
+    requirements:
+        annee: \d+
+        mois: \d+
 
 aviron_sortie_statistiques_bateaux:
-    path:     /sorties/statistiques/bateaux/kilometresparcourus
-    defaults: 
+    path:     /sorties/statistiques/bateaux/kilometresparcourus/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
         _controller: AvironSortieBundle:Sortie:statistiquesBateaux
+    requirements:
+        annee: \d+
+        mois: \d+
 
 aviron_sortie_statistiques_nombre_sorties_bateaux:
-    path:     /sorties/statistiques/bateaux/nombredesorties
-    defaults: 
+    path:     /sorties/statistiques/bateaux/nombredesorties/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
         _controller: AvironSortieBundle:Sortie:statistiquesNombreDeSortiesBateaux
+    requirements:
+        annee: \d+
+        mois: \d+
 
 aviron_sortie_typebateau_home:
     path:     /typebateau/{page}
@@ -160,6 +180,11 @@ aviron_sortie_saison_supprimer:
         id: \d+
 
 aviron_sortie_excel:
-    path:     /export/membres/kilometresparcourus
+    path:     /export/membres/kilometresparcourus/{annee}/{mois}
     defaults: 
+        annee: 0
+        mois: 0
         _controller: AvironSortieBundle:ExportExcel:exportKmParcourusParMembre
+    requirements:
+        annee: \d+
+        mois: \d+

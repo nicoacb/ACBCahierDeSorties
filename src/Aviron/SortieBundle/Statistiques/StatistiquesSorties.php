@@ -13,10 +13,10 @@ class StatistiquesSorties
         $this->repository = $pRepository;
     }
 
-    public function getStatistiquesParMembre()
+    public function getStatistiquesParMembre($annee, $mois)
     {
         // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques();
+        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($annee, $mois);
 
         $statistiques = array();
         $maxSorties = 0;
@@ -38,10 +38,10 @@ class StatistiquesSorties
         return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
     }
 
-    public function getStatistiquesParBateau()
+    public function getStatistiquesParBateau($annee, $mois)
     {
         // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques();
+        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($annee, $mois);
 
         $statistiques = array();
         $maxSorties = 0;
