@@ -28,8 +28,8 @@ class ExportExcelController extends Controller
         $sheet->setCellValue('B1', 'Km parcourus');
         $sheet->setCellValue('C1', 'Nombre de sorties');
 
-        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'));
-        $listeStatistiques = $statistiques->getStatistiquesParMembre($annee, $mois)->getStatistiques();        
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);
+        $listeStatistiques = $statistiques->getStatistiquesParMembre()->getStatistiques();        
 
         usort($listeStatistiques, array($this, "triKmParcourusDesc"));
 

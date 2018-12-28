@@ -8,15 +8,19 @@ use Aviron\SortieBundle\Statistiques\ModeleStatistiques;
 class StatistiquesSorties
 {
     private $repository;
+    private $annee;
+    private $mois;
 
-    public function __construct($pRepository) {
+    public function __construct($pRepository, $pAnnee, $pMois) {
         $this->repository = $pRepository;
+        $this->annee = $pAnnee;
+        $this->mois = $pMois;
     }
 
-    public function getStatistiquesParMembre($annee, $mois)
+    public function getStatistiquesParMembre()
     {
         // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($annee, $mois);
+        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($this->annee, $this->mois);
 
         $statistiques = array();
         $maxSorties = 0;
@@ -38,10 +42,10 @@ class StatistiquesSorties
         return new ModeleStatistiques($statistiques, $maxSorties, $maxKmParcourus);
     }
 
-    public function getStatistiquesParBateau($annee, $mois)
+    public function getStatistiquesParBateau()
     {
         // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($annee, $mois);
+        $listSortiesTerminees = $this->repository->getSortiesTermineesStatistiques($this->annee, $this->mois);
 
         $statistiques = array();
         $maxSorties = 0;
