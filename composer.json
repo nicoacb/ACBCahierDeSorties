@@ -36,7 +36,8 @@
         "phpunit/phpunit": "5.7.*",
 		"voku/urlify": "^4.0",
 		"snilius/twig-sort-by-field": "^0.1.5",
-		"phpoffice/phpspreadsheet": "^1.5"
+		"phpoffice/phpspreadsheet": "^1.5",
+		"beberlei/DoctrineExtensions": "^1.1"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "^3.0",
