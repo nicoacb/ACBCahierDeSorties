@@ -117,7 +117,9 @@ class SortieController extends Controller
         
         return $this->render('AvironSortieBundle:Sortie:statistiquesnombredesortiesbateaux.html.twig', 
             array(
-                'modele' => $modeleStatistiques
+                'modele' => $modeleStatistiques,
+                'annee' => $annee,
+                'mois' => $mois
             ));
     }
 
