@@ -1,11 +1,19 @@
 {% extends "::layout.html.twig" %}
+{% use "AvironSortieBundle:Statistiques:filtre.html.twig" %}
 
 {% block title %}
     Sorties - Nombre de sorties par membre - {{ parent() }}
 {% endblock %}
 
+{% block javascripts %} 
+    {{ parent() }}
+    {{ block('filtre_javascripts') }}
+{% endblock %}
+
 {% block body %}
     <h2>Sorties - Nombre de sorties par membre</h2>
+
+    {{ block('filtre') }}
 
     <div class="table-responsive">
         <table class="table table-striped">
