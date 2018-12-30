@@ -29,6 +29,18 @@ class ExportExcelController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
+    public function exportNombreDeSortiesParMembreAction(Request $request, $annee, $mois)
+    {
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);
+        $listeStatistiques = $statistiques->getStatistiquesParMembre()->getStatistiques();        
+        usort($listeStatistiques, array($this, "triNombreDeSortiesDesc"));
+        
+        return $this->DonneClasseurExcel('Membre', $listeStatistiques);
+    }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function exportKmParcourusParBateauAction(Request $request, $annee, $mois)
     {
         $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);

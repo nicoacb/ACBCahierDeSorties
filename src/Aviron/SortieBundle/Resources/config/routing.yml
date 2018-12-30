@@ -189,6 +189,16 @@ aviron_sortie_excel:
         annee: \d+
         mois: \d+
 
+aviron_sortie_export_nombre_sorties_membres:
+    path:     /export/membres/nombredesorties/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
+        _controller: AvironSortieBundle:ExportExcel:exportNombreDeSortiesParMembre
+    requirements:
+        annee: \d+
+        mois: \d+
+
 aviron_sortie_export_kmparcourus_bateaux:
     path:     /export/bateaux/kilometresparcourus/{annee}/{mois}
     defaults:
