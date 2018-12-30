@@ -188,3 +188,13 @@ aviron_sortie_excel:
     requirements:
         annee: \d+
         mois: \d+
+
+aviron_sortie_export_kmparcourus_bateaux:
+    path:     /export/bateaux/kilometresparcourus/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
+        _controller: AvironSortieBundle:ExportExcel:exportKmParcourusParBateau
+    requirements:
+        annee: \d+
+        mois: \d+

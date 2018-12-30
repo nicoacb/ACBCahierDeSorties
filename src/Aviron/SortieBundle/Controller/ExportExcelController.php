@@ -19,19 +19,40 @@ class ExportExcelController extends Controller
     */
     public function exportKmParcourusParMembreAction(Request $request, $annee, $mois)
     {
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);
+        $listeStatistiques = $statistiques->getStatistiquesParMembre()->getStatistiques();        
+        usort($listeStatistiques, array($this, "triKmParcourusDesc"));
+        
+        return $this->DonneClasseurExcel('Membre', $listeStatistiques);
+    }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function exportKmParcourusParBateauAction(Request $request, $annee, $mois)
+    {
+        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);
+        $listeStatistiques = $statistiques->getStatistiquesParBateau()->getStatistiques();        
+        usort($listeStatistiques, array($this, "triKmParcourusDesc"));
+        
+        return $this->DonneClasseurExcel('Bateau', $listeStatistiques);
+    }
+
+    private function triKmParcourusDesc($a, $b)
+    {
+        return $a->getKmParcourus() < $b->getKmParcourus();
+    }
+
+    private function DonneClasseurExcel($label, $listeStatistiques)
+    {
         $spreadsheet = new Spreadsheet();
         
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle("Statistiques");
-        $sheet->setCellValue('A1', 'Membre');
+        $sheet->setCellValue('A1', $label);
         $sheet->setCellValue('B1', 'Km parcourus');
         $sheet->setCellValue('C1', 'Nombre de sorties');
-
-        $statistiques = new StatistiquesSorties($this->getDoctrine()->getManager()->getRepository('AvironSortieBundle:Sortie'), $annee, $mois);
-        $listeStatistiques = $statistiques->getStatistiquesParMembre()->getStatistiques();        
-
-        usort($listeStatistiques, array($this, "triKmParcourusDesc"));
 
         $ligne = 2;
         foreach ($listeStatistiques as $stat)
@@ -51,10 +72,5 @@ class ExportExcelController extends Controller
         
         // Return the excel file as an attachment
         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-    }
-
-    function triKmParcourusDesc($a, $b)
-    {
-        return $a->getKmParcourus() < $b->getKmParcourus();
     }
 }
