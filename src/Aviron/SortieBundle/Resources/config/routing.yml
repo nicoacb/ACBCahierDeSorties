@@ -198,3 +198,13 @@ aviron_sortie_export_kmparcourus_bateaux:
     requirements:
         annee: \d+
         mois: \d+
+
+aviron_sortie_export_nombre_sorties_bateaux:
+    path:     /export/bateaux/nombredesorties/{annee}/{mois}
+    defaults:
+        annee: 0
+        mois: 0
+        _controller: AvironSortieBundle:ExportExcel:exportNombreDeSortiesParBateau
+    requirements:
+        annee: \d+
+        mois: \d+

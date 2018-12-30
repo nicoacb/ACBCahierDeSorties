@@ -20,20 +20,23 @@
             <thead>
               <tr>
                 <th style="width: 20%">Bateau</th>
-                <th style="width: 65%">Nombre de sorties</th>
-                <th style="width: 15%"></th>
+                <th colspan="2">Nombre de sorties
+                    <a href="{{ path('aviron_sortie_export_nombre_sorties_bateaux', {'mois': mois, 'annee': annee}) }}" class="pull-right">
+                        <i class="glyphicon glyphicon-download-alt"></i> Exporter au format Excel (XLSX)
+                    </a>
+                </th>
               </tr>
             </thead>
             <tbody>
             {% for stat in modele.statistiques | sortbyfield('nombreDeSorties') | reverse %}
             <tr>
                 <td>{{ stat.label }}</td>
-                <td>
+                <td style="width: 65%">
                     <div class="progress" style="margin-bottom: 0px">
                         <div class="progress-bar" style="width: {{ stat.nombredesorties * 100 / modele.maxsorties }}%">{{ stat.nombredesorties }}</div>
                     </div>
                 </td>
-                <td>pour {{ stat.kmparcourus }} km</td>
+                <td style="width: 15%">pour {{ stat.kmparcourus }} km</td>
             </tr>             
             {% else %}
             <tr>
