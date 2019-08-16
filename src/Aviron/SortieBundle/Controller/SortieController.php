@@ -151,6 +151,35 @@ class SortieController extends Controller
                 'sorties'   => $sorties
                 ));
     }
+
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function bateauAction(Request $request, $idbateau)
+    {
+        // On récupère l'entité du membre correspondante à l'id $idmembre
+        $bateau = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Bateau')
+            ->find($idbateau);
+
+        // Si $membre est null, l'id n'existe pas
+        if(null == $bateau) {
+            throw new NotFoundHttpException("Le bateau d'id ".$idbateau." n'existe pas.");
+        }
+
+        // On récupère la liste des sorties terminées
+        $sorties = $this->getDoctrine()
+    	    ->getManager()
+    	    ->getRepository('AvironSortieBundle:Sortie')
+            ->getSortiesBateau($idbateau);
+
+        return $this->render('AvironSortieBundle:Sortie:bateau.html.twig',
+            array(
+                'bateau'    => $bateau,
+                'sorties'   => $sorties
+                ));
+    }
    
     public function ajouterAction(Request $request, $nbrameurs)
     {

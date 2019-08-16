@@ -19,6 +19,7 @@
         <table class="table table-striped">
             <thead>
               <tr>
+                <th style="width: 30px"></th>
                 <th style="width: 20%">Bateau</th>
                 <th colspan="2">Kilomètres parcourus
                     <a href="{{ path('aviron_sortie_export_kmparcourus_bateaux', {'mois': mois, 'annee': annee}) }}" class="pull-right">
@@ -30,6 +31,12 @@
             <tbody>
             {% for stat in modele.statistiques | sortbyfield('kmParcourus') | reverse %}
             <tr>
+                <td>
+                    <a href="{{ path('aviron_sortie_bateau', {'idbateau': stat.id}) }}" class="btn btn-success btn-sm"
+                    title="Détail des sorties de {{ stat.label }}">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </a>
+                </td>
                 <td>{{ stat.label }}</td>
                 <td style="width: 65%">
                     <div class="progress" style="margin-bottom: 0px">
@@ -40,7 +47,7 @@
             </tr>             
             {% else %}
             <tr>
-                <td colspan="3">Aucune donnée disponible pour cette période</td>
+                <td colspan="4">Aucune donnée disponible pour cette période</td>
             </tr>
             {% endfor %}
             </tbody>

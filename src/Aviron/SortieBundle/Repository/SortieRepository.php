@@ -71,4 +71,16 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
                     ->getQuery()
                     ->getResult();
     }
+
+    public function getSortiesBateau($idBateau)
+    {
+        return $this->createQueryBuilder('s')
+                    ->where('s.bateau = :idBateau')
+                    ->andWhere('s.hretour IS NOT NULL')
+                    ->andWhere('s.datesupp IS NULL')
+                    ->orderBy('s.date', 'DESC')
+                    ->setParameter('idBateau', $idBateau)
+                    ->getQuery()
+                    ->getResult();
+    }
 }
