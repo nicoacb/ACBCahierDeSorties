@@ -22,6 +22,12 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+    * @ORM\ManyToMany(targetEntity="Aviron\SortieBundle\Entity\Saison", cascade={"persist"})
+    * @ORM\JoinTable(name="gestion_aviron_saison_user")
+    */
+    private $saisons;
     
     /**
      * @ORM\Column(name="nom", type="string", length=255)
@@ -136,5 +142,39 @@ class User extends BaseUser
     public function getDatesupp()
     {
         return $this->datesupp;
+    }
+
+    /**
+     * Add saison
+     *
+     * @param \Aviron\SortieBundle\Entity\Saison $saison
+     *
+     * @return User
+     */
+    public function addSaison(\Aviron\SortieBundle\Entity\Saison $saison)
+    {
+        $this->saisons[] = $saison;
+
+        return $this;
+    }
+
+    /**
+     * Remove saison
+     *
+     * @param \Aviron\SortieBundle\Entity\Saison $saison
+     */
+    public function removeSaison(\Aviron\SortieBundle\Entity\Saison $saison)
+    {
+        $this->saisons->removeElement($saison);
+    }
+
+    /**
+     * Get saisons
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSaisons()
+    {
+        return $this->saisons;
     }
 }

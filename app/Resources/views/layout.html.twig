@@ -89,13 +89,9 @@
             <ul>
               <li{{ app.request.get('_route') == 'aviron_bateaux_home' ? ' class="active"' }}><a href="{{ path('aviron_bateaux_home') }}">Bateaux</a></li>
               <li{{ app.request.get('_route') == 'aviron_sortie_typebateau_home' ? ' class="active"' }}><a href="{{ path('aviron_sortie_typebateau_home') }}">Types de bateau</a></li>
+              <li{{ app.request.get('_route') == 'aviron_sortie_saison_liste' ? ' class="active"' }}><a href="{{ path('aviron_sortie_saison_liste') }}">Saisons</a></li>
             </ul>
           </ul>
-          {% if (app.environment == 'dev') %}
-          <ul class="nav nav-sidebar">
-            <li{{ app.request.get('_route') == 'aviron_sortie_saison_liste' ? ' class="active"' }}><a href="{{ path('aviron_sortie_saison_liste') }}">Saisons</a></li>
-          </ul>
-          {% endif %}
         </div>
       </div>
     </div>

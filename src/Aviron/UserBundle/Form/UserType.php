@@ -2,6 +2,7 @@
 
 namespace Aviron\UserBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,6 +21,12 @@ class UserType extends AbstractType
             ))
             ->add('nom', TextType::class, array(
                 'label'         => 'Nom'
+            ))
+            ->add('saisons', EntityType::class, array(
+                'class' => 'AvironSortieBundle:Saison',
+                'choice_label' => 'nom',
+                'expanded' => true,
+                'multiple' => true,
             ))
             ->add('save', SubmitType::class, array(
                 'label'         => 'Enregistrer'
