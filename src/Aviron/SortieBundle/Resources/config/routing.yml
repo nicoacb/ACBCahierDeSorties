@@ -225,3 +225,13 @@ aviron_sortie_export_nombre_sorties_bateaux:
     requirements:
         annee: \d+
         mois: \d+
+
+aviron_sortie_reservation_entrainements:
+    path: /reservation/entrainements
+    defaults:
+        _controller: AvironSortieBundle:Reservation:listerEntrainements
+
+aviron_sortie_reservation_ajouter_entrainement:
+    path: /reservation/entrainements/ajouter
+    defaults:
+        _controller: AvironSortieBundle:Reservation:ajouterEntrainement

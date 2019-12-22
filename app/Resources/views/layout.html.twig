@@ -85,6 +85,13 @@
           </ul>
 
           <ul class="nav nav-sidebar">
+            <li{{ app.request.get('_route') == 'aviron_sortie_reservation_entrainements' ? ' class="active"' }}><a href="{{ path('aviron_sortie_reservation_entrainements') }}">Entraînements</a></li>
+            <ul>
+              <li{{ app.request.get('_route') == 'aviron_sortie_reservation_ajouter_entrainement' ? ' class="active"' }}><a href="{{ path('aviron_sortie_reservation_ajouter_entrainement') }}">Ajouter un entraînement</a></li>
+            </ul>
+          </ul>
+
+          <ul class="nav nav-sidebar">
             <li><a href="#">Paramétrage</a></li>
             <ul>
               <li{{ app.request.get('_route') == 'aviron_bateaux_home' ? ' class="active"' }}><a href="{{ path('aviron_bateaux_home') }}">Bateaux</a></li>
