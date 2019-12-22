@@ -1,0 +1,28 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Réservations -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<h2 class="page-header">Réserver ma place à un entraînement</h2>
+
+	{% for entrainement in listeEntrainements %}
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{ entrainement.nom }}</div>
+				<div class="panel-body">
+					Date :
+					{{ entrainement.datedebut | date('d/m/Y') }}<br />
+					Heure de début :
+					{{ entrainement.heuredebut | date('H:i') }}<br />
+					Heure de fin :
+					{{ entrainement.heurefin | date('H:i') }}<br />
+				</div>
+			</div>
+		</div>
+		{% else %}Pas (encore !) d'entraînement
+	{% endfor %}
+{% endblock %}

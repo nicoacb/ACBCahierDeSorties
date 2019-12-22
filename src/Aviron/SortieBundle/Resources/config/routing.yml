@@ -229,9 +229,14 @@ aviron_sortie_export_nombre_sorties_bateaux:
 aviron_sortie_reservation_entrainements:
     path: /reservation/entrainements
     defaults:
+        _controller: AvironSortieBundle:Reservation:listerEntrainementsAVenir
+        
+aviron_sortie_reservation_admin_entrainements:
+    path: /reservation/administrer/entrainements
+    defaults:
         _controller: AvironSortieBundle:Reservation:listerEntrainements
 
-aviron_sortie_reservation_ajouter_entrainement:
-    path: /reservation/entrainements/ajouter
+aviron_sortie_reservation_admin_ajouter_entrainement:
+    path: /reservation/administrer/entrainements/ajouter
     defaults:
         _controller: AvironSortieBundle:Reservation:ajouterEntrainement

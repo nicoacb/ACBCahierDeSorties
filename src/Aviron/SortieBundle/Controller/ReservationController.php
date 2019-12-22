@@ -23,6 +23,18 @@ class ReservationController extends Controller
         return $this->render('AvironSortieBundle:Reservation:index.html.twig', array('listeEntrainements' => $listeEntrainements));
     }
 
+    /**
+    * @Security("has_role('ROLE_USER')")
+    */
+    public function listerEntrainementsAVenirAction()
+    {
+        $listeEntrainements = $this->getDoctrine()
+    	->getManager()
+    	->getRepository('AvironSortieBundle:Reservation')
+        ->getListeEntrainementsAVenir();
+
+        return $this->render('AvironSortieBundle:Reservation:lister.html.twig', array('listeEntrainements' => $listeEntrainements));
+    }
     
     /**
     * @Security("has_role('ROLE_ADMIN')")
@@ -49,7 +61,7 @@ class ReservationController extends Controller
                 $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
 
                 // On redirige vers la liste des entraînements
-                return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+                return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
             }
         }
         return $this->render('AvironSortieBundle:Reservation:ajouter.html.twig', array('form' => $form->createView()));
