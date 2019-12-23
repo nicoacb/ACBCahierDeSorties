@@ -60,7 +60,7 @@ class ReservationController extends Controller
         $reservation = new Reservation();
         $reservation->setIdentrainement($id);
         $reservation->setDatereservation(new \DateTime());
-        $reservation->setIdut($this->getUser()->getId());
+        $reservation->setIdut($this->getUser());
 
         $this->persistReservation($reservation);
 
@@ -100,6 +100,22 @@ class ReservationController extends Controller
 
         // On redirige vers la liste des entrainements
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+    }
+
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function participantsAction($id)
+    {
+        $participants =  $this->getDoctrine()
+        ->getManager()
+        ->getRepository('AvironSortieBundle:Reservation')
+        ->findBy([
+            'identrainement' => $id,
+            'datesupp' => null
+        ]);
+
+        return $this->render('AvironSortieBundle:Reservation:participants.html.twig', array('participants' => $participants));
     }
 
     /**

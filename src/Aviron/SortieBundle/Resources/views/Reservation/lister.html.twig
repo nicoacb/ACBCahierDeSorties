@@ -20,13 +20,16 @@
 					{{ entrainement.heuredebut | date('H:i') }}<br/>
 					Heure de fin :
 					{{ entrainement.heurefin | date('H:i') }}<br/>
+					<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}"><br/>
+						Voir les participants
+					</a><br/>
 					{% if entrainement.id not in reservations %}
 						<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
 							<i class="glyphicon glyphicon-plus"></i>
 							Réserver
 						</a>
 					{% else %}
-						<b>Vous êtes inscrits à cette séance.</b>
+						<b>Vous êtes inscrit à cet entraînement.</b>
 						<a href="{{ path('aviron_sortie_reservation_desinscrire', {'id': entrainement.id}) }}" class="btn btn-default">
 							<i class="glyphicon glyphicon-plus"></i>
 							Se désinscrire

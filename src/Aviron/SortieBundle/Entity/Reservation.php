@@ -45,11 +45,8 @@ class Reservation
     private $idutsupp;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idut", type="integer")
      * @ORM\ManyToOne(targetEntity="Aviron\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="idut", nullable=false)
      */
     private $idut;
 
@@ -57,7 +54,7 @@ class Reservation
      * @var int
      *
      * @ORM\Column(name="identrainement", type="integer")
-     * @ORM\ManyToOne(targetEntity="Aviron\SortieBundle\Entity\Bateau")
+     * @ORM\ManyToOne(targetEntity="Aviron\SortieBundle\Entity\Entrainement")
      * @ORM\JoinColumn(nullable=false)
      */
     private $identrainement;
