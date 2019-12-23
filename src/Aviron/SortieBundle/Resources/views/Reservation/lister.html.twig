@@ -15,11 +15,19 @@
 				<div class="panel-heading">{{ entrainement.nom }}</div>
 				<div class="panel-body">
 					Date :
-					{{ entrainement.datedebut | date('d/m/Y') }}<br />
+					{{ entrainement.datedebut | date('d/m/Y') }}<br/>
 					Heure de début :
-					{{ entrainement.heuredebut | date('H:i') }}<br />
+					{{ entrainement.heuredebut | date('H:i') }}<br/>
 					Heure de fin :
-					{{ entrainement.heurefin | date('H:i') }}<br />
+					{{ entrainement.heurefin | date('H:i') }}<br/>
+					{% if entrainement.id not in reservations %}
+						<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
+							<i class="glyphicon glyphicon-plus"></i>
+							Réserver
+						</a>
+					{% else %}
+						<b>Vous êtes inscrits à cette séance.</b>
+					{% endif %}
 				</div>
 			</div>
 		</div>

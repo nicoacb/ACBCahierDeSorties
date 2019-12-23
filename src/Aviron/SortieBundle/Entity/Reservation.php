@@ -22,46 +22,11 @@ class Reservation
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255)
-     */
-    private $nom;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="datedebut", type="date")
+     * @ORM\Column(name="datereservation", type="datetime")
      */
-    private $datedebut;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datefin", type="date", nullable=true)
-     */
-    private $datefin;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="heuredebut", type="time")
-     */
-    private $heuredebut;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="heurefin", type="time")
-     */
-    private $heurefin;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datecloture", type="datetime", nullable=true)
-     */
-    private $datecloture;
+    private $datereservation;
 
     /**
      * @var \DateTime
@@ -73,9 +38,30 @@ class Reservation
     /**
      * @var int
      *
-     * @ORM\Column(name="nbplacesdisponibles", type="integer")
+     * @ORM\Column(name="idutsupp", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Aviron\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $nbplacesdisponibles;
+    private $idutsupp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idut", type="integer")
+     * @ORM\ManyToOne(targetEntity="Aviron\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idut;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="identrainement", type="integer")
+     * @ORM\ManyToOne(targetEntity="Aviron\SortieBundle\Entity\Bateau")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $identrainement;
+
 
     /**
      * Get id
@@ -88,171 +74,27 @@ class Reservation
     }
 
     /**
-     * Set nom
+     * Set datereservation
      *
-     * @param string $nom
+     * @param \DateTime $datereservation
      *
      * @return Reservation
      */
-    public function setNom($nom)
+    public function setDatereservation($datereservation)
     {
-        $this->nom = $nom;
+        $this->datereservation = $datereservation;
 
         return $this;
     }
 
     /**
-     * Get nom
-     *
-     * @return string
-     */
-    public function getNom()
-    {
-        return $this->nom;
-    }
-
-    /**
-     * Set datedebut
-     *
-     * @param \DateTime $datedebut
-     *
-     * @return Reservation
-     */
-    public function setDatedebut($datedebut)
-    {
-        $this->datedebut = $datedebut;
-
-        return $this;
-    }
-
-    /**
-     * Get datedebut
+     * Get datereservation
      *
      * @return \DateTime
      */
-    public function getDatedebut()
+    public function getDatereservation()
     {
-        return $this->datedebut;
-    }
-
-    /**
-     * Set datefin
-     *
-     * @param \DateTime $datefin
-     *
-     * @return Reservation
-     */
-    public function setDatefin($datefin)
-    {
-        $this->datefin = $datefin;
-
-        return $this;
-    }
-
-    /**
-     * Get datefin
-     *
-     * @return \DateTime
-     */
-    public function getDatefin()
-    {
-        return $this->datefin;
-    }
-
-    /**
-     * Set heuredebut
-     *
-     * @param \DateTime $heuredebut
-     *
-     * @return Reservation
-     */
-    public function setHeuredebut($heuredebut)
-    {
-        $this->heuredebut = $heuredebut;
-
-        return $this;
-    }
-
-    /**
-     * Get heuredebut
-     *
-     * @return \DateTime
-     */
-    public function getHeuredebut()
-    {
-        return $this->heuredebut;
-    }
-
-    /**
-     * Set heurefin
-     *
-     * @param \DateTime $heurefin
-     *
-     * @return Reservation
-     */
-    public function setHeurefin($heurefin)
-    {
-        $this->heurefin = $heurefin;
-
-        return $this;
-    }
-
-    /**
-     * Get heurefin
-     *
-     * @return \DateTime
-     */
-    public function getHeurefin()
-    {
-        return $this->heurefin;
-    }
-
-    /**
-     * Set nbplacesdisponibles
-     *
-     * @param integer $nbplacesdisponibles
-     *
-     * @return Reservation
-     */
-    public function setNbplacesdisponibles($nbplacesdisponibles)
-    {
-        $this->nbplacesdisponibles = $nbplacesdisponibles;
-
-        return $this;
-    }
-
-    /**
-     * Get nbplacesdisponibles
-     *
-     * @return int
-     */
-    public function getNbplacesdisponibles()
-    {
-        return $this->nbplacesdisponibles;
-    }
-
-    /**
-     * Set datecloture
-     *
-     * @param \DateTime $datecloture
-     *
-     * @return Reservation
-     */
-    public function setDatecloture($datecloture)
-    {
-        $this->datecloture = $datecloture;
-
-        return $this;
-    }
-
-    /**
-     * Get datecloture
-     *
-     * @return \DateTime
-     */
-    public function getDatecloture()
-    {
-        return $this->datecloture;
+        return $this->datereservation;
     }
 
     /**
@@ -277,5 +119,77 @@ class Reservation
     public function getDatesupp()
     {
         return $this->datesupp;
+    }
+
+    /**
+     * Set idutsupp
+     *
+     * @param integer $idutsupp
+     *
+     * @return Reservation
+     */
+    public function setIdutsupp($idutsupp)
+    {
+        $this->idutsupp = $idutsupp;
+
+        return $this;
+    }
+
+    /**
+     * Get idutsupp
+     *
+     * @return int
+     */
+    public function getIdutsupp()
+    {
+        return $this->idutsupp;
+    }
+
+    /**
+     * Set idut
+     *
+     * @param integer $idut
+     *
+     * @return Reservation
+     */
+    public function setIdut($idut)
+    {
+        $this->idut = $idut;
+
+        return $this;
+    }
+
+    /**
+     * Get idut
+     *
+     * @return int
+     */
+    public function getIdut()
+    {
+        return $this->idut;
+    }
+
+    /**
+     * Set identrainement
+     *
+     * @param integer $identrainement
+     *
+     * @return Reservation
+     */
+    public function setIdentrainement($identrainement)
+    {
+        $this->identrainement = $identrainement;
+
+        return $this;
+    }
+
+    /**
+     * Get identrainement
+     *
+     * @return int
+     */
+    public function getIdentrainement()
+    {
+        return $this->identrainement;
     }
 }

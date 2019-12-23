@@ -230,7 +230,14 @@ aviron_sortie_reservation_entrainements:
     path: /reservation/entrainements
     defaults:
         _controller: AvironSortieBundle:Reservation:listerEntrainementsAVenir
-        
+
+aviron_sortie_reservation_reserver:
+    path: /reservation/entrainements/reserver/{id}
+    defaults:
+        _controller: AvironSortieBundle:Reservation:reserver
+    requirements:
+        id: \d+
+
 aviron_sortie_reservation_admin_entrainements:
     path: /reservation/administrer/entrainements
     defaults:

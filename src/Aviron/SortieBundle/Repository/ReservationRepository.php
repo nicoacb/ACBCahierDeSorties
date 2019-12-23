@@ -10,26 +10,13 @@ namespace Aviron\SortieBundle\Repository;
  */
 class ReservationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getListeEntrainements()
+    public function DonneReservations($utilisateur)
     {
         $qb = $this
-            ->createQueryBuilder('e')
-            ->orderBy('e.datedebut', 'DESC')
-            ->addOrderBy('e.heuredebut');
-
-        return $qb
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getListeEntrainementsAVenir()
-    {
-        $qb = $this
-            ->createQueryBuilder('e')
-            ->where("e.datedebut >= :aujourdhui")
-            ->orderBy('e.datedebut', 'DESC')
-            ->addOrderBy('e.heuredebut')
-            ->setParameter('aujourdhui', date("Y-m-d", time()));
+            ->createQueryBuilder('r')
+            ->where('r.idut = :idut')
+            ->andWhere('r.datesupp is null')
+            ->setParameter('idut', $utilisateur);
 
         return $qb
             ->getQuery()

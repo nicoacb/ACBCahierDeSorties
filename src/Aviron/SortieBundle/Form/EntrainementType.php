@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReservationType extends AbstractType
+class EntrainementType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -53,7 +53,7 @@ class ReservationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Aviron\SortieBundle\Entity\Reservation'
+            'data_class' => 'Aviron\SortieBundle\Entity\Entrainement'
         ));
     }
 
@@ -62,7 +62,7 @@ class ReservationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'aviron_sortiebundle_reservation';
+        return 'aviron_sortiebundle_entrainement';
     }
 
 
