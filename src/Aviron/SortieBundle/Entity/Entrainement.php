@@ -278,14 +278,4 @@ class Entrainement
     {
         return $this->datesupp;
     }
-
-    /**
-     * Has reservation
-     *
-     * @return bool
-     */
-    public function hasReservation()
-    {
-        $this->getDoctrine()
-    }
 }
