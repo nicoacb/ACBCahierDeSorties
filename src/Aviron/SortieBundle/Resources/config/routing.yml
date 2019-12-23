@@ -238,6 +238,13 @@ aviron_sortie_reservation_reserver:
     requirements:
         id: \d+
 
+aviron_sortie_reservation_desinscrire:
+    path: /reservation/entrainements/desinscrire/{id}
+    defaults:
+        _controller: AvironSortieBundle:Reservation:desinscrire
+    requirements:
+        id: \d+
+
 aviron_sortie_reservation_admin_entrainements:
     path: /reservation/administrer/entrainements
     defaults:

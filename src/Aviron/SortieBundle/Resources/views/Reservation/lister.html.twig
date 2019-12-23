@@ -27,6 +27,10 @@
 						</a>
 					{% else %}
 						<b>Vous êtes inscrits à cette séance.</b>
+						<a href="{{ path('aviron_sortie_reservation_desinscrire', {'id': entrainement.id}) }}" class="btn btn-default">
+							<i class="glyphicon glyphicon-plus"></i>
+							Se désinscrire
+						</a>
 					{% endif %}
 				</div>
 			</div>

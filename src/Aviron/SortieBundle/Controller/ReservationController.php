@@ -8,6 +8,7 @@ use Aviron\SortieBundle\Form\EntrainementType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReservationController extends Controller
 {
@@ -61,12 +62,41 @@ class ReservationController extends Controller
         $reservation->setDatereservation(new \DateTime());
         $reservation->setIdut($this->getUser()->getId());
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($reservation);
-        $em->flush();
+        $this->persistReservation($reservation);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Inscription validée.');
+
+        // On redirige vers la liste des entrainements
+        return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+    }
+
+    public function desinscrireAction(Request $request, $id)
+    {
+        $reservation = new Reservation();
+        
+        // On récupère l'entité de la sortie correspondante à l'id $id
+        $reservation = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Reservation')
+            ->findOneBy([
+                'identrainement' => $id,
+                'idut' => $this->getUser()->getId(),
+                'datesupp' => null
+            ]);
+
+        // Si sortie est null, l'id n'existe pas
+        if(null == $reservation) {
+            throw new NotFoundHttpException("La sortie d'id ".$id." n'existe pas.");
+        }
+
+        $reservation->setIdutsupp($this->getUser()->getId());
+        $reservation->setDatesupp(new \DateTime());
+
+        $this->persistReservation($reservation);
+
+        // On affiche un message de validation
+        $request->getSession()->getFlashBag()->add('success', 'Désinscription validée.');
 
         // On redirige vers la liste des entrainements
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
@@ -108,6 +138,13 @@ class ReservationController extends Controller
         // On enregistre l'objet $entrainement en base de données
         $em = $this->GetDoctrine()->getManager();
         $em->persist($entrainement);
+        $em->flush();
+    }
+
+    private function persistReservation($reservation)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($reservation);
         $em->flush();
     }
 }
