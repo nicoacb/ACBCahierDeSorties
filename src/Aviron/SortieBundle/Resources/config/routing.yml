@@ -245,6 +245,13 @@ aviron_sortie_reservation_desinscrire:
     requirements:
         id: \d+
 
+aviron_sortie_reservation_participants:
+    path: /reservation/entrainements/participants/{id}
+    defaults:
+        _controller: AvironSortieBundle:Reservation:participants
+    requirements:
+        id: \d+
+
 aviron_sortie_reservation_admin_entrainements:
     path: /reservation/administrer/entrainements
     defaults:
@@ -254,3 +261,10 @@ aviron_sortie_reservation_admin_ajouter_entrainement:
     path: /reservation/administrer/entrainements/ajouter
     defaults:
         _controller: AvironSortieBundle:Reservation:ajouterEntrainement
+
+aviron_sortie_reservation_admin_supprimer_entrainement:
+    path: /reservation/administrer/entrainements/supprimer/{id}
+    defaults:
+        _controller: AvironSortieBundle:Reservation:supprimerEntrainement
+    requirements:
+        id: \d+

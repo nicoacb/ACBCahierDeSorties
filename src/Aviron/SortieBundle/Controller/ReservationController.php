@@ -71,10 +71,13 @@ class ReservationController extends Controller
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
     }
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function desinscrireAction(Request $request, $id)
     {
         $reservation = new Reservation();
-        
+
         // On récupère l'entité de la sortie correspondante à l'id $id
         $reservation = $this->getDoctrine()
             ->getManager()
@@ -86,8 +89,8 @@ class ReservationController extends Controller
             ]);
 
         // Si sortie est null, l'id n'existe pas
-        if(null == $reservation) {
-            throw new NotFoundHttpException("La sortie d'id ".$id." n'existe pas.");
+        if (null == $reservation) {
+            throw new NotFoundHttpException("La sortie d'id " . $id . " n'existe pas.");
         }
 
         $reservation->setIdutsupp($this->getUser()->getId());
@@ -108,12 +111,12 @@ class ReservationController extends Controller
     public function participantsAction($id)
     {
         $participants =  $this->getDoctrine()
-        ->getManager()
-        ->getRepository('AvironSortieBundle:Reservation')
-        ->findBy([
-            'identrainement' => $id,
-            'datesupp' => null
-        ]);
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Reservation')
+            ->findBy([
+                'identrainement' => $id,
+                'datesupp' => null
+            ]);
 
         return $this->render('AvironSortieBundle:Reservation:participants.html.twig', array('participants' => $participants));
     }
@@ -147,6 +150,33 @@ class ReservationController extends Controller
             }
         }
         return $this->render('AvironSortieBundle:Reservation:ajouter.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function supprimerEntrainementAction(Request $request, $id)
+    {
+        // On récupère l'entité de l'entrainement correspondante à l'id $id
+        $entrainement = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Entrainement')
+            ->find($id);
+
+        // Si $entrainement est null, l'id n'existe pas
+        if(null == $entrainement) {
+            throw new NotFoundHttpException("L'entrainement d'id ".$id." n'existe pas.");
+        }
+
+        $entrainement->setIdutsupp($this->getUser()->getId());
+        $entrainement->setDatesupp(new \DateTime());
+        $this->persistEntrainement($entrainement);
+
+        // On affiche un message de validation
+        $request->getSession()->getFlashBag()->add('success', 'Entraînement bien supprimé.');
+
+        // On redirige vers la liste des entrainements
+        return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
     }
 
     private function persistEntrainement($entrainement)

@@ -14,6 +14,7 @@ class EntrainementRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this
             ->createQueryBuilder('e')
+            ->where('e.datesupp is null')
             ->orderBy('e.datedebut', 'DESC')
             ->addOrderBy('e.heuredebut');
 
@@ -26,8 +27,9 @@ class EntrainementRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this
             ->createQueryBuilder('e')
-            ->where("e.datedebut >= :aujourdhui")
-            ->orderBy('e.datedebut', 'DESC')
+            ->where('e.datedebut >= :aujourdhui')
+            ->andWhere('e.datesupp is null')
+            ->orderBy('e.datedebut', 'ASC')
             ->addOrderBy('e.heuredebut')
             ->setParameter('aujourdhui', date("Y-m-d", time()));
 

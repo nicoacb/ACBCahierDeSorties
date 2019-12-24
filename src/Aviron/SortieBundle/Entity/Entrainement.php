@@ -73,6 +73,13 @@ class Entrainement
     /**
      * @var int
      *
+     * @ORM\Column(name="idutsupp", type="integer", nullable=true)
+     */
+    private $idutsupp;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="nbplacesdisponibles", type="integer")
      */
     private $nbplacesdisponibles;
@@ -277,5 +284,29 @@ class Entrainement
     public function getDatesupp()
     {
         return $this->datesupp;
+    }
+
+    /**
+     * Set idutsupp
+     *
+     * @param integer $idutsupp
+     *
+     * @return Entrainement
+     */
+    public function setIdutsupp($idutsupp)
+    {
+        $this->idutsupp = $idutsupp;
+
+        return $this;
+    }
+
+    /**
+     * Get idutsupp
+     *
+     * @return integer
+     */
+    public function getIdutsupp()
+    {
+        return $this->idutsupp;
     }
 }
