@@ -268,3 +268,10 @@ aviron_sortie_reservation_admin_supprimer_entrainement:
         _controller: AvironSortieBundle:Reservation:supprimerEntrainement
     requirements:
         id: \d+
+
+aviron_sortie_reservation_admin_modifier_entrainement:
+    path: /reservation/administrer/entrainements/modifier/{id}
+    defaults:
+        _controller: AvironSortieBundle:Reservation:modifierEntrainement
+    requirements:
+        id: \d+

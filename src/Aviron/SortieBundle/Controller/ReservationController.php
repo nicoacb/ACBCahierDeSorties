@@ -139,8 +139,7 @@ class ReservationController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
-                // On enregistre l'objet $bateau en base de données
-                $this->persistEntrainement($entrainement);
+                $this->SauvegardeEntrainement($entrainement);
 
                 // On affiche un message de validation
                 $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
@@ -157,11 +156,7 @@ class ReservationController extends Controller
      */
     public function supprimerEntrainementAction(Request $request, $id)
     {
-        // On récupère l'entité de l'entrainement correspondante à l'id $id
-        $entrainement = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AvironSortieBundle:Entrainement')
-            ->find($id);
+        $entrainement = $this->DonneEntrainement($id);
 
         // Si $entrainement est null, l'id n'existe pas
         if(null == $entrainement) {
@@ -170,7 +165,7 @@ class ReservationController extends Controller
 
         $entrainement->setIdutsupp($this->getUser()->getId());
         $entrainement->setDatesupp(new \DateTime());
-        $this->persistEntrainement($entrainement);
+        $this->SauvegardeEntrainement($entrainement);
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Entraînement bien supprimé.');
@@ -179,7 +174,35 @@ class ReservationController extends Controller
         return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
     }
 
-    private function persistEntrainement($entrainement)
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function modifierEntrainementAction(Request $request, $id)
+    {
+        $entrainement = $this->DonneEntrainement($id);
+
+        // On génère le formulaire
+        $form = $this->createForm(EntrainementType::class, $entrainement);
+
+        // Si la requête est en POST, c'est qu'on veut enregistrer l'entrainement
+        if($request->isMethod('POST')) {
+            // On fait le lien Requête <-> Formulaire
+            $form->handleRequest($request);
+
+            if($form->isValid()) {
+                $this->SauvegardeEntrainement($entrainement);
+
+                // On affiche un message de validation
+                $request->getSession()->getFlashBag()->add('succes', 'Entraînement bien enregistré.');
+
+                return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
+            }
+        }
+        return $this->render('AvironSortieBundle:Reservation:modifier.html.twig',
+                                array('form' => $form->createView()));
+    }
+
+    private function SauvegardeEntrainement($entrainement)
     {
         // On enregistre l'objet $entrainement en base de données
         $em = $this->GetDoctrine()->getManager();
@@ -192,5 +215,13 @@ class ReservationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($reservation);
         $em->flush();
+    }
+
+    private function DonneEntrainement($id)
+    {
+        return $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AvironSortieBundle:Entrainement')
+            ->find($id);
     }
 }

@@ -34,6 +34,9 @@
 						<td>{{ entrainement.heuredebut | date('H:i') }}</td>
 						<td>{{ entrainement.heurefin | date('H:i') }}</td>
 						<td>
+							<a href="{{ path('aviron_sortie_reservation_admin_modifier_entrainement', {'id': entrainement.id}) }}" class="btn btn-primary" title="Modifier l'entraînement">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
 							<a href="{{ path('aviron_sortie_reservation_admin_supprimer_entrainement', {'id': entrainement.id}) }}" class="btn btn-danger" title="Supprimer l'entraînement">
 								<i class="glyphicon glyphicon-trash"></i>
 							</a>
