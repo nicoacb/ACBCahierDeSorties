@@ -21,7 +21,7 @@ class BateauController extends Controller
     	->getRepository('App:Bateau')
         ->getListeBateaux();
 
-        return $this->render('Bateau/index.html.twig', array('listeBateaux' => $listeBateaux));
+        return $this->render('bateau/index.html.twig', array('listeBateaux' => $listeBateaux));
     }
     
     /**
@@ -52,7 +52,7 @@ class BateauController extends Controller
                 return $this->redirectToRoute('aviron_bateaux_home');
             }
         }
-        return $this->render('Bateau/modifier.html.twig',
+        return $this->render('bateau/modifier.html.twig',
                                 array('form' => $form->createView(), 'bateau' => $bateau));
     }
     
@@ -85,7 +85,7 @@ class BateauController extends Controller
             }
         }
 
-        return $this->render('Bateau/ajouter.html.twig', array('form' => $form->createView()));
+        return $this->render('bateau/ajouter.html.twig', array('form' => $form->createView()));
     }
     
     /**

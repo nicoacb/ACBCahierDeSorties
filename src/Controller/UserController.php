@@ -36,7 +36,7 @@ class UserController extends Controller
             throw $this->createNotFoundException("La page ".$page." n'existe pas.");
         }
 
-		return $this->render('User/index.html.twig', 
+		return $this->render('user/index.html.twig', 
             array(
                 'listeUsers'    => $listeUsers,
                 'nbPages'       => $nbPages,
@@ -84,7 +84,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('User/ajouter.html.twig',
+        return $this->render('user/ajouter.html.twig',
                                 array('form' => $form->createView()));
     }
 
@@ -117,7 +117,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('User/modifier.html.twig',
+        return $this->render('user/modifier.html.twig',
                                 array('form' => $form->createView()));
     }
 

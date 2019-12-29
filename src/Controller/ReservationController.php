@@ -22,7 +22,7 @@ class ReservationController extends Controller
             ->getRepository('App:Entrainement')
             ->getListeEntrainements();
 
-        return $this->render('Reservation/index.html.twig', array('listeEntrainements' => $listeEntrainements));
+        return $this->render('reservation/index.html.twig', array('listeEntrainements' => $listeEntrainements));
     }
 
     /**
@@ -49,7 +49,7 @@ class ReservationController extends Controller
             }
         }
 
-        return $this->render('Reservation/lister.html.twig', array('listeEntrainements' => $listeEntrainements, 'reservations' => $estInscrit));
+        return $this->render('reservation/lister.html.twig', array('listeEntrainements' => $listeEntrainements, 'reservations' => $estInscrit));
     }
 
     /**
@@ -118,7 +118,7 @@ class ReservationController extends Controller
                 'datesupp' => null
             ]);
 
-        return $this->render('Reservation/participants.html.twig', array('participants' => $participants));
+        return $this->render('reservation/participants.html.twig', array('participants' => $participants));
     }
 
     /**
@@ -148,7 +148,7 @@ class ReservationController extends Controller
                 return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
             }
         }
-        return $this->render('Reservation/ajouter.html.twig', array('form' => $form->createView()));
+        return $this->render('reservation/ajouter.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -198,7 +198,7 @@ class ReservationController extends Controller
                 return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
             }
         }
-        return $this->render('Reservation/modifier.html.twig',
+        return $this->render('reservation/modifier.html.twig',
                                 array('form' => $form->createView()));
     }
 

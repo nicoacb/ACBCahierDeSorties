@@ -20,7 +20,7 @@ class SaisonController extends Controller
     	->getRepository('App:Saison')
     	->findAll();
     	
-        return $this->render('Saison/index.html.twig', array('listeSaisons' => $listeSaisons));
+        return $this->render('saison/index.html.twig', array('listeSaisons' => $listeSaisons));
     }
     
     /**
@@ -41,7 +41,7 @@ class SaisonController extends Controller
             return $this->redirectToRoute('aviron_sortie_saison_liste');
         }
 
-        return $this->render('Saison/ajouter.html.twig', array(
+        return $this->render('saison/ajouter.html.twig', array(
         'form' => $form->createView(),
         ));
     }
@@ -84,7 +84,7 @@ class SaisonController extends Controller
                 return $this->redirectToRoute('aviron_sortie_saison_liste');
             }
         }
-        return $this->render('Saison/modifier.html.twig',
+        return $this->render('saison/modifier.html.twig',
                                 array('form' => $form->createView()));
     }
     
@@ -115,5 +115,4 @@ class SaisonController extends Controller
         // On redirige vers la liste des saisons
         return $this->redirectToRoute('aviron_sortie_saison_liste');
     }
-
 }

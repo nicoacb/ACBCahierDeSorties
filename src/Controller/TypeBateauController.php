@@ -27,7 +27,7 @@ class TypeBateauController extends Controller
     	    ->getRepository('App:TypeBateau')
     	    ->getListeTypesBateau();
 
-        return $this->render('TypeBateau/index.html.twig', array('listTypesBateau' => $typesbateau));
+        return $this->render('typebateau/index.html.twig', array('listTypesBateau' => $typesbateau));
     }
     
     /**
@@ -60,7 +60,7 @@ class TypeBateauController extends Controller
         }
 
         // Sinon on affiche le formulaire pour ajouter un type de bateau
-        return $this->render('TypeBateau/ajouter.html.twig', 
+        return $this->render('typebateau/ajouter.html.twig', 
                         array('form' => $form->createView()));
     }
     
@@ -101,7 +101,7 @@ class TypeBateauController extends Controller
             }
         }
  
-        return $this->render('TypeBateau/modifier.html.twig', 
+        return $this->render('typebateau/modifier.html.twig', 
                         array('form' => $form->createView()));
     }
 
