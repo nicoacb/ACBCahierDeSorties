@@ -1,0 +1,48 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Saisons - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2 class="sub-header">Saisons</h2>
+  <p>
+    <a href="{{ path('aviron_sortie_saison_ajouter') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-plus"></i>
+      Ajouter une saison
+    </a>
+  </p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Saison</th>
+                  <th>En cours</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for saison in listeSaisons %}
+                <tr>
+                  <td>{{ saison.nom }}</td>
+                  <td>{% if (saison.courante == 1) %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+                  <td>
+                    <a href="{{ path('aviron_sortie_saison_modifier', {'id': saison.id}) }}" class="btn btn-primary" title="Modifier la saison">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                    <a href="{{ path('aviron_sortie_saison_supprimer', {'id': saison.id}) }}" class="btn btn-danger" title="Supprimer la saison">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                <td colspan="3">Pas encore de saison</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+{% endblock %}

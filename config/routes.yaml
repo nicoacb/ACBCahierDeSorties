@@ -1,0 +1,317 @@
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /moncompte
+    
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+    
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+    
+#fos_user_change_password:
+#    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+#    prefix: /profile
+    
+aviron_users_liste:
+    path:       /membres/{page}
+    controller: App\Controller\UserController:index
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+aviron_users_ajouter:
+    path:       /membres/ajouter
+    controller: App\Controller\UserController:ajouter
+
+aviron_users_modifier:
+    path:       /membres/modifier/{id}
+    controller: App\Controller\UserController:modifier
+    requirements:
+        id: \d+
+
+aviron_users_supprimer:
+    path:       /membres/supprimer/{id}
+    controller: App\Controller\UserController:supprimer
+    requirements:
+        id: \d+
+
+aviron_users_recherche:
+    path:       /membres/recherche
+    controller: App\Controller\UserController:recherche
+
+aviron_users_get:
+    path:       /membres/get/
+    controller: App\Controller\User/get
+
+fos_user_change_password:
+    path: /moncompte/motdepasse
+    defaults: { _controller: fos_user.change_password.controller:changePasswordAction }
+
+fos_user_security_login:
+    path: /
+    defaults: { _controller: fos_user.security.controller:loginAction }
+
+aviron_accueil:
+    path:     /accueil
+    controller: App\Controller\SortieController:accueil
+    
+aviron_bateaux_home:
+    path:     /bateaux/{page}
+    controller:    App\Controller\BateauController:index
+    defaults:
+        page:           1
+    requirements:
+        page: \d*
+        
+aviron_bateaux_ajouter:
+    path:     /bateaux/ajouter
+    controller:    App\Controller\BateauController:ajouter
+        
+aviron_bateaux_modifier:
+    path:       /bateaux/modifier/{id}
+    controller:    App\Controller\BateauController:modifier
+    requirements:
+        id: \d+
+        
+aviron_bateaux_supprimer:
+    path:       /bateaux/supprimer/{id}
+    controller:    App\Controller\BateauController:supprimer
+    requirements:
+        id: \d+
+
+aviron_bateaux_mettrehorsservice:
+    path:       /bateaux/mettrehorsservice/{id}
+    controller:    App\Controller\BateauController:mettrehorsservice
+    requirements:
+        id: \d+
+
+aviron_bateaux_remettreenservice:
+    path:       /bateaux/remettreenservice/{id}
+    controller:    App\Controller\BateauController:remettreenservice
+    requirements:
+        id: \d+
+    
+aviron_sortie_home:
+    path:     /sorties/{page}
+    controller: App\Controller\SortieController:index
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+    
+aviron_sortie_ajouter:
+    path:     /sorties/ajouter/{nbrameurs}
+    controller: App\Controller\SortieController:ajouter
+    defaults:
+        nbrameurs: 0
+    requirements:
+        nbrameurs: \d+
+    
+aviron_sortie_terminer:
+    path:     /sorties/terminer/{id}
+    controller: App\Controller\SortieController:terminer
+    requirements:
+        id: \d+
+        
+aviron_sortie_voir:
+    path:     /sorties/sortie/{id}
+    controller: App\Controller\SortieController:voir
+    requirements:
+        id: \d+
+        
+aviron_sortie_modifier:
+    path:     /sorties/modifier/{id}
+    controller: App\Controller\SortieController:modifier
+    requirements:
+        id: \d+
+        
+aviron_sortie_supprimer:
+    path:     /sorties/supprimer/{id}
+    controller: App\Controller\SortieController:supprimer
+    requirements:
+        id: \d+
+
+aviron_sortie_membre:
+    path:     /sorties/membre/{idmembre}
+    controller: App\Controller\SortieController:membre
+    requirements:
+        id: \d+
+
+aviron_sortie_bateau:
+    path:     /sorties/bateau/{idbateau}
+    controller: App\Controller\SortieController:bateau
+    requirements:
+        id: \d+
+
+aviron_sortie_statistiques_membres:
+    path:     /sorties/statistiques/membres/kilometresparcourus/{annee}/{mois}
+    controller: App\Controller\SortieController:statistiquesMembres
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_statistiques_nombre_sorties_membres:
+    path:     /sorties/statistiques/membres/nombredesorties/{annee}/{mois}
+    controller: App\Controller\SortieController:statistiquesNombreDeSortiesMembres
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_statistiques_bateaux:
+    path:     /sorties/statistiques/bateaux/kilometresparcourus/{annee}/{mois}
+    controller: App\Controller\SortieController:statistiquesBateaux
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_statistiques_nombre_sorties_bateaux:
+    path:     /sorties/statistiques/bateaux/nombredesorties/{annee}/{mois}
+    controller: App\Controller\SortieController:statistiquesNombreDeSortiesBateaux
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_typebateau_home:
+    path:     /typebateau/{page}
+    controller: App\Controller\TypeBateauController:index
+    defaults:
+        page: 1
+    requirements:
+        page: \d*
+    
+aviron_sortie_typebateau_ajouter:
+    path:     /typebateau/ajouter
+    controller: App\Controller\TypeBateauController:ajouter
+        
+aviron_sortie_typebateau_modifier:
+    path:     /typebateau/modifier/{id}
+    controller: App\Controller\TypeBateauController:modifier
+    requirements:
+        id: \d+
+        
+aviron_sortie_typebateau_supprimer:
+    path:     /typebateau/supprimer/{id}
+    controller: App\Controller\TypeBateauController:supprimer
+    requirements:
+        id: \d+
+
+aviron_sortie_saison_liste:
+    path:     /config/saison
+    controller: App\Controller\SaisonController:index
+    
+aviron_sortie_saison_ajouter:
+    path:     /config/saison/ajouter
+    controller: App\Controller\SaisonController:ajouter
+        
+aviron_sortie_saison_modifier:
+    path:     /config/saison/modifier/{id}
+    controller: App\Controller\SaisonController:modifier
+    requirements:
+        id: \d+
+
+aviron_sortie_saison_supprimer:
+    path:     /config/saison/supprimer/{id}
+    controller: App\Controller\SaisonController:supprimer
+    requirements:
+        id: \d+
+
+aviron_sortie_excel:
+    path:     /export/membres/kilometresparcourus/{annee}/{mois}
+    controller: App\Controller\ExportExcelController:exportKmParcourusParMembre
+    defaults: 
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_export_nombre_sorties_membres:
+    path:     /export/membres/nombredesorties/{annee}/{mois}
+    controller: App\Controller\ExportExcelController:exportNombreDeSortiesParMembre
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_export_kmparcourus_bateaux:
+    path:     /export/bateaux/kilometresparcourus/{annee}/{mois}
+    controller: App\Controller\ExportExcelController:exportKmParcourusParBateau
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_export_nombre_sorties_bateaux:
+    path:     /export/bateaux/nombredesorties/{annee}/{mois}
+    controller: App\Controller\ExportExcelController:exportNombreDeSortiesParBateau
+    defaults:
+        annee: 0
+        mois: 0
+    requirements:
+        annee: \d+
+        mois: \d+
+
+aviron_sortie_reservation_entrainements:
+    path: /reservation/entrainements
+    controller: App\Controller\ReservationController:listerEntrainementsAVenir
+
+aviron_sortie_reservation_reserver:
+    path: /reservation/entrainements/reserver/{id}
+    controller: App\Controller\ReservationController:reserver
+    requirements:
+        id: \d+
+
+aviron_sortie_reservation_desinscrire:
+    path: /reservation/entrainements/desinscrire/{id}
+    controller: App\Controller\ReservationController:desinscrire
+    requirements:
+        id: \d+
+
+aviron_sortie_reservation_participants:
+    path: /reservation/entrainements/participants/{id}
+    controller: App\Controller\ReservationController:participants
+    requirements:
+        id: \d+
+
+aviron_sortie_reservation_admin_entrainements:
+    path: /reservation/administrer/entrainements
+    controller: App\Controller\ReservationController:listerEntrainements
+
+aviron_sortie_reservation_admin_ajouter_entrainement:
+    path: /reservation/administrer/entrainements/ajouter
+    controller: App\Controller\ReservationController:ajouterEntrainement
+
+aviron_sortie_reservation_admin_supprimer_entrainement:
+    path: /reservation/administrer/entrainements/supprimer/{id}
+    controller: App\Controller\ReservationController:supprimerEntrainement
+    requirements:
+        id: \d+
+
+aviron_sortie_reservation_admin_modifier_entrainement:
+    path: /reservation/administrer/entrainements/modifier/{id}
+    controller: App\Controller\ReservationController:modifierEntrainement
+    requirements:
+        id: \d+
+        

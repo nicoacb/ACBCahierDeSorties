@@ -1,0 +1,71 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Liste des bateaux - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2 class="page-header">Liste des bateaux du Club</h2>
+  <p>
+    <a href="{{ path('aviron_bateaux_ajouter') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-plus"></i>
+      Ajouter un bateau
+    </a>
+  </p>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Nom</th>
+          <th>Fabricant</th>
+          <th>Année de fabrication</th>
+          <th>Année d'achat</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for bateau in listeBateaux %}
+        <tr>
+          <td>{{ bateau.type.nom }}</td>
+          <td>{{ bateau.nom }}</td>
+          <td>{{ bateau.fabriquant }}</td>
+          <td>
+            {% if bateau.datefabrication is not null %}
+              {{ bateau.datefabrication | date('d/m/Y') }}
+            {% endif %}  
+          </td>
+          <td>
+            {% if bateau.dateachat is not null %}
+              {{ bateau.dateachat | date('d/m/Y') }}
+            {% endif %}
+          </td>
+          <td><a href="{{ path('aviron_bateaux_modifier', {'id': bateau.id}) }}" class="btn btn-primary" title="Modifier le bateau">
+              <i class="glyphicon glyphicon-pencil"></i>
+              Modifier
+            </a>
+            {% if bateau.datehorsservice is null %}
+            <a href="{{ path('aviron_bateaux_mettrehorsservice', {'id': bateau.id}) }}" class="btn btn-success">
+              <i class="glyphicon glyphicon-wrench"></i>
+              Mettre hors-service
+            </a>
+            {% else %}
+            <a href="{{ path('aviron_bateaux_remettreenservice', {'id': bateau.id}) }}" class="btn btn-warning">
+              <i class="glyphicon glyphicon-wrench"></i>
+              Remettre en service
+            </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+        <td colspan="6">Pas (encore !) de bateaux</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}

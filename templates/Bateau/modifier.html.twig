@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Modifier un bateau - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier un bateau</h2>
+  <p>
+    <a href="{{ path('aviron_bateaux_supprimer', {'id': bateau.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le bateau
+    </a>
+  </p>
+
+  {{ include("Bateau/form.html.twig") }}
+  
+  <p>
+    <a href="{{ path('aviron_bateaux_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour aux bateaux
+    </a>
+  </p>
+
+{% endblock %}

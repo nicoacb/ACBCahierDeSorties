@@ -1,0 +1,18 @@
+parameters:
+    locale: fr
+    nbSortiesParPage: 25
+    nbUsersParPage: 50
+    nbPagesDebutEtFinPagination: 3
+    nbPagesAutourPageCourrante: 4
+
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: null
+    form_themes:
+        - 'bootstrap_3_horizontal_layout.html.twig'
+        - 'form/fields.html.twig'
+    globals:
+        nbPagesDebutEtFinPagination: "%nbPagesDebutEtFinPagination%"
+        nbPagesAutourPageCourrante: "%nbPagesAutourPageCourrante%"

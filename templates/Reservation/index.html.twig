@@ -1,0 +1,54 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+	Réservations -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<h2 class="page-header">Liste des entraînements</h2>
+	<p>
+		<a href="{{ path('aviron_sortie_reservation_admin_ajouter_entrainement') }}" class="btn btn-default">
+			<i class="glyphicon glyphicon-plus"></i>
+			Ajouter un entraînement
+		</a>
+	</p>
+
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Nom</th>
+					<th>Heure de début</th>
+					<th>Heure de fin</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for entrainement in listeEntrainements %}
+					<tr>
+						<td>{{ entrainement.datedebut | date('d/m/Y') }}</td>
+						<td>{{ entrainement.nom }}</td>
+						<td>{{ entrainement.heuredebut | date('H:i') }}</td>
+						<td>{{ entrainement.heurefin | date('H:i') }}</td>
+						<td>
+							<a href="{{ path('aviron_sortie_reservation_admin_modifier_entrainement', {'id': entrainement.id}) }}" class="btn btn-primary" title="Modifier l'entraînement">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a href="{{ path('aviron_sortie_reservation_admin_supprimer_entrainement', {'id': entrainement.id}) }}" class="btn btn-danger" title="Supprimer l'entraînement">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">Pas (encore !) d'entraînement</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Ajouter un type de bateau - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Ajouter un type de bateau</h2>
+
+  {{ include("TypeBateau/form.html.twig") }}
+
+{% endblock %}
