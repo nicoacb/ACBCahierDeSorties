@@ -14,20 +14,26 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">{{ entrainement.nom }}</div>
 				<div class="panel-body">
-					Date :
-					{{ entrainement.datedebut | date('d/m/Y') }}<br/>
-					Heure de début :
-					{{ entrainement.heuredebut | date('H:i') }}<br/>
-					Heure de fin :
-					{{ entrainement.heurefin | date('H:i') }}<br/>
+					Date : le
+					{{ entrainement.datedebut | date('d/m/Y') }}
+					{% if entrainement.heurefin %}
+					de {{ entrainement.heuredebut | date('H:i') }} à {{ entrainement.heurefin | date('H:i') }}
+					{% else %}
+						à {{ entrainement.heuredebut | date('H:i') }}
+					{% endif %}
+					
+					Clôture des inscriptions le
+					{{ entrainement.datecloture | date ('d/m/y à H:i')}}
 					<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}"><br/>
 						Voir les participants
 					</a><br/>
 					{% if entrainement.id not in reservations %}
+						{% if entrainement.datecloture|date('Y-m-d H:i') >= "now"|date('Y-m-d H:i', "Europe/Paris") %}
 						<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
 							<i class="glyphicon glyphicon-plus"></i>
 							Réserver
 						</a>
+						{% endif %}
 					{% else %}
 						<b>Vous êtes inscrit à cet entraînement.</b>
 						<a href="{{ path('aviron_sortie_reservation_desinscrire', {'id': entrainement.id}) }}" class="btn btn-default">
