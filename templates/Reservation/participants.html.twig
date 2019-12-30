@@ -10,11 +10,11 @@
 	<h2 class="page-header">Participants</h2>
 
 	{% if participants %}
-		<ul>
+		<ol>
 			{% for participant in participants %}
 				<li>{{ participant.idut.prenomnom }}</li>
 			{% endfor %}
-		</ul>
+		</ol>
 	{% else %}
 		<p>Pas (encore !) de participants.</p>
 	{% endif %}

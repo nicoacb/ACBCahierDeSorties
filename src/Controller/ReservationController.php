@@ -116,6 +116,9 @@ class ReservationController extends Controller
             ->findBy([
                 'identrainement' => $id,
                 'datesupp' => null
+            ], 
+            [
+                'datereservation' => 'ASC'
             ]);
 
         return $this->render('reservation/participants.html.twig', array('participants' => $participants));
