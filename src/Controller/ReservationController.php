@@ -41,15 +41,30 @@ class ReservationController extends Controller
             ->DonneReservations($this->getUser()->getId());
 
         $estInscrit = array();
+        $nbreservations = array();
         foreach ($listeEntrainements as $entrainement) {
             foreach ($reservations as $reservation) {
                 if ($entrainement->getId() == $reservation->getIdentrainement()) {
                     array_push($estInscrit, $entrainement->getId());
                 }
             }
+
+            $nbreservations[$entrainement->getId()] = $this->DonneNombreDeReservations($entrainement->getId());
         }
 
-        return $this->render('reservation/lister.html.twig', array('listeEntrainements' => $listeEntrainements, 'reservations' => $estInscrit));
+        return $this->render('reservation/lister.html.twig', array(
+            'listeEntrainements' => $listeEntrainements,
+            'reservations' => $estInscrit,
+            'nbreservations' => $nbreservations
+        ));
+    }
+
+    private function DonneNombreDeReservations($identrainement)
+    {
+        return $this->getDoctrine()
+            ->getManager()
+            ->getRepository('App:Reservation')
+            ->CompteNombreDeReservations($identrainement);
     }
 
     /**
@@ -113,13 +128,15 @@ class ReservationController extends Controller
         $participants =  $this->getDoctrine()
             ->getManager()
             ->getRepository('App:Reservation')
-            ->findBy([
-                'identrainement' => $id,
-                'datesupp' => null
-            ], 
-            [
-                'datereservation' => 'ASC'
-            ]);
+            ->findBy(
+                [
+                    'identrainement' => $id,
+                    'datesupp' => null
+                ],
+                [
+                    'datereservation' => 'ASC'
+                ]
+            );
 
         return $this->render('reservation/participants.html.twig', array('participants' => $participants));
     }
@@ -162,8 +179,8 @@ class ReservationController extends Controller
         $entrainement = $this->DonneEntrainement($id);
 
         // Si $entrainement est null, l'id n'existe pas
-        if(null == $entrainement) {
-            throw new NotFoundHttpException("L'entrainement d'id ".$id." n'existe pas.");
+        if (null == $entrainement) {
+            throw new NotFoundHttpException("L'entrainement d'id " . $id . " n'existe pas.");
         }
 
         $entrainement->setIdutsupp($this->getUser()->getId());
@@ -188,11 +205,11 @@ class ReservationController extends Controller
         $form = $this->createForm(EntrainementType::class, $entrainement);
 
         // Si la requête est en POST, c'est qu'on veut enregistrer l'entrainement
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             // On fait le lien Requête <-> Formulaire
             $form->handleRequest($request);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $this->SauvegardeEntrainement($entrainement);
 
                 // On affiche un message de validation
@@ -201,8 +218,10 @@ class ReservationController extends Controller
                 return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
             }
         }
-        return $this->render('reservation/modifier.html.twig',
-                                array('form' => $form->createView()));
+        return $this->render(
+            'reservation/modifier.html.twig',
+            array('form' => $form->createView())
+        );
     }
 
     private function SauvegardeEntrainement($entrainement)

@@ -17,22 +17,35 @@
 					Date : le
 					{{ entrainement.datedebut | date('d/m/Y') }}
 					{% if entrainement.heurefin %}
-					de {{ entrainement.heuredebut | date('H:i') }} à {{ entrainement.heurefin | date('H:i') }}
+						de
+						{{ entrainement.heuredebut | date('H:i') }}
+						à
+						{{ entrainement.heurefin | date('H:i') }}
 					{% else %}
-						à {{ entrainement.heuredebut | date('H:i') }}
+						à
+						{{ entrainement.heuredebut | date('H:i') }}
 					{% endif %}
-					
+
 					Clôture des inscriptions le
-					{{ entrainement.datecloture | date ('d/m/y à H:i')}}
+					{{ entrainement.datecloture | date ('d/m/y à H:i')}}<br/>
+					Nombre de places disponibles :
+					{{ entrainement.nbplacesdisponibles - nbreservations[entrainement.id]}}
+					/
+					{{ entrainement.nbplacesdisponibles }}<br/>
 					<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}"><br/>
 						Voir les participants
 					</a><br/>
+
 					{% if entrainement.id not in reservations %}
-						{% if entrainement.datecloture|date('Y-m-d H:i') >= "now"|date('Y-m-d H:i', "Europe/Paris") %}
-						<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
-							<i class="glyphicon glyphicon-plus"></i>
-							Réserver
-						</a>
+						{% if entrainement.nbplacesdisponibles > nbreservations[entrainement.id] %}
+							{% if entrainement.datecloture|date('Y-m-d H:i') >= "now"|date('Y-m-d H:i', "Europe/Paris") %}
+								<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
+									<i class="glyphicon glyphicon-plus"></i>
+									Réserver
+								</a>
+							{% endif %}
+						{% else %}
+							Complet !
 						{% endif %}
 					{% else %}
 						<b>Vous êtes inscrit à cet entraînement.</b>

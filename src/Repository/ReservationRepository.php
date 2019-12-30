@@ -22,4 +22,18 @@ class ReservationRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function CompteNombreDeReservations($identrainement)
+    {
+        $qb = $this
+            ->createQueryBuilder('r')
+            ->select('COUNT(r)')
+            ->where('r.identrainement = :identrainement')
+            ->andWhere('r.datesupp is null')
+            ->setParameter('identrainement', $identrainement);
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
