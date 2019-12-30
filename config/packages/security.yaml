@@ -38,7 +38,7 @@ security:
                 default_target_path: aviron_accueil
             logout:
                path: fos_user_security_logout
-               target: /sorties
+               target: /
             remember_me:
                 secret:     '%secret%' # %secret% est un paramètre de parameter
             
