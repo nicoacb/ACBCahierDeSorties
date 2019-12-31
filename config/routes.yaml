@@ -295,10 +295,6 @@ aviron_sortie_reservation_participants:
     requirements:
         id: \d+
 
-aviron_sortie_reservation_admin_entrainements:
-    path: /reservation/administrer/entrainements
-    controller: App\Controller\ReservationController:listerEntrainements
-
 aviron_sortie_reservation_admin_ajouter_entrainement:
     path: /reservation/administrer/entrainements/ajouter
     controller: App\Controller\ReservationController:ajouterEntrainement

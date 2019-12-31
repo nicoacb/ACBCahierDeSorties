@@ -10,20 +10,22 @@ namespace App\Repository;
  */
 class EntrainementRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getListeEntrainements()
+    public function DonneEntrainementsPasses()
     {
         $qb = $this
             ->createQueryBuilder('e')
-            ->where('e.datesupp is null')
-            ->orderBy('e.datedebut', 'DESC')
-            ->addOrderBy('e.heuredebut');
+            ->where('e.datedebut < :aujourdhui')
+            ->andWhere('e.datesupp is null')
+            ->orderBy('e.datedebut', 'ASC')
+            ->addOrderBy('e.heuredebut')
+            ->setParameter('aujourdhui', date("Y-m-d", time()));
 
         return $qb
             ->getQuery()
             ->getResult();
     }
 
-    public function getListeEntrainementsAVenir()
+    public function DonneEntrainementsAVenir()
     {
         $qb = $this
             ->createQueryBuilder('e')

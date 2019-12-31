@@ -11,29 +11,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReservationController extends Controller
-{
-    /**
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function listerEntrainements()
-    {
-        $listeEntrainements = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Entrainement')
-            ->getListeEntrainements();
-
-        return $this->render('reservation/index.html.twig', array('listeEntrainements' => $listeEntrainements));
-    }
-
+{    
     /**
      * @Security("has_role('ROLE_USER')")
      */
     public function listerEntrainementsAVenir()
     {
-        $listeEntrainements = $this->getDoctrine()
+        $listeEntrainementsAVenir = $this->getDoctrine()
             ->getManager()
             ->getRepository('App:Entrainement')
-            ->getListeEntrainementsAVenir();
+            ->DonneEntrainementsAVenir();
+
+        $listeEntrainementsPasses = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('App:Entrainement')
+            ->DonneEntrainementsPasses();
 
         $reservations = $this->getDoctrine()
             ->getManager()
@@ -42,7 +34,7 @@ class ReservationController extends Controller
 
         $estInscrit = array();
         $nbreservations = array();
-        foreach ($listeEntrainements as $entrainement) {
+        foreach ($listeEntrainementsAVenir as $entrainement) {
             foreach ($reservations as $reservation) {
                 if ($entrainement->getId() == $reservation->getIdentrainement()) {
                     array_push($estInscrit, $entrainement->getId());
@@ -52,8 +44,13 @@ class ReservationController extends Controller
             $nbreservations[$entrainement->getId()] = $this->DonneNombreDeReservations($entrainement->getId());
         }
 
+        foreach ($listeEntrainementsPasses as $entrainement) {
+            $nbreservations[$entrainement->getId()] = $this->DonneNombreDeReservations($entrainement->getId());
+        }
+
         return $this->render('reservation/lister.html.twig', array(
-            'listeEntrainements' => $listeEntrainements,
+            'listeEntrainementsAVenir' => $listeEntrainementsAVenir,
+            'listeEntrainementsPasses' => $listeEntrainementsPasses,
             'reservations' => $estInscrit,
             'nbreservations' => $nbreservations
         ));
@@ -165,7 +162,7 @@ class ReservationController extends Controller
                 $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
 
                 // On redirige vers la liste des entraînements
-                return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
+                return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
             }
         }
         return $this->render('reservation/ajouter.html.twig', array('form' => $form->createView()));
@@ -191,7 +188,7 @@ class ReservationController extends Controller
         $request->getSession()->getFlashBag()->add('success', 'Entraînement bien supprimé.');
 
         // On redirige vers la liste des entrainements
-        return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
+        return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
     }
 
     /**
@@ -213,9 +210,9 @@ class ReservationController extends Controller
                 $this->SauvegardeEntrainement($entrainement);
 
                 // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('succes', 'Entraînement bien enregistré.');
+                $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
 
-                return $this->redirectToRoute('aviron_sortie_reservation_admin_entrainements');
+                return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
             }
         }
         return $this->render(

@@ -6,57 +6,133 @@
 {% endblock %}
 
 {% block body %}
+	<div class="row">
+		<h2 class="page-header">Entraînements à venir</h2>
 
-	<h2 class="page-header">Réserver ma place à un entraînement</h2>
+		{% if is_granted('ROLE_ADMIN') %}
+			<p>
+				<a href="{{ path('aviron_sortie_reservation_admin_ajouter_entrainement') }}" class="btn btn-default">
+					<i class="glyphicon glyphicon-plus"></i>
+					Ajouter un entraînement
+				</a>
+			</p>
+		{% endif %}
 
-	{% for entrainement in listeEntrainements %}
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">{{ entrainement.nom }}</div>
-				<div class="panel-body">
-					Date : le
-					{{ entrainement.datedebut | date('d/m/Y') }}
-					{% if entrainement.heurefin %}
-						de
-						{{ entrainement.heuredebut | date('H:i') }}
-						à
-						{{ entrainement.heurefin | date('H:i') }}
-					{% else %}
-						à
-						{{ entrainement.heuredebut | date('H:i') }}
-					{% endif %}
+		{% for entrainement in listeEntrainementsAVenir %}
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ entrainement.nom }}</div>
+					<div class="panel-body">
+						{{ entrainement.datedebut | localizeddate('full', 'none') | capitalize }}
+						{% if entrainement.heurefin %}
+							de
+							{{ entrainement.heuredebut | date('H:i') }}
+							à
+							{{ entrainement.heurefin | date('H:i') }}
+						{% else %}
+							à
+							{{ entrainement.heuredebut | date('H:i') }}
+						{% endif %}
+						<br/>
+						Clôture des inscriptions le
+						{{ entrainement.datecloture | localizeddate('full', 'short')}}<br/>
+						Nombre de places disponibles :
+						{{ entrainement.nbplacesdisponibles - nbreservations[entrainement.id]}}
+						/
+						{{ entrainement.nbplacesdisponibles }}<br/>
+						<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}">
+							Voir les participants
+						</a><br/><br/>
 
-					Clôture des inscriptions le
-					{{ entrainement.datecloture | date ('d/m/y à H:i')}}<br/>
-					Nombre de places disponibles :
-					{{ entrainement.nbplacesdisponibles - nbreservations[entrainement.id]}}
-					/
-					{{ entrainement.nbplacesdisponibles }}<br/>
-					<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}"><br/>
-						Voir les participants
-					</a><br/>
-
-					{% if entrainement.id not in reservations %}
-						{% if entrainement.nbplacesdisponibles > nbreservations[entrainement.id] %}
-							{% if entrainement.datecloture|date('Y-m-d H:i') >= "now"|date('Y-m-d H:i', "Europe/Paris") %}
-								<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
-									<i class="glyphicon glyphicon-plus"></i>
-									Réserver
-								</a>
+						{% if entrainement.id not in reservations %}
+							{% if entrainement.nbplacesdisponibles > nbreservations[entrainement.id] %}
+								{% if entrainement.datecloture|date('Y-m-d H:i') >= "now"|date('Y-m-d H:i', "Europe/Paris") %}
+									<a href="{{ path('aviron_sortie_reservation_reserver', {'id': entrainement.id}) }}" class="btn btn-default">
+										<i class="glyphicon glyphicon-plus"></i>
+										Réserver
+									</a>
+								{% endif %}
+							{% else %}
+								Complet !
 							{% endif %}
 						{% else %}
-							Complet !
+							<b>Vous êtes inscrit à cet entraînement.</b>
+							<a href="{{ path('aviron_sortie_reservation_desinscrire', {'id': entrainement.id}) }}" class="btn btn-default">
+								<i class="glyphicon glyphicon-plus"></i>
+								Se désinscrire
+							</a>
 						{% endif %}
-					{% else %}
-						<b>Vous êtes inscrit à cet entraînement.</b>
-						<a href="{{ path('aviron_sortie_reservation_desinscrire', {'id': entrainement.id}) }}" class="btn btn-default">
-							<i class="glyphicon glyphicon-plus"></i>
-							Se désinscrire
-						</a>
-					{% endif %}
+
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('aviron_sortie_reservation_admin_modifier_entrainement', {'id': entrainement.id}) }}" class="btn btn-primary" title="Modifier l'entraînement">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a href="{{ path('aviron_sortie_reservation_admin_supprimer_entrainement', {'id': entrainement.id}) }}" class="btn btn-danger" title="Supprimer l'entraînement">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						{% endif %}
+					</div>
 				</div>
 			</div>
+			{% else %}Pas (encore !) d'entraînement
+		{% endfor %}
+	</div>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="row">
+			<h2 class="page-header">Entraînements passés</h2>
+
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Date</th>
+							<th>Nombre de participants</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for entrainement in listeEntrainementsPasses %}
+							<tr>
+								<td>{{ entrainement.nom }}</td>
+								<td>{{ entrainement.datedebut | localizeddate('full', 'none') }}
+									{% if entrainement.heurefin %}
+										de
+										{{ entrainement.heuredebut | date('H:i') }}
+										à
+										{{ entrainement.heurefin | date('H:i') }}
+									{% else %}
+										à
+										{{ entrainement.heuredebut | date('H:i') }}
+									{% endif %}
+								</td>
+								<td>
+									{{ nbreservations[entrainement.id] }}
+								</td>
+								<td>
+									<a href="{{ path('aviron_sortie_reservation_participants', {'id': entrainement.id}) }}">
+										Voir les participants
+									</a>
+								</td>
+								<td>
+									<a href="{{ path('aviron_sortie_reservation_admin_modifier_entrainement', {'id': entrainement.id}) }}" class="btn btn-primary" title="Modifier l'entraînement">
+										<i class="glyphicon glyphicon-pencil"></i>
+									</a>
+									<a href="{{ path('aviron_sortie_reservation_admin_supprimer_entrainement', {'id': entrainement.id}) }}" class="btn btn-danger" title="Supprimer l'entraînement">
+										<i class="glyphicon glyphicon-trash"></i>
+									</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">Pas (encore !) d'entraînement</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
-		{% else %}Pas (encore !) d'entraînement
-	{% endfor %}
+	{% endif %}
 {% endblock %}
