@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserModificationType;
 use App\Helper\ChainesHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -97,7 +98,7 @@ class UserController extends Controller
         $user = $this->getUserById($id);
 
         // On génère le formulaire
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserModificationType::class, $user);
 
         // Si la requête est en POST, c'est qu'on veut enregistrer les modifications sur le membre
         if($request->isMethod('POST')) {
