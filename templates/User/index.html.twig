@@ -21,6 +21,8 @@
           <th style="width: 30px"></th>
           <th>Pr&eacute;nom</th>
           <th>Nom</th>
+          <th>Login</th>
+          <th>Email</th>
           <th></th>
         </tr>
       </thead>
@@ -35,7 +37,9 @@
           </td>
           <td>{{ user.prenom }}</td>
           <td>{{ user.nom }}</td>
-          <td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td class="text-nowrap">
             <a href="{{ path('aviron_users_modifier', {'id': user.id}) }}" class="btn btn-primary"
               title="Modifier le membre">
               <i class="glyphicon glyphicon-pencil"></i>
@@ -48,7 +52,7 @@
         </tr>
         {% else %}
         <tr>
-        <td colspan="4">Pas (encore !) de membre</td>
+        <td colspan="6">Pas (encore !) de membre</td>
         </tr>
         {% endfor %}
       </tbody>
