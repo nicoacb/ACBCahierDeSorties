@@ -9,6 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class UserController extends Controller
 {
@@ -95,7 +98,7 @@ class UserController extends Controller
     public function modifier(Request $request, $id)
     {
         // On récupère l'entité du membre correspondante à l'id $id
-        $user = $this->getUserById($id);
+        $user = $this->DonneMembre($id);
 
         // On génère le formulaire
         $form = $this->createForm(UserModificationType::class, $user);
@@ -128,7 +131,7 @@ class UserController extends Controller
     public function supprimer(Request $request, $id)
     {
         // On récupère l'entité de l'utilisateur correspondant à l'id $id
-        $user = $this->getUserById($id);
+        $user = $this->DonneMembre($id);
 
         $user->setDatesupp(new \DateTime("now"));
 
@@ -142,7 +145,33 @@ class UserController extends Controller
         return $this->redirectToRoute('aviron_users_liste');
     }
 
-    private function getUserById($id)
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+    public function envoyerLoginParMail(Request $request, MailerInterface $mailer, $id)
+    {
+        $membre = $this->DonneMembre($id);
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('contact@aviron-bourges.org', 'Aviron Club de Bourges'))
+            ->to($membre->getEmail())
+            ->subject('Votre compte Aviron Club de Bourges')
+            ->htmlTemplate('user/envoyerloginparmail.html.twig')
+            ->context([
+                'membre' => $membre
+            ]);
+
+        /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
+        $sentEmail = $mailer->send($email);
+
+        // On affiche un message de validation
+        $request->getSession()->getFlashBag()->add('success', 'Mail envoyé à ' & $membre->getPrenomNom() & '.');
+
+        // On redirige vers la liste des membres
+        return $this->redirectToRoute('aviron_users_liste');
+    }
+
+    private function DonneMembre($id)
     {
         // On récupère l'entité du membre correspondante à l'id $id
         $user = $this->getDoctrine()

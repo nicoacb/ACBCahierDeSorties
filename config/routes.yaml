@@ -45,6 +45,12 @@ aviron_users_recherche:
     path:       /membres/recherche
     controller: App\Controller\UserController:recherche
 
+aviron_users_envoyer_login_par_mail:
+    path:       /membres/envoyerloginparmail/{id}
+    controller: App\Controller\UserController:envoyerLoginParMail
+    requirements:
+        id: \d+
+
 aviron_users_get:
     path:       /membres/get/
     controller: App\Controller\User/get
