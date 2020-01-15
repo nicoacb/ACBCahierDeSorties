@@ -74,7 +74,8 @@ class UserController extends Controller
                 $user->setEmail($email);
                 $user->setEmailCanonical($email);
                 $user->setEnabled(1);
-                $user->setPlainPassword('@viron!');
+                $user->setPlainPassword(bin2hex(random_bytes(12)));
+                $user->addRole("USER");
           
                 // On enregistre l'objet $user en base de données
                 $userManager = $this->get('fos_user.user_manager'); 
