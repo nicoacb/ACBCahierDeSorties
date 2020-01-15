@@ -12,7 +12,11 @@
 	{% if participants %}
 		<ol>
 			{% for participant in participants %}
-				<li>{{ participant.idut.prenomnom }}</li>
+				<li>{{ participant.idut.prenomnom }}
+					<a href="{{ path('aviron_sortie_reservation_admin_desinscrire', {'identrainement': identrainement,'idmembre': participant.idut.id}) }}" class="btn btn-danger" title="Désinscrire le membre">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a>
+				</li>
 			{% endfor %}
 		</ol>
 	{% else %}

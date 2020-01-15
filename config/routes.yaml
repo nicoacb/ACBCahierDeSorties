@@ -295,6 +295,13 @@ aviron_sortie_reservation_desinscrire:
     requirements:
         id: \d+
 
+aviron_sortie_reservation_admin_desinscrire:
+    path: /reservation/entrainements/desinscrire/{identrainement}/{idmembre}
+    controller: App\Controller\ReservationController:desinscrireUnMembre
+    requirements:
+        identrainement: \d+
+        idmembre: \d+
+
 aviron_sortie_reservation_participants:
     path: /reservation/entrainements/participants/{id}
     controller: App\Controller\ReservationController:participants

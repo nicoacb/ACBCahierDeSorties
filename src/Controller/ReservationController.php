@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReservationController extends Controller
-{    
+{
     /**
      * @Security("has_role('ROLE_USER')")
      */
@@ -88,6 +88,23 @@ class ReservationController extends Controller
      */
     public function desinscrire(Request $request, $id)
     {
+        $this->desinscrireUnMembreDUnEntrainement($request, $id, $this->getUser()->getId());
+        
+        return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function desinscrireUnMembre(Request $request, $identrainement, $idmembre)
+    {
+        $this->desinscrireUnMembreDUnEntrainement($request, $identrainement, $idmembre);
+        
+        return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+    }
+
+    private function desinscrireUnMembreDUnEntrainement(Request $request, $identrainement, $idmembre)
+    {
         $reservation = new Reservation();
 
         // On récupère l'entité de la sortie correspondante à l'id $id
@@ -95,14 +112,13 @@ class ReservationController extends Controller
             ->getManager()
             ->getRepository('App:Reservation')
             ->findOneBy([
-                'identrainement' => $id,
-                'idut' => $this->getUser()->getId(),
+                'identrainement' => $identrainement,
+                'idut' => $idmembre,
                 'datesupp' => null
             ]);
 
-        // Si sortie est null, l'id n'existe pas
         if (null == $reservation) {
-            throw new NotFoundHttpException("La sortie d'id " . $id . " n'existe pas.");
+            throw new NotFoundHttpException("La réservation d'id " . $identrainement . " n'existe pas.");
         }
 
         $reservation->setIdutsupp($this->getUser()->getId());
@@ -112,9 +128,6 @@ class ReservationController extends Controller
 
         // On affiche un message de validation
         $request->getSession()->getFlashBag()->add('success', 'Désinscription validée.');
-
-        // On redirige vers la liste des entrainements
-        return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
     }
 
     /**
@@ -135,7 +148,7 @@ class ReservationController extends Controller
                 ]
             );
 
-        return $this->render('reservation/participants.html.twig', array('participants' => $participants));
+        return $this->render('reservation/participants.html.twig', array('identrainement' => $id, 'participants' => $participants));
     }
 
     /**
