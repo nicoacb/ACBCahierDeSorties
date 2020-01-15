@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,8 +18,8 @@ class UserModificationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('prenom', TextType::class, array(
-                'label'         => 'Prénom'
-            ))
+            'label'         => 'Prénom'
+        ))
             ->add('nom', TextType::class, array(
                 'label'         => 'Nom'
             ))
@@ -36,11 +37,21 @@ class UserModificationType extends AbstractType
                 'expanded'      => true,
                 'multiple'      => true,
             ))
+            ->add('roles', ChoiceType::class, array(
+                'choices'   => array(
+                    'Administrateur'                        => 'ROLE_ADMIN',
+                    'Membre (nécessaire pour se connecter)' => 'ROLE_USER'
+                ),
+                'expanded'  => true,
+                'multiple'  => true,
+                'required'  => true,
+                'label'     => 'Droits'
+            ))
             ->add('save', SubmitType::class, array(
                 'label'         => 'Enregistrer'
             ));
     }
-    
+
     /**
      * {@inheritdoc}
      */
