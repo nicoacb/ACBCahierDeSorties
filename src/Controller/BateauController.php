@@ -45,8 +45,7 @@ class BateauController extends Controller
                 // On enregistre l'objet $bateau en base de données
                 $this->persistBateau($bateau);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('notice', 'Bateau bien enregistré.');
+                $this->addFlash('notice', 'Bateau bien enregistré.');
 
                 // On redirige vers le cahier de sortie
                 return $this->redirectToRoute('aviron_bateaux_home');
@@ -77,8 +76,7 @@ class BateauController extends Controller
                 // On enregistre l'objet $bateau en base de données
                 $this->persistBateau($bateau);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Bateau bien enregistré.');
+                $this->addFlash('success', 'Bateau bien enregistré.');
 
                 // On redirige vers la liste des bateaux
                 return $this->redirectToRoute('aviron_bateaux_home');
@@ -101,8 +99,7 @@ class BateauController extends Controller
         // On enregistre l'objet $bateau en base de données
         $this->persistBateau($bateau);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Bateau bien supprimé.');
+        $this->addFlash('success', 'Bateau bien supprimé.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');
@@ -121,8 +118,7 @@ class BateauController extends Controller
         // On enregistre l'objet $bateau en base de données
         $this->persistBateau($bateau);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Bateau mis hors-service.');
+        $this->addFlash('success', 'Bateau mis hors-service.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');
@@ -141,8 +137,7 @@ class BateauController extends Controller
         // On enregistre l'objet $bateau en base de données
         $this->persistBateau($bateau);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Bateau mis hors-service.');
+        $this->addFlash('success', 'Bateau mis hors-service.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');

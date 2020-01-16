@@ -81,8 +81,7 @@ class UserController extends Controller
                 $userManager = $this->get('fos_user.user_manager'); 
                 $userManager->updateUser($user);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Membre bien ajouté.');
+                $this->addFlash('success', 'Membre bien ajouté.');
 
                 // On redirige vers la liste des membres
                 return $this->redirectToRoute('aviron_users_liste');
@@ -114,8 +113,7 @@ class UserController extends Controller
                 // On enregistre l'objet $user en base de données
                 $this->persistUser($user);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Membre bien modifié.');
+                $this->addFlash('success', 'Membre bien modifié.');
 
                 // On redirige vers la liste des membres
                 return $this->redirectToRoute('aviron_users_liste');
@@ -139,8 +137,7 @@ class UserController extends Controller
         // On enregistre l'objet $user en base de données
         $this->persistUser($user);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Membre bien supprimé.');
+        $this->addFlash('success', 'Membre bien supprimé.');
 
         // On redirige vers la liste des membres
         return $this->redirectToRoute('aviron_users_liste');
@@ -165,8 +162,7 @@ class UserController extends Controller
         /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
         $sentEmail = $mailer->send($email);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Mail envoyé à ' & $membre->getPrenomNom() & '.');
+        $this->addFlash('success', 'Mail envoyé à ' & $membre->getPrenomNom() & '.');
 
         // On redirige vers la liste des membres
         return $this->redirectToRoute('aviron_users_liste');

@@ -51,8 +51,7 @@ class TypeBateauController extends Controller
                 // On enregistre l'objet $typebateau en base de données
                 $this->persistTypeBateau($typebateau);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Type de bateau bien ajouté.');
+                $this->addFlash('success', 'Type de bateau bien ajouté.');
 
                 // On redirige vers les types de bateaux
                 return $this->redirectToRoute('aviron_sortie_typebateau_home');
@@ -93,8 +92,7 @@ class TypeBateauController extends Controller
                 // On enregistre l'objet $typebateau en base de données
                 $this->persistTypeBateau($typebateau);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Type de bateau bien enregistré.');
+                $this->addFlash('success', 'Type de bateau bien enregistré.');
 
                 // On redirige vers les types de bateaux
                 return $this->redirectToRoute('aviron_sortie_typebateau_home');

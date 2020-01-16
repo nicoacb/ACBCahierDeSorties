@@ -36,7 +36,7 @@ class SaisonController extends Controller
             $em->persist($saison);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', 'Saison bien enregistrée.');
+            $this->addFlash('success', 'Saison bien enregistrée.');
 
             return $this->redirectToRoute('aviron_sortie_saison_liste');
         }
@@ -77,8 +77,7 @@ class SaisonController extends Controller
                 $em->persist($saison);
                 $em->flush();
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Saison bien enregistrée.');
+                $this->addFlash('success', 'Saison bien enregistrée.');
 
                 // On redirige vers la liste des saisons
                 return $this->redirectToRoute('aviron_sortie_saison_liste');
@@ -109,8 +108,7 @@ class SaisonController extends Controller
         $em->remove($saison);
         $em->flush();
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Saison bien supprimée.');
+        $this->addFlash('success', 'Saison bien supprimée.');
 
         // On redirige vers la liste des saisons
         return $this->redirectToRoute('aviron_sortie_saison_liste');

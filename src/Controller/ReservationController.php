@@ -77,8 +77,7 @@ class ReservationController extends Controller
 
         $this->persistReservation($reservation);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Inscription validée.');
+        $this->addFlash('success', 'Inscription validée.');
 
         // On redirige vers la liste des entrainements
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
@@ -100,7 +99,7 @@ class ReservationController extends Controller
 
             if ($form->isValid()) {
                 $this->persistReservation($reservation);
-                $request->getSession()->getFlashBag()->add('success', 'Inscription validée.');
+                $this->addFlash('success', 'Inscription validée.');
                 return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
             }
         }
@@ -150,8 +149,7 @@ class ReservationController extends Controller
 
         $this->persistReservation($reservation);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Désinscription validée.');
+        $this->addFlash('success', 'Désinscription validée.');
     }
 
     /**
@@ -195,8 +193,7 @@ class ReservationController extends Controller
             if ($form->isValid()) {
                 $this->SauvegardeEntrainement($entrainement);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
+                $this->addFlash('success', 'Entraînement bien enregistré.');
 
                 // On redirige vers la liste des entraînements
                 return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
@@ -221,8 +218,7 @@ class ReservationController extends Controller
         $entrainement->setDatesupp(new \DateTime());
         $this->SauvegardeEntrainement($entrainement);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Entraînement bien supprimé.');
+        $this->addFlash('success', 'Entraînement bien supprimé.');
 
         // On redirige vers la liste des entrainements
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
@@ -246,8 +242,7 @@ class ReservationController extends Controller
             if ($form->isValid()) {
                 $this->SauvegardeEntrainement($entrainement);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Entraînement bien enregistré.');
+                $this->addFlash('success', 'Entraînement bien enregistré.');
 
                 return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
             }

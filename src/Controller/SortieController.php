@@ -213,8 +213,7 @@ class SortieController extends Controller
                 $em->persist($sortie);
                 $em->flush();
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Sortie bien enregistrée.');
+                $this->addFlash('success', 'Sortie bien enregistrée.');
 
                 // On redirige vers le cahier de sortie
                 return $this->redirectToRoute('aviron_sortie_home');
@@ -256,8 +255,7 @@ class SortieController extends Controller
                 $em->persist($sortie);
                 $em->flush();
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Sortie bien enregistrée.');
+                $this->addFlash('success', 'Sortie bien enregistrée.');
 
                 // On redirige vers le cahier de sortie
                 return $this->redirectToRoute('aviron_sortie_home');
@@ -288,7 +286,6 @@ class SortieController extends Controller
 
         // On renvoie la vue en réponse
         return $this->render('sortie/view.html.twig', array('sortie' => $sortie));
-        
     }
 
     /**
@@ -312,8 +309,7 @@ class SortieController extends Controller
                 // On enregistre l'objet $sortie en base de données
                 $this->persistSortie($sortie);
 
-                // On affiche un message de validation
-                $request->getSession()->getFlashBag()->add('success', 'Sortie bien modifiée.');
+                $this->addFlash('success', 'Sortie bien modifiée.');
 
                 // On redirige vers le cahier de sortie
                 return $this->redirectToRoute('aviron_sortie_home');
@@ -336,8 +332,7 @@ class SortieController extends Controller
         // On enregistre l'objet $sortie en base de données
         $this->persistSortie($sortie);
 
-        // On affiche un message de validation
-        $request->getSession()->getFlashBag()->add('success', 'Sortie bien supprimée.');
+        $this->addFlash('success', 'Sortie bien supprimée.');
 
         // On redirige vers le cahier de sortie
         return $this->redirectToRoute('aviron_sortie_home');
