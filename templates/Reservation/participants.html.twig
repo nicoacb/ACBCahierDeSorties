@@ -9,6 +9,15 @@
 
 	<h2 class="page-header">Participants</h2>
 
+	{% if is_granted('ROLE_ADMIN') %}
+		<p>
+			<a href="{{ path('aviron_sortie_reservation_admin_reserver',  {'identrainement': identrainement}) }}" class="btn btn-default">
+				<i class="glyphicon glyphicon-plus"></i>
+				Réserver pour un membre
+			</a>
+		</p>
+	{% endif %}
+
 	{% if participants %}
 		<ol>
 			{% for participant in participants %}

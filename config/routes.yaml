@@ -289,6 +289,12 @@ aviron_sortie_reservation_reserver:
     requirements:
         id: \d+
 
+aviron_sortie_reservation_admin_reserver:
+    path: /reservation/entrainements/reserverpourunmembre/{identrainement}
+    controller: App\Controller\ReservationController:reserverPourUnMembre
+    requirements:
+        identrainement: \d+
+
 aviron_sortie_reservation_desinscrire:
     path: /reservation/entrainements/desinscrire/{id}
     controller: App\Controller\ReservationController:desinscrire

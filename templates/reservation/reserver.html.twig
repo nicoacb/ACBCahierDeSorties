@@ -1,0 +1,20 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Réserver pour un membre - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Réserver pour un membre</h2>
+
+  {{ include("reservation/form.html.twig") }}
+
+  <p>
+    <a href="{{ path('aviron_sortie_reservation_entrainements') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+  </p>
+
+{% endblock %}

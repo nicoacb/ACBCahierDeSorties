@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Entrainement;
 use App\Entity\Reservation;
 use App\Form\EntrainementType;
+use App\Form\ReservationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,6 +82,29 @@ class ReservationController extends Controller
 
         // On redirige vers la liste des entrainements
         return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function reserverPourUnMembre(Request $request, $identrainement)
+    {
+        $reservation = new Reservation();
+        $reservation->setIdentrainement($identrainement);
+        $reservation->setDatereservation(new \DateTime());
+
+        $form = $this->createForm(ReservationType::class, $reservation);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $this->persistReservation($reservation);
+                $request->getSession()->getFlashBag()->add('success', 'Inscription validée.');
+                return $this->redirectToRoute('aviron_sortie_reservation_entrainements');
+            }
+        }
+        return $this->render('reservation/reserver.html.twig', array('form' => $form->createView()));
     }
 
     /**
