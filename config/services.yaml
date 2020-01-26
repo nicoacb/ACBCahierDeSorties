@@ -34,3 +34,7 @@ services:
         class:      App\Tools\UserManipulator
         public: true
         arguments:  ['@fos_user.user_manager']
+
+    redirection.apres.authentification:
+        class: App\Service\RedirectionApresAuthentification
+        arguments: ['@router']

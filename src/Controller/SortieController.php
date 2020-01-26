@@ -23,6 +23,9 @@ class SortieController extends Controller
         return $this->render('sortie/accueil.html.twig');
     }
 
+    /**
+    * @Security("has_role('ROLE_SORTIES')")
+    */
     public function index($page)
     {
         // On ne sait pas combien de pages il y a mais on sait qu'une page doit être supérieure ou égale à 1
@@ -189,6 +192,9 @@ class SortieController extends Controller
                 ));
     }
    
+    /**
+    * @Security("has_role('ROLE_SORTIES')")
+    */
     public function ajouter(Request $request, $nbrameurs)
     {
         // On créé un objet Sortie
@@ -224,6 +230,9 @@ class SortieController extends Controller
         return $this->render('sortie/ajouter.html.twig', array('form' => $form->createView()));
     }
     
+    /**
+    * @Security("has_role('ROLE_SORTIES')")
+    */
     public function terminer(Request $request, $id)
     {
         // On récupère l'entité de la sortie correspondante à l'id $id
@@ -269,6 +278,9 @@ class SortieController extends Controller
                                     ));
     }
     
+    /**
+    * @Security("has_role('ROLE_ADMIN')")
+    */
     public function view($id)
     {
         // On récupère le repository
