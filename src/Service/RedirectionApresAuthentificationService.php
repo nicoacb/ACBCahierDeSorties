@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
 /**
- * Class RedirectionApresAuthentification
+ * Class RedirectionApresAuthentificationService
  *
  * @package App\Service
  */
-class RedirectionApresAuthentification implements AuthenticationSuccessHandlerInterface
+class RedirectionApresAuthentificationService implements AuthenticationSuccessHandlerInterface
 {
     private $router;
 

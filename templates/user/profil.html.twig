@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+  Mon profil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2 class="page-header">Mon profil</h2>
+
+  Mon adresse mail : {{ user.email }}<br />
+  <br />
+  Pour modifier cette adresse, merci de prendre contact avec le club : celle-ci est utilisée pour communiquer avec vous.<br />
+  Il est important que nous soyons au courant de tout changement.
+
+{% endblock %}

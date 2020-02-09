@@ -59,19 +59,19 @@ $('div[name=alerte]').fadeOut('slow');
 								</a>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="{{ path('fos_user_profile_show') }}">Mon compte</a>
+										<a href="{{ path('aviron_users_profil') }}">Mon compte</a>
 									</li>
 									<li>
-										<a href="{{path('fos_user_change_password')}}">Changer de mot de passe</a>
+										<a href="{{ path('authentification_changermotdepasse') }}">Changer de mot de passe</a>
 									</li>
 									<li>
-										<a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+										<a href="{{ path('authentification_logout') }}">Déconnexion</a>
 									</li>
 								</ul>
 							</li>
 						{% else %}
 							<li>
-								<a href="{{ path('fos_user_security_login') }}">Connexion</a>
+								<a href="{{ path('authentification_login') }}">Connexion</a>
 							</li>
 						{% endif %}
 

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class UserController extends Controller
@@ -51,7 +52,7 @@ class UserController extends Controller
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
-    public function ajouter(Request $request)
+    public function ajouter(Request $request, UserPasswordEncoderInterface $encoder)
     {
         // On créé un objet User
         $user = new User();
@@ -74,12 +75,9 @@ class UserController extends Controller
                 $user->setEmail($email);
                 $user->setEmailCanonical($email);
                 $user->setEnabled(1);
-                $user->setPlainPassword(bin2hex(random_bytes(12)));
-                $user->addRole("USER");
-          
-                // On enregistre l'objet $user en base de données
-                $userManager = $this->get('fos_user.user_manager'); 
-                $userManager->updateUser($user);
+                $user->setPassword($encoder->encodePassword($user, bin2hex(random_bytes(12))));
+
+                $this->persistUser($user);
 
                 $this->addFlash('success', 'Membre bien ajouté.');
 
@@ -141,6 +139,15 @@ class UserController extends Controller
 
         // On redirige vers la liste des membres
         return $this->redirectToRoute('aviron_users_liste');
+    }
+
+    /**
+    * @Security("has_role('ROLE_USER')")
+    */
+    public function afficherProfil()
+    {
+        return $this->render('user/profil.html.twig',
+                                array('user' => $this->getUser()));
     }
 
     /**
