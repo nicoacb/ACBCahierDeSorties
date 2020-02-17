@@ -75,8 +75,8 @@ class AuthentificationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $form->get('adresseMail')->getData();
-            $membre = $this->DonneMembre($email);
+            $login = $form->get('login')->getData();
+            $membre = $this->DonneMembreParUsername($login);
 
             if (null != $membre) {
                 $token = $this->GenereToken();
@@ -135,24 +135,24 @@ class AuthentificationController extends AbstractController
         ));
     }
 
-    private function DonneMembre($email)
+    private function DonneMembreParUsername($username)
     {
-        $user = $this->getDoctrine()
+        $membre = $this->getDoctrine()
             ->getManager()
             ->getRepository(User::class)
-            ->findOneByEmail($email);
+            ->findOneByUsername($username);
 
-        return $user;
+        return $membre;
     }
 
     private function DonneMembreParToken($token)
     {
-        $user = $this->getDoctrine()
+        $membre = $this->getDoctrine()
             ->getManager()
             ->getRepository(User::class)
             ->findOneByConfirmationToken($token);
 
-        return $user;
+        return $membre;
     }
 
     private function GenereToken()

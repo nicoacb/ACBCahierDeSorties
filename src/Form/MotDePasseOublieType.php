@@ -13,9 +13,9 @@ class MotDePasseOublieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('adresseMail', TextType::class, array(
+        ->add('login', TextType::class, array(
             'mapped' => false,
-            'label' => 'Adresse mail'
+            'label' => 'Login'
         ))
         ->add('submit', SubmitType::class, array(
             'label' => 'Récupérer mon mot de passe'
