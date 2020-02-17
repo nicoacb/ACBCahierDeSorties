@@ -70,10 +70,8 @@ class UserController extends Controller
 
                 $login = ChainesHelper::getLoginFromPrenomNom($user->getPrenom(), $user->getNom());
                 $user->setUsername($login);
-                $user->setUsernameCanonical($login);
                 $email = $login . '@aviron-bourges.org';
                 $user->setEmail($email);
-                $user->setEmailCanonical($email);
                 $user->setEnabled(1);
                 $user->setPassword($encoder->encodePassword($user, bin2hex(random_bytes(12))));
 
@@ -158,7 +156,7 @@ class UserController extends Controller
         $membre = $this->DonneMembre($id);
 
         $email = (new TemplatedEmail())
-            ->from(new Address('contact@aviron-bourges.org', 'Aviron Club de Bourges'))
+            ->from(new Address('noreply@mytrainingbook.fr', 'Aviron Club de Bourges'))
             ->to($membre->getEmail())
             ->subject('Votre compte Aviron Club de Bourges')
             ->htmlTemplate('user/envoyerloginparmail.html.twig')

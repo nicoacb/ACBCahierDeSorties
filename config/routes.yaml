@@ -52,6 +52,16 @@ authentification_changermotdepasse:
     path: /changerdemotdepasse
     controller: App\Controller\AuthentificationController:changerMotDePasse
 
+authentification_motdepasseoublie:
+    path: /motdepasseoublie
+    controller: App\Controller\AuthentificationController:motDePasseOublie
+
+authentification_nouveaumotdepasse:
+    path: /nouveaumotdepasse/{token}
+    controller: App\Controller\AuthentificationController:nouveauMotDePasse
+    requirements:
+        token: .+
+
 aviron_accueil:
     path:     /accueil
     controller: App\Controller\SortieController:accueil

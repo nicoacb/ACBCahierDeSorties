@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+	<p>Première connexion ou mot de passe oublié ?<br />
+	Veuillez indiquer la dernière adresse mail que vous nous avez fourni au club.<br />
+	Un email avec un lien pour définir un nouveau mot de passe vous sera envoyé à cette adresse.</p>
+	<div class="well">
+		{{ form(form) }}
+	</div>
+{% endblock %}
