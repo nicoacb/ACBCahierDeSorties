@@ -22,7 +22,13 @@ class AuthentificationController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('aviron_accueil');
+            $roles = $this->getUser()->getRoles();
+
+            if (in_array('ROLE_SORTIES', $roles, true)) {
+                return $this->redirectToRoute('aviron_sortie_home');
+            } else {
+                return $this->redirectToRoute('aviron_sortie_home');
+            }
         }
 
         // get the login error if there is one
@@ -109,7 +115,7 @@ class AuthentificationController extends AbstractController
     {
         $membre = $this->DonneMembreParToken($token);
 
-        if(null == $membre) {
+        if (null == $membre) {
             throw new NotFoundHttpException("Ce lien a déjà été utilisé.");
         }
 
@@ -126,7 +132,7 @@ class AuthentificationController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Votre mot de passe à bien été changé !');
-            
+
             return $this->redirectToRoute('aviron_accueil');
         }
 

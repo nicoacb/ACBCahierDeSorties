@@ -94,7 +94,19 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('aviron_accueil'));
+        $roles = $token->getRoles();
+
+        $rolesTab = array_map(function ($role) {
+            return $role->getRole();
+        }, $roles);
+
+        if (in_array('ROLE_SORTIES', $rolesTab, true)) {
+            $redirection = new RedirectResponse($this->urlGenerator->generate('aviron_sortie_home'));
+        } else {
+            $redirection = new RedirectResponse($this->urlGenerator->generate('aviron_accueil'));
+        }
+
+        return $redirection;
     }
 
     protected function getLoginUrl()

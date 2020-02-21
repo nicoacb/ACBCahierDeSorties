@@ -37,7 +37,6 @@ security:
                 entry_point: App\Security\LoginAuthenticator
             form_login:
                 login_path: authentification_login
-                success_handler: App\Service\RedirectionApresAuthentificationService
             logout:
                 path: authentification_logout
             
