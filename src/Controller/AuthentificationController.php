@@ -86,7 +86,7 @@ class AuthentificationController extends AbstractController
                 $em->flush();
 
                 $email = (new TemplatedEmail())
-                    ->from(new Address('noreply@mytrainingbook.fr', 'Aviron Club de Bourges'))
+                    ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
                     ->to($membre->getEmail())
                     ->subject('Nouveau mot de passe pour votre compte Aviron Club de Bourges')
                     ->htmlTemplate('authentification/emailmotdepasseoublie.html.twig')
@@ -97,7 +97,7 @@ class AuthentificationController extends AbstractController
                 $mailer->send($email);
             }
 
-            $this->addFlash('success', 'Un lien pour définir votre nouveau mot de passe a été envoyé à l\'adresse ');
+            $this->addFlash('success', 'Un lien pour définir votre nouveau mot de passe a été envoyé à l\'adresse email que vous nous avez fournie lors de votre inscription.');
         }
 
         return $this->render('authentification/motdepasseoublie.html.twig', array(
