@@ -18,7 +18,7 @@ class BateauController extends Controller
     {
         $listeBateaux = $this->getDoctrine()
     	->getManager()
-    	->getRepository('App:Bateau')
+    	->getRepository(Bateau::class)
         ->getListeBateaux();
 
         return $this->render('bateau/index.html.twig', array('listeBateaux' => $listeBateaux));
