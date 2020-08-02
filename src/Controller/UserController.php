@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -6,7 +7,7 @@ use App\Form\UserType;
 use App\Form\UserModificationType;
 use App\Helper\ChainesHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
@@ -14,44 +15,46 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-class UserController extends Controller
+class UserController extends AbstractController
 {
     /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function index($page)
     {
-        if($page < 1) {
-            throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        if ($page < 1) {
+            throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
 
         $nbParPage = $this->getParameter('nbUsersParPage');
 
         $listeUsers = $this->getDoctrine()
-		->getManager()
-		->getRepository('App:User')
-		->getMembres($page, $nbParPage);
+            ->getManager()
+            ->getRepository('App:User')
+            ->getMembres($page, $nbParPage);
 
         // On calcule le nombre total de pages grâces au count($listeUsers) qui retourne 
         // le nombre total de membres
         $nbPages = ceil(count($listeUsers) / $nbParPage);
-		 
+
         // Si la page n'existe pas, on lève une erreur 404
-        if($page > $nbPages) {
-            throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        if ($page > $nbPages) {
+            throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
 
-		return $this->render('user/index.html.twig', 
+        return $this->render(
+            'user/index.html.twig',
             array(
                 'listeUsers'    => $listeUsers,
                 'nbPages'       => $nbPages,
                 'page'          => $page
-            ));
+            )
+        );
     }
 
     /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function ajouter(Request $request, UserPasswordEncoderInterface $encoder)
     {
         // On créé un objet User
@@ -61,12 +64,12 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
 
         // Si la requête est en POST, c'est qu'on veut enregistrer les modifications sur le membre
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             // On fait le lien Requête <-> Formulaire
             $form->handleRequest($request);
 
             // On vérifie que les valeurs entrées sont correctes
-            if($form->isValid()) {
+            if ($form->isValid()) {
 
                 $login = ChainesHelper::getLoginFromPrenomNom($user->getPrenom(), $user->getNom());
                 $user->setUsername($login);
@@ -84,13 +87,15 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('user/ajouter.html.twig',
-                                array('form' => $form->createView()));
+        return $this->render(
+            'user/ajouter.html.twig',
+            array('form' => $form->createView())
+        );
     }
 
     /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function modifier(Request $request, $id)
     {
         // On récupère l'entité du membre correspondante à l'id $id
@@ -100,12 +105,12 @@ class UserController extends Controller
         $form = $this->createForm(UserModificationType::class, $user);
 
         // Si la requête est en POST, c'est qu'on veut enregistrer les modifications sur le membre
-        if($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             // On fait le lien Requête <-> Formulaire
             $form->handleRequest($request);
 
             // On vérifie que les valeurs entrées sont correctes
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 // On enregistre l'objet $user en base de données
                 $this->persistUser($user);
 
@@ -116,13 +121,15 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('user/modifier.html.twig',
-                                array('form' => $form->createView()));
+        return $this->render(
+            'user/modifier.html.twig',
+            array('form' => $form->createView())
+        );
     }
 
     /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function supprimer(Request $request, $id)
     {
         // On récupère l'entité de l'utilisateur correspondant à l'id $id
@@ -140,17 +147,19 @@ class UserController extends Controller
     }
 
     /**
-    * @Security("has_role('ROLE_USER')")
-    */
+     * @Security("has_role('ROLE_USER')")
+     */
     public function afficherProfil()
     {
-        return $this->render('user/profil.html.twig',
-                                array('user' => $this->getUser()));
+        return $this->render(
+            'user/profil.html.twig',
+            array('user' => $this->getUser())
+        );
     }
 
     /**
-    * @Security("has_role('ROLE_ADMIN')")
-    */
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function envoyerLoginParMail(Request $request, MailerInterface $mailer, $id)
     {
         $membre = $this->DonneMembre($id);
@@ -182,8 +191,8 @@ class UserController extends Controller
             ->find($id);
 
         // Si $user est null, l'id n'existe pas
-        if(null == $user) {
-            throw new NotFoundHttpException("Le membre d'id ".$id." n'existe pas.");
+        if (null == $user) {
+            throw new NotFoundHttpException("Le membre d'id " . $id . " n'existe pas.");
         }
 
         return $user;
@@ -191,7 +200,6 @@ class UserController extends Controller
 
     private function persistUser($user)
     {
-        // On enregistre l'objet $user en base de données
         $em = $this->GetDoctrine()->getManager();
         $em->persist($user);
         $em->flush();

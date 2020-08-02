@@ -29,3 +29,6 @@ services:
         class: Snilius\Twig\SortByFieldExtension
         tags:
             - { name: twig.extension }
+
+    app.form.flow.preinscription:
+        class: App\Form\PreinscriptionFlow

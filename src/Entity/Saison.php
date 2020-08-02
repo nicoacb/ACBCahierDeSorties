@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +36,16 @@ class Saison
      * @ORM\Column(name="courante", type="boolean", length=25)
      */
     private $courante;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembreLicences", mappedBy="saison", orphanRemoval=true)
+     */
+    private $licences;
+
+    public function __construct()
+    {
+        $this->licences = new ArrayCollection();
+    }
 
 
     /**
@@ -92,5 +104,36 @@ class Saison
     public function getCourante()
     {
         return $this->courante;
+    }
+
+    /**
+     * @return Collection|MembreLicences[]
+     */
+    public function getLicences(): Collection
+    {
+        return $this->licences;
+    }
+
+    public function addLicence(MembreLicences $licence): self
+    {
+        if (!$this->licences->contains($licence)) {
+            $this->licences[] = $licence;
+            $licence->setSaison($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLicence(MembreLicences $licence): self
+    {
+        if ($this->licences->contains($licence)) {
+            $this->licences->removeElement($licence);
+            // set the owning side to null (unless already changed)
+            if ($licence->getSaison() === $this) {
+                $licence->setSaison(null);
+            }
+        }
+
+        return $this;
     }
 }

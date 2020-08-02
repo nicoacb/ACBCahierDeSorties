@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,6 +26,9 @@ class User implements UserInterface
     public function __construct()
     {
         $this->enabled = false;
+        $this->contacts = new ArrayCollection();
+        $this->licences = new ArrayCollection();
+        $this->enviesPratiques = new ArrayCollection();
     }
 
     /**
@@ -115,6 +120,92 @@ class User implements UserInterface
      */
     private $email;
     
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $licence;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $datenaissance;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $civilite;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $numeroVoie;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $typeVoie;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $libelleVoie;
+
+    /**
+     * @ORM\Column(type="string", length=38, nullable=true)
+     */
+    private $immBatRes;
+
+    /**
+     * @ORM\Column(type="string", length=38, nullable=true)
+     */
+    private $aptEtageEsc;
+
+    /**
+     * @ORM\Column(type="string", length=38, nullable=true)
+     */
+    private $lieuDit;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=33, nullable=true)
+     */
+    private $ville;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembreContacts", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
+    private $contacts;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembreLicences", mappedBy="membre", orphanRemoval=true, cascade={"persist"})
+     */
+    private $licences;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $entrepriseProfessionEcole;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\EnviesPratique", mappedBy="membre")
+     * @ORM\JoinTable(name="gestion_aviron_envies_pratique_membre")
+     */
+    private $enviesPratiques;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\EngagementAssociation", mappedBy="membre", cascade={"persist", "remove"})
+     */
+    private $engagementAssociation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\MembreNationalite")
+     */
+    private $nationalite;
+
     /**
      * Get id
      *
@@ -362,6 +453,281 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Set licence
+     *
+     * @param int $licence
+     *
+     * @return User
+     */
+    public function setLicence($licence)
+    {
+        $this->licence = $licence;
+
+        return $this;
+    }
+
+    /**
+     * Get licence
+     *
+     * @return int
+     */
+    public function getLicence()
+    {
+        return $this->licence;
+    }
+
+    public function getDatenaissance(): ?\DateTimeInterface
+    {
+        return $this->datenaissance;
+    }
+
+    public function setDatenaissance(?\DateTimeInterface $datenaissance): self
+    {
+        $this->datenaissance = $datenaissance;
+
+        return $this;
+    }
+
+    public function getCivilite(): ?int
+    {
+        return $this->civilite;
+    }
+
+    public function setCivilite(?int $civilite): self
+    {
+        $this->civilite = $civilite;
+
+        return $this;
+    }
+
+    public function getNumeroVoie(): ?string
+    {
+        return $this->numeroVoie;
+    }
+
+    public function setNumeroVoie(?string $numeroVoie): self
+    {
+        $this->numeroVoie = $numeroVoie;
+
+        return $this;
+    }
+
+    public function getTypeVoie(): ?string
+    {
+        return $this->typeVoie;
+    }
+
+    public function setTypeVoie(?string $typeVoie): self
+    {
+        $this->typeVoie = $typeVoie;
+
+        return $this;
+    }
+
+    public function getLibelleVoie(): ?string
+    {
+        return $this->libelleVoie;
+    }
+
+    public function setLibelleVoie(?string $libelleVoie): self
+    {
+        $this->libelleVoie = $libelleVoie;
+
+        return $this;
+    }
+
+    public function getImmBatRes(): ?string
+    {
+        return $this->immBatRes;
+    }
+
+    public function setImmBatRes(?string $immBatRes): self
+    {
+        $this->immBatRes = $immBatRes;
+
+        return $this;
+    }
+
+    public function getAptEtageEsc(): ?string
+    {
+        return $this->aptEtageEsc;
+    }
+
+    public function setAptEtageEsc(?string $aptEtageEsc): self
+    {
+        $this->aptEtageEsc = $aptEtageEsc;
+
+        return $this;
+    }
+
+    public function getLieuDit(): ?string
+    {
+        return $this->lieuDit;
+    }
+
+    public function setLieuDit(?string $lieuDit): self
+    {
+        $this->lieuDit = $lieuDit;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?int
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(?int $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MembreContacts[]
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(MembreContacts $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(MembreContacts $contact): self
+    {
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->removeElement($contact);
+            // set the owning side to null (unless already changed)
+            if ($contact->getUser() === $this) {
+                $contact->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MembreLicences[]
+     */
+    public function getLicences(): Collection
+    {
+        return $this->licences;
+    }
+
+    public function addLicence(MembreLicences $licence): self
+    {
+        if (!$this->licences->contains($licence)) {
+            $this->licences[] = $licence;
+            $licence->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLicence(MembreLicences $licence): self
+    {
+        if ($this->licences->contains($licence)) {
+            $this->licences->removeElement($licence);
+            // set the owning side to null (unless already changed)
+            if ($licence->getMembre() === $this) {
+                $licence->setMembre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEntrepriseProfessionEcole(): ?string
+    {
+        return $this->entrepriseProfessionEcole;
+    }
+
+    public function setEntrepriseProfessionEcole(?string $entrepriseProfessionEcole): self
+    {
+        $this->entrepriseProfessionEcole = $entrepriseProfessionEcole;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EnviesPratique[]
+     */
+    public function getEnviesPratiques(): Collection
+    {
+        return $this->enviesPratiques;
+    }
+
+    public function addEnviesPratique(EnviesPratique $enviesPratique): self
+    {
+        if (!$this->enviesPratiques->contains($enviesPratique)) {
+            $this->enviesPratiques[] = $enviesPratique;
+            $enviesPratique->addMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnviesPratique(EnviesPratique $enviesPratique): self
+    {
+        if ($this->enviesPratiques->contains($enviesPratique)) {
+            $this->enviesPratiques->removeElement($enviesPratique);
+            $enviesPratique->removeMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function getEngagementAssociation(): ?EngagementAssociation
+    {
+        return $this->engagementAssociation;
+    }
+
+    public function setEngagementAssociation(EngagementAssociation $engagementAssociation): self
+    {
+        $this->engagementAssociation = $engagementAssociation;
+
+        // set the owning side of the relation if necessary
+        if ($engagementAssociation->getMembre() !== $this) {
+            $engagementAssociation->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function getNationalite(): ?MembreNationalite
+    {
+        return $this->nationalite;
+    }
+
+    public function setNationalite(?MembreNationalite $nationalite): self
+    {
+        $this->nationalite = $nationalite;
 
         return $this;
     }

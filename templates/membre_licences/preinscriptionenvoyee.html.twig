@@ -1,0 +1,32 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+	Demande d'inscription envoyée -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<h2 class="page-header">Demande d'inscription envoyée</h2>
+	<p>
+		Nous avons bien reçu votre demande d'inscription.<br/>
+		Pour la valider vous devez payer votre cotisation et nous rapporter les documents suivants :<br/>
+		- certificat de non contre indication à la pratique de l'aviron en compétion<br/>
+		- bordereau MAIF IA Sport+<br/>
+
+		<b>! TODO Compléter !</b>
+	</p>
+	<p>Vous pouvez :<br/>
+		<a href="{{ path('aviron_membre_licences_telecharger_fiche_inscription') }}" class="btn btn-info" title="Envoyer le login par mail">
+			<i class="glyphicon glyphicon-search"></i>
+			Télécharger votre fiche d'inscription
+		</a><br/>
+
+
+		<a href="{{ path('aviron_membre_licences_preinscription') }}" class="btn btn-default">
+			<i class="glyphicon glyphicon-plus"></i>
+			Effectuer une nouvelle demande pour une autre personne
+		</a>
+	</p>
+	Mot de passe : {{motdepasse}}
+{% endblock %}

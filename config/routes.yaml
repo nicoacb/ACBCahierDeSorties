@@ -40,6 +40,42 @@ aviron_users_get:
     path:       /membres/get/
     controller: App\Controller\User/get
 
+aviron_membre_licences_preinscription:
+    path:       /preinscription
+    controller: App\Controller\MembreLicencesController:preinscription
+
+aviron_membre_licences_preinscriptions:
+    path:       /membres/preinscriptions
+    controller: App\Controller\MembreLicencesController:preinscriptions
+
+aviron_membre_licences_valider_inscription:
+    path:       /membres/validerinscription/{id}
+    controller: App\Controller\MembreLicencesController:validerInscription
+    requirements:
+        id: \d+
+
+aviron_membre_licences_supprimer_inscription:
+    path:       /membres/supprimerinscription/{id}
+    controller: App\Controller\MembreLicencesController:supprimerInscription
+    requirements:
+        id: \d+
+
+aviron_membre_licences_marquer_comme_saisie:
+    path:       /membres/marquercommesaisie/{id}
+    controller: App\Controller\MembreLicencesController:marquerCommeSaisie
+    requirements:
+        id: \d+
+
+aviron_membre_licences_telecharger_fiche_inscription:
+    path:       /telechargerficheinscription
+    controller: App\Controller\MembreLicencesController:telechargerFicheInscription
+
+aviron_membre_licences_voir_fiche_inscription:
+    path:       /membres/voirficheinscription/{id}
+    controller: App\Controller\MembreLicencesController:voirFicheInscription
+    requirements:
+        id: \d+
+
 authentification_login:
     path: /
     controller: App\Controller\AuthentificationController:login

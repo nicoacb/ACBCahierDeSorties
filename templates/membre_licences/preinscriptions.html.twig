@@ -1,0 +1,115 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+	Demandes d'inscription -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<h2 class="page-header">Demandes d'inscription</h2>
+	<p>
+		<a href="{{ path('aviron_membre_licences_preinscription') }}" class="btn btn-default">
+			<i class="glyphicon glyphicon-plus"></i>
+			Nouvelle demande
+		</a>
+	</p>
+
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Pr&eacute;nom</th>
+					<th>Nom</th>
+					<th>Date de naissance</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for demande in preinscriptions %}
+					<tr>
+						<td>{{ demande.membre.prenom }}</td>
+						<td>{{ demande.membre.nom }}</td>
+						<td>{{ demande.membre.datenaissance | date('d/m/Y') }}</td>
+						<td class="text-nowrap">
+							<a href="{{ path('aviron_membre_licences_voir_fiche_inscription', {'id': demande.id}) }}" class="btn btn-info" title="Envoyer le login par mail">
+								<i class="glyphicon glyphicon-search"></i>
+								Voir la fiche d'inscription
+							</a>
+							<a href="{{ path('aviron_membre_licences_valider_inscription', {'id': demande.id}) }}" class="btn btn-success" title="Valider l'inscription">
+								<i class="glyphicon glyphicon-pencil"></i>
+								Valider l'inscription
+							</a>
+							<a href="{{ path('aviron_membre_licences_supprimer_inscription', {'id': demande.id}) }}" class="btn btn-danger" title="Supprimer la demande d'inscription">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">Pas (encore !) de demande d'inscription</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<h2 class="page-header">Licences à saisir</h2>
+
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Pr&eacute;nom</th>
+					<th>Nom</th>
+					<th>Date de naissance</th>
+					<th>Type de licence</th>
+					<th>Avec IA Sport+</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for demande in licencesasaisir %}
+					<tr>
+						<td>{{ demande.membre.prenom }}</td>
+						<td>{{ demande.membre.nom }}</td>
+						<td>{{ demande.membre.datenaissance | date('d/m/Y') }}</td>
+						<td>
+							{% if (demande.typelicence == 1) %}Licence A
+							{% endif %}
+							{% if (demande.typelicence == 2) %}Licence U
+							{% endif %}
+							{% if (demande.typelicence == 3) %}D7
+							{% endif %}
+							{% if (demande.typelicence == 4) %}D30
+							{% endif %}
+							{% if (demande.typelicence == 5) %}D90
+							{% endif %}
+						</td>
+						<td>{% if (demande.avecIASportPlus == 1) %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+						<td class="text-nowrap">
+							<a href="{{ path('aviron_membre_licences_voir_fiche_inscription', {'id': demande.id}) }}" class="btn btn-info" title="Envoyer le login par mail">
+								<i class="glyphicon glyphicon-search"></i>
+								Voir la fiche d'inscription
+							</a>
+							<a href="{{ path('aviron_membre_licences_marquer_comme_saisie', {'id': demande.id}) }}" class="btn btn-success" title="Valider l'inscription">
+								<i class="glyphicon glyphicon-ok"></i>
+								Marquer comme saisie
+							</a>
+							<a href="{{ path('aviron_membre_licences_valider_inscription', {'id': demande.id}) }}" class="btn btn-primary" title="Valider l'inscription">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a href="{{ path('aviron_membre_licences_supprimer_inscription', {'id': demande.id}) }}" class="btn btn-danger" title="Supprimer la demande d'inscription">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">Pas (encore !) de licence à saisir</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
