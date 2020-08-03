@@ -24,7 +24,7 @@ class MembreLicencesController extends AbstractController
 {
     public function preinscription(PreinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session)
     {
-        $membre = new User(); // Your form data class. Has to be an object, won't work properly with an array.
+        $membre = new User();
         $contactPortable = new MembreContacts();
         $contactPortable->setTypeContact(1);
         $membre->addContact($contactPortable);
@@ -33,37 +33,27 @@ class MembreLicencesController extends AbstractController
         $contactUrgence->setTypeContact(2);
         $membre->addContact($contactUrgence);
 
-        //$flow = $this->get('app.form.flow.preinscription'); // must match the flow's service id
+        $licence = new MembreLicences();
+        $membre->addLicence($licence);
+
         $flow->bind($membre);
 
-        // form of the current step
         $form = $flow->createForm();
         if ($flow->isValid($form)) {
             $flow->saveCurrentStepData($form);
 
             if ($flow->nextStep()) {
-                // form for the next step
                 $form = $flow->createForm();
             } else {
-                // flow finished
-                $motdepasse = $membre->getPassword();
                 $newEncodedPassword = $encoder->encodePassword($membre, $membre->getPassword());
                 $membre->setPassword($newEncodedPassword);
-                $this->EnregistreMembre($membre);                
-
-                $saison = $this->DonneSaison(7);
-                $licence = new MembreLicences();
-                $licence->setSaison($saison);
-                $licence->setMembre($membre);
-                $this->EnregistreLicence($licence);
+                $this->EnregistreMembre($membre);
 
                 $session->set('idFicheInscription', $licence->getId());
 
-                $flow->reset(); // remove step data from the session
+                $flow->reset();
 
-                return $this->render('membre_licences/preinscriptionenvoyee.html.twig', [
-                    'motdepasse' => $motdepasse
-                ]);
+                return $this->render('membre_licences/preinscriptionenvoyee.html.twig');
             }
         }
 

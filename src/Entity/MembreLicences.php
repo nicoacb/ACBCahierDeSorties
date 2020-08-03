@@ -39,7 +39,7 @@ class MembreLicences
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Saison", inversedBy="licences")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $saison;
 
@@ -78,6 +78,21 @@ class MembreLicences
      * @ORM\ManyToOne(targetEntity="App\Entity\user")
      */
     private $userSuppressionInscription;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $autoriseDroitImage;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $accepteReglementInterieur;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateDemandeInscription;
 
     public function getId(): ?int
     {
@@ -224,6 +239,42 @@ class MembreLicences
     public function setUserSuppressionInscription(?user $userSuppressionInscription): self
     {
         $this->userSuppressionInscription = $userSuppressionInscription;
+
+        return $this;
+    }
+
+    public function getAutoriseDroitImage(): ?bool
+    {
+        return $this->autoriseDroitImage;
+    }
+
+    public function setAutoriseDroitImage(?bool $autoriseDroitImage): self
+    {
+        $this->autoriseDroitImage = $autoriseDroitImage;
+
+        return $this;
+    }
+
+    public function getAccepteReglementInterieur(): ?bool
+    {
+        return $this->accepteReglementInterieur;
+    }
+
+    public function setAccepteReglementInterieur(?bool $accepteReglementInterieur): self
+    {
+        $this->accepteReglementInterieur = $accepteReglementInterieur;
+
+        return $this;
+    }
+
+    public function getDateDemandeInscription(): ?\DateTimeInterface
+    {
+        return $this->dateDemandeInscription;
+    }
+
+    public function setDateDemandeInscription(?\DateTimeInterface $dateDemandeInscription): self
+    {
+        $this->dateDemandeInscription = $dateDemandeInscription;
 
         return $this;
     }

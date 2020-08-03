@@ -19,10 +19,7 @@ class PreinscriptionCompteType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, array(
-                'label'         => 'Login'
-            ))
-            ->add('email', TextType::class, array(
-                'label'         => 'Adresse email',
+                'label'         => 'Login',
                 'required'  => true
             ))
             ->add('password', RepeatedType::class, array(

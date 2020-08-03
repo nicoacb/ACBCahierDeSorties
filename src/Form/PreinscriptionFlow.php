@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowInterface;
-use App\Form\PreinscriptionAdresseType;
+use App\Form\PreinscriptionAttestationType;
 use App\Form\PreinscriptionCompteType;
+use App\Form\PreinscriptionContactsType;
+use App\Form\PreinscriptionEnviesType;
+use App\Form\PreinscriptionIdentiteType;
 
 class PreinscriptionFlow extends FormFlow {
 
@@ -13,7 +15,7 @@ class PreinscriptionFlow extends FormFlow {
 		return [
 			[
 				'label' => 'Mon compte sur bourges.avironclub.fr',
-				'form_type' => PreinscriptionCompteType::class,
+				'form_type' => PreinscriptionCompteType::class
 			],
 			[
 				'label' => 'Mon identité',
@@ -22,6 +24,10 @@ class PreinscriptionFlow extends FormFlow {
 			[
 				'label' => 'Mes contacts',
 				'form_type' => PreinscriptionContactsType::class
+			],
+			[
+				'label' => 'Attestation',
+				'form_type' => PreinscriptionAttestationType::class
 			],
 			[
 				'label' => 'Mes envies',
