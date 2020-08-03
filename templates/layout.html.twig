@@ -101,6 +101,9 @@ $('div[name=alerte]').fadeOut('slow');
 								<a href="{{ path('aviron_users_liste') }}">Membres</a>
 							</li>
 							<ul>
+								<li{{app.request.get('_route')=='aviron_membre_licences_preinscriptions'?'class="active"'}}>
+									<a href="{{ path('aviron_membre_licences_preinscriptions') }}">Préinscriptions</a>
+								</li>
 								<li{{app.request.get('_route')=='aviron_users_ajouter'?'class="active"'}}>
                 <a href="{{ path('aviron_users_ajouter') }}">Ajouter un membre</a>
                 </li>
