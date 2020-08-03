@@ -14,7 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="gestion_aviron_user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(
+ *  fields={"username"},
+ *  message="Un membre utilise déjà ce login, merci d'en choisir un autre",
+ *  groups={"flow_preinscription_step1"}
+ * )
  */
 class User implements UserInterface
 {
@@ -81,6 +85,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Unique
      */
     private $username;
 
