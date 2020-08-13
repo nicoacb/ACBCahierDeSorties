@@ -9,6 +9,7 @@ use App\Form\MembreLicenceType;
 use App\Form\NumeroLicenceType;
 use App\Form\PreinscriptionFlow;
 use App\Repository\MembreLicencesRepository;
+use App\Repository\SaisonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\IOFactory;
@@ -24,11 +25,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class MembreLicencesController extends AbstractController
 {
     private $membreLicencesRepository;
+    private $saisonRepository;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository)
+    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
     {
         $this->membreLicencesRepository = $membreLicencesRepository;
+        $this->saisonRepository = $saisonRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -96,6 +99,7 @@ class MembreLicencesController extends AbstractController
     public function validerInscription(Request $request, $id)
     {
         $licence = $this->DonneLicence($id);
+        $licence->setSaison($this->saisonRepository->DonneDerniereSaison());
 
         $form = $this->createForm(MembreLicenceType::class, $licence);
 
