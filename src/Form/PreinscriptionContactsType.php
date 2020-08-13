@@ -18,8 +18,11 @@ class PreinscriptionContactsType extends AbstractType
     {
         $builder
             ->add('email', TextType::class, array(
-                'label'         => 'L\'adresse email qui nous permettra de vous contacter',
-                'required'  => true
+                'label'         => 'Email*',
+                'required'  => true,
+                'attr'   => array(
+                    'placeholder' => 'Email que vous consultez régulièrement'
+                )
             ))
             ->add('contacts', CollectionType::class, array(
                 'entry_type'    => MembreContactsType::class,

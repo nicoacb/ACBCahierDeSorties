@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\MembreContacts;
 use App\Entity\MembreLicences;
-use App\Entity\Saison;
 use App\Entity\User;
 use App\Form\MembreLicenceType;
 use App\Form\NumeroLicenceType;
 use App\Form\PreinscriptionFlow;
+use App\Repository\MembreLicencesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,15 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MembreLicencesController extends AbstractController
 {
+    private $membreLicencesRepository;
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository)
+    {
+        $this->membreLicencesRepository = $membreLicencesRepository;
+        $this->entityManager = $entityManager;
+    }
+
     public function preinscription(PreinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session)
     {
         $membre = new User();
@@ -68,15 +78,8 @@ class MembreLicencesController extends AbstractController
      */
     public function preinscriptions()
     {
-        $preinscriptions = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(MembreLicences::class)
-            ->DonnePreinscriptions();
-
-        $licencesASaisir = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(MembreLicences::class)
-            ->DonneLicencesASaisir();
+        $preinscriptions = $this->membreLicencesRepository->DonnePreinscriptions();
+        $licencesASaisir = $this->membreLicencesRepository->DonneLicencesASaisir();
 
         return $this->render(
             'membre_licences/preinscriptions.html.twig',
@@ -206,10 +209,7 @@ class MembreLicencesController extends AbstractController
 
     private function DonneLicence($id)
     {
-        $licence = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(MembreLicences::class)
-            ->find($id);
+        $licence = $this->membreLicencesRepository->find($id);
 
         if (null == $licence) {
             throw new NotFoundHttpException("La licence d'id " . $id . " n'existe pas.");
@@ -220,29 +220,13 @@ class MembreLicencesController extends AbstractController
 
     private function EnregistreLicence($licence)
     {
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($licence);
-        $em->flush();
-    }
-
-    private function DonneSaison($id)
-    {
-        $saison = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(Saison::class)
-            ->find($id);
-
-        if (null == $saison) {
-            throw new NotFoundHttpException("La saison d'id " . $id . " n'existe pas.");
-        }
-
-        return $saison;
+        $this->entityManager->persist($licence);
+        $this->entityManager->flush();
     }
 
     private function EnregistreMembre($membre)
     {
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($membre);
-        $em->flush();
+        $this->entityManager->persist($membre);
+        $this->entityManager->flush();
     }
 }

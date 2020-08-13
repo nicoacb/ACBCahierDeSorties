@@ -1,33 +1,188 @@
 {% extends "layout.html.twig" %}
 
+{% form_theme form with ['bootstrap_3_horizontal_layout.html.twig', _self] %}
+
+{% block form_label_class -%}
+col-sm-3
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+col-sm-9
+{%- endblock form_group_class %}
+
 {% block body %}
 
+<div class="row">
+	<div class="col-sm-2">
+		<h4{% if flow.getCurrentStepNumber() != 1 %} class="text-muted"{% endif %}>Compte <span class="label {% if flow.getCurrentStepNumber() == 1 %}label-primary{% else %}label-default{% endif %}">1</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4{% if flow.getCurrentStepNumber() != 2 %} class="text-muted"{% endif %}>Votre identité <span class="label {% if flow.getCurrentStepNumber() == 2 %}label-primary{% else %}label-default{% endif %}">2</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4{% if flow.getCurrentStepNumber() != 3 %} class="text-muted"{% endif %}>Vos contacts <span class="label {% if flow.getCurrentStepNumber() == 3 %}label-primary{% else %}label-default{% endif %}">3</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4{% if flow.getCurrentStepNumber() != 4 %} class="text-muted"{% endif %}>Attestations <span class="label {% if flow.getCurrentStepNumber() == 4 %}label-primary{% else %}label-default{% endif %}">4</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4{% if flow.getCurrentStepNumber() != 5 %} class="text-muted"{% endif %}>Sondage <span class="label {% if flow.getCurrentStepNumber() == 5 %}label-primary{% else %}label-default{% endif %}">5</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Fin <span class="label label-default">6</span></h4>
+	</div>
+</div><br />
 
 {% if flow.getCurrentStepNumber() == 1 %}
-	<p>
-		Bonjour !<br/><br/>
-		Bienvenue sur la plateforme d'inscription en ligne de l'Aviron Club de Bourges.<br/>
-		Si ce n'est pas déjà fait, et avant de faire votre demande,
-		<b>vous devez d'abord nous rencontrer au Club.</b>
-	</p>
-	<p>Pour commencer, nous allons créer un compte.</p>
+	<div class="well">
+		<p>
+			Bonjour !<br/><br/>
+			Bienvenue sur la plateforme d'inscription en ligne de l'Aviron Club de Bourges.<br/>
+			Si ce n'est pas déjà fait, et avant de faire votre demande,
+			<b>vous devez d'abord nous rencontrer au Club.</b>
+		</p>
+		<p>
+			Pour commencer, nous allons créer un compte : il vous permettra par la suite de suivre votre demande d'inscription et, une fois celle-ci validée, d'accéder à d'autres ressources comme le système de réservation des séances AviFit.
+		</p>
+	</div>
 {% endif %}
+
+{% if flow.getCurrentStepNumber() == 2 %}
+<div class="well">
+	<p>
+		Une fois votre inscription validée, ces données seront transmises à la Fédération Française d'Aviron pour la création de votre licence-assurance.<br />
+		L'assurance est souscrite auprès de la MAIF. Il est important de remplir les champs obligatoires avec précision.
+	</p>
+</div>
+{% endif %}
+
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
+{% if flow.getCurrentStepNumber() == 2 %}
+{{ form_row(form.civilite) }}
+{{ form_row(form.nom) }}
+{{ form_row(form.prenom) }}
+{{ form_row(form.datenaissance) }}
+{{ form_row(form.nationalite) }}
+<div class="form-group">
+	{{ form_label(form.numeroVoie) }}
+	<div class="col-sm-1">
+		{{ form_widget(form.numeroVoie) }}
+	</div>
+	<div class="col-sm-3">
+		{{ form_widget(form.typeVoie) }}
+	</div>
+	<div class="col-sm-5">
+		{{ form_widget(form.libelleVoie) }}
+	</div>
+</div>
+{% endif %}
+
 {% if flow.getCurrentStepNumber() == 3 %}
+<div class="well">
+	<p>
+	Nous communiquons essentiellement par mail, une à deux fois par mois, pour vous proposer des activités et vous tenir informé de la vie du Club.<br/>
+	Nous donnons également cette adresse à la Fédération Française d'Aviron afin qu'elle vous fasse parvenir votre licence de façon dématérialisée.<br/>
+	En aucun cas nous ne donnons votre adresse mail à l'un de nos partenaires.
+	</p>
+	<p>
+	Dans quelques rares cas, nous communiquons également par téléphone.<br/>
+	Vos numéros ne sont ni communiqués à la Fédération Française d'Aviron ni à nos partenaires.<br/>
+	Sentez-vous libre d'ajouter autant de numéros que nécessaire.
+	</p>
+</div>
 	{{ form_row(form.email) }}
 
-	<ul class="contacts" data-prototype="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}">
+	<ul class="contacts list-group" data-prototype="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}">
 		{% for contact in form.contacts %}
-			<li>{{ form_row(contact.typeContact) }}
-				{{ form_row(contact.telephone) }}</li>
+			<li class="list-group-item">
+				{{ form_row(contact.typeContact) }}
+				{{ form_row(contact.nomContact) }}
+				{{ form_row(contact.telephoneEmail) }}
+			</li>
 		{% endfor %}
 	</ul>
 {% endif %}
 
+{% if flow.getCurrentStepNumber() == 4 %}
+<div class="well">
+	<p>
+		L'Aviron Club de Bourges est une association de forme loi 1901. Nous avons un <a href="#">règlement intérieur que vous devez consulter</a>.
+	</p>
+</div>
+{% for licence in form.licences %}
+	<div class="form-group">
+		<label for="accepteReglementInterieur" class="col-sm-3 control-label required">Règlement intérieur*</label>
+		<div class="col-sm-9">
+			{{ form_widget(licence.accepteReglementInterieur) }}
+		</div>
+	</div>
+<div class="well">
+	<p>
+		Même si nous sommes essentiellement sur l'eau et non dans l'eau, il est possible de chavirer. Il est donc impératif de savoir nager !
+	</p>
+</div>
+	<div class="form-group">
+		<label for="declareSavoirNager" class="col-sm-3 control-label required">Savoir Nager*</label>
+		<div class="col-sm-9">
+			{{ form_widget(licence.declareSavoirNager) }}
+		</div>
+	</div>
+<div class="well">
+	<p>
+		Pour promouvoir notre activité, nous prenons des photos que nous publions sur notre site Internet et sur les réseaux sociaux (Facebook, Instagram).<br/>
+		Nous faisons très attention à votre image car celle-ci a une incidence sur notre propre image. 
+	</p>
+</div>
+	{{ form_row(licence.autoriseDroitImage) }}
+{% endfor %}
+{% endif %}
+
+
+{% if flow.getCurrentStepNumber() == 5 %}
+<div class="well">
+	<p>
+		Notre objectif est que chacun trouve sa place dans notre association. <br/>
+		Ce petit sondage nous permet de mieux connaitre nos adhérents et de vous proposer des activités en concéquence. 
+	</p>
+	<p>
+		L'Aviron Club de Bourges fonctionne grâce au dévouement de gentils bénévoles. Nous serions ravis de vous compter parmis eux !<br/>
+		Pour cela nous aimerions en savoir un peu plus sur vous. 
+	</p>
+</div>
+{{ form_row(form.enviesPratiques) }}
+{{ form_row(form.frequencePratique) }}
+<div class="form-group">
+		<label for="aPermisBateauEauxInterieures" class="col-sm-3 control-label required">Permis</label>
+		<div class="col-sm-9">
+			{{ form_widget(form.engagementAssociation.aPermisBateauEauxInterieures) }}
+		</div>
+	</div>
+{{ form_row(form.engagementAssociation.aPermisBateauEauxInterieures) }}
+{{ form_row(form.engagementAssociation.aPermisBateauCotier) }}
+{{ form_row(form.engagementAssociation.aPermisRemorqueEB) }}
+{{ form_row(form.engagementAssociation.aPermisRemorqueB96) }}
+{{ form_row(form.engagementAssociation.brevetSecourisme) }}
+{{ form_row(form.engagementAssociation.encadrementSportif) }}
+{{ form_row(form.engagementAssociation.communication) }}
+{{ form_row(form.engagementAssociation.informatique) }}
+{{ form_row(form.engagementAssociation.technique) }}
+{{ form_row(form.engagementAssociation.autres) }}
+{% endif %}
+
 {{ form_rest(form) }}
+
+<p>
+* Champ obligatoire<br />
+{% if flow.getCurrentStepNumber() == 2 %}
+
+(1) Nationalité : si vous avez plusieurs nationalités, dont la nationalité française, merci de sélectionner la France.<br/>
+En effet, la nationalité a une incidence sur la possibilité de participer aux épreuves nationales.<br/>
+(2) Adresse / Lieu dit : une seule des deux lignes obligatoires. 
+{% endif %}
+</p>
 
 {% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
 		craue_formflow_button_class_last: 'btn btn-primary',
@@ -44,7 +199,7 @@ var $collectionHolder;
 
 // setup an "add a tag" link
 var $addTagButton = $('<button type="button" class="add_tag_link btn">Ajouter un contact</button>');
-var $newLinkLi = $('<li></li>').append($addTagButton);
+var $newLinkLi = $('<li class="list-group-item"></li>').append($addTagButton);
 
 jQuery(document).ready(function() {
     // Get the ul that holds the collection of tags
@@ -92,7 +247,7 @@ newForm = newForm.replace(/__name__/g, index);
 $collectionHolder.data('index', index + 1);
 
 // Display the form in the page in an li, before the "Add a tag" link li
-var $newFormLi = $('<li></li>').append(newForm);
+var $newFormLi = $('<li class="list-group-item"></li>').append(newForm);
 $newLinkLi.before($newFormLi);
 
 // add a delete link to the new form

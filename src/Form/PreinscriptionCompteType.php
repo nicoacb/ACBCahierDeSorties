@@ -19,15 +19,15 @@ class PreinscriptionCompteType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, array(
-                'label'         => 'Login',
+                'label'         => 'Login*',
                 'required'  => true
             ))
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent être identiques',
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer le mot de passe'],
+                'first_options'  => ['label' => 'Mot de passe*'],
+                'second_options' => ['label' => 'Confirmer le mot de passe*'],
             ));
     }
 

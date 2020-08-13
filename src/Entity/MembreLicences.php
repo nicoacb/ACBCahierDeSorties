@@ -94,6 +94,11 @@ class MembreLicences
      */
     private $dateDemandeInscription;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $declareSavoirNager;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -275,6 +280,18 @@ class MembreLicences
     public function setDateDemandeInscription(?\DateTimeInterface $dateDemandeInscription): self
     {
         $this->dateDemandeInscription = $dateDemandeInscription;
+
+        return $this;
+    }
+
+    public function getDeclareSavoirNager(): ?bool
+    {
+        return $this->declareSavoirNager;
+    }
+
+    public function setDeclareSavoirNager(?bool $declareSavoirNager): self
+    {
+        $this->declareSavoirNager = $declareSavoirNager;
 
         return $this;
     }

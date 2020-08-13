@@ -15,22 +15,34 @@ class MembreContactsType extends AbstractType
     {
         $builder
             ->add('typeContact', ChoiceType::class, array(
-                'choices'   => array(
-                    'Numéro de portable'                    => 1,
-                    'Personne à prévenir en cas d\'urgence' => 2,
-                    'Mère'                                  => 3,
-                    'Père'                                  => 4,
-                    'Responsable légal'                     => 5,
-                    'Autre'                                 => 6
+                'choices'       => array(
+                    'Numéro de portable'                                                => 1,
+                    'Numéro de portable de la personne à prévenir en cas d\'urgence'    => 2,
+                    'Numéro de portable de la Mère'                                     => 3,
+                    'Numéro de portable du Père'                                        => 4,
+                    'Numéro de portable du Responsable légal'                           => 5,
+                    'Autre (précisez dans le champ Nom  du contact'                     => 6,
+                    'Email de la Mère'                                                  => 7,
+                    'Email du Père'                                                     => 8,
+                    'Email du Responsable légal'                                        => 9,
                 ),
-                'expanded'  => false,
-                'multiple'  => false,
-                'required'  => true,
-                'placeholder'    => 'Faites votre choix',
-                'label'     => 'Type de contact'
+                'expanded'      => false,
+                'multiple'      => false,
+                'required'      => true,
+                'placeholder'   => 'Faites votre choix',
+                'label'         => 'Type de contact*'
             ))
-            ->add('telephone', TextType::class, array(
-                'label'         => 'Numéro de téléphone'
+            ->add('nomContact', TextType::class, array(
+                'label'         => 'Nom du contact*',
+                'attr'          => array(
+                    'placeholder' => 'Nom du contact'
+                )
+            ))
+            ->add('telephoneEmail', TextType::class, array(
+                'label'         => 'Numéro de téléphone ou email*',
+                'attr'          => array(
+                    'placeholder' => 'Numéro de téléphone ou email'
+                )
             ))
         ;
     }

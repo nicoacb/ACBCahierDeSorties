@@ -24,30 +24,48 @@ class PreinscriptionIdentiteType extends AbstractType
                     'Madame'    => 1,
                     'Monsieur'  => 2
                 ),
-                'expanded'  => true,
-                'multiple'  => false,
-                'required'  => true,
-                'placeholder'    => 'Faites votre choix',
-                'label'     => 'Civilité'
+                'expanded'      => true,
+                'multiple'      => false,
+                'required'      => true,
+                'placeholder'   => 'Faites votre choix',
+                'label'         => 'Civilité*',
+                'label_attr'    => [
+                    'class' => 'radio-inline'
+                ]
             ))
             ->add('prenom', TextType::class, array(
-                'label'         => 'Prénom'
+                'label'     => 'Prénom*',
+                'required'  => true,
+                'attr'   => array(
+                    'placeholder' => 'Prénom'
+                )
             ))
             ->add('nom', TextType::class, array(
-                'label'         => 'Nom'
+                'label'     => 'Nom*',
+                'required'  => true,
+                'attr'   => array(
+                    'placeholder' => 'Nom'
+                )
             ))
             ->add('datenaissance', BirthdayType::class, array(
-                'label'         => 'Date de naissance'
+                'label'         => 'Date de naissance*',
+                'placeholder'   => ['year' => 'année', 'month' => 'mois', 'day' => 'jour'],
+                'required'      => true
             ))
             ->add('nationalite', EntityType::class, array(
                 'class'         => 'App:MembreNationalite',
                 'choice_label'  => 'nationalite',
                 'expanded'      => false,
                 'multiple'      => false,
-                'label'         => 'Nationalité'
+                'label'         => 'Nationalité* (1)',
+                'required'      => true
             ))
             ->add('numeroVoie', TextType::class, array(
-                'label'         => 'N°'
+                'label'     => 'Adresse* (2)',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'N°'
+                )
             ))
             ->add('typeVoie', ChoiceType::class, array(
                 'choices'   => array(
@@ -85,38 +103,45 @@ class PreinscriptionIdentiteType extends AbstractType
                     'Village' => 'Village',
                     'Voie' => 'Voie'
                 ),
-                'expanded'  => false,
-                'multiple'  => false,
-                'required'  => true,
-                'placeholder'   => 'Faites votre choix',
-                'label'         => 'Type de voie'
+                'expanded'      => false,
+                'multiple'      => false,
+                'placeholder'   => 'Type de voie',
+                'label'         => 'Type de voie*',
+                'required'      => false
             ))
             ->add('libelleVoie', TextType::class, array(
-                'label'         => ''
+                'label'     => 'Nom de la voie*',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Nom de la voie'
+                )
             ))
             ->add('immBatRes', TextType::class, array(
-                'label'     => '',
-                'required'  => false,
+                'label'     => 'Immeuble, bâtiment, résidence',
+                'required'  => false
             ))
             ->add('aptEtageEsc', TextType::class, array(
-                'label'         => '',
+                'label'     => 'Appartement, étage, escalier',
                 'required'  => false
             ))
             ->add('lieuDit', TextType::class, array(
-                'label'         => 'Lieu dit',
+                'label'     => 'Lieu dit* (2)',
                 'required'  => false
             ))
             ->add('codePostal', TextType::class, array(
-                'label'         => 'Code Postal',
+                'label'     => 'Code Postal*',
                 'required'  => true
             ))
             ->add('ville', TextType::class, array(
-                'label'         => 'Ville',
+                'label'     => 'Ville*',
                 'required'  => true
             ))
             ->add('licence', NumberType::class, array(
-                'label'         => 'Numéro de licence (si licencié autre club)',
-                'required'      => false
+                'label'     => 'Numéro de licence',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Numéro de licence (uniquement si vous avez déjà pris une licence dans un autre club)'
+                )
             ));
     }
 

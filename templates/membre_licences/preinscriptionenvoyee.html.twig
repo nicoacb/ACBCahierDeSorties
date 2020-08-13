@@ -7,20 +7,48 @@
 
 {% block body %}
 
+	<div class="row">
+	<div class="col-sm-2">
+		<h4 class="text-muted">Compte <span class="label label-default">1</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Votre identité <span class="label label-default">2</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Vos contacts <span class="label label-default">3</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Attestations <span class="label label-default">4</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Sondage <span class="label label-default">5</span></h4>
+	</div>
+	<div class="col-sm-2">
+		<h4 class="text-muted">Fin <span class="label label-primary">6</span></h4>
+	</div>
+</div><br />
+
 	<h2 class="page-header">Demande d'inscription envoyée</h2>
 	<p>
 		Nous avons bien reçu votre demande d'inscription.<br/>
 		Pour la valider vous devez payer votre cotisation et nous rapporter les documents suivants :<br/>
-		- certificat de non contre indication à la pratique de l'aviron en compétion<br/>
-		- bordereau MAIF IA Sport+<br/>
-
-		<b>! TODO Compléter !</b>
+		<br/>
+		<b>Pour tous :</b><br/>
+		1 photo d’identité récente (inscrire au verso les noms et prénoms)<br/>
+		1 certificat médical ou <a href="">une attestation (voir pièce jointe)</a><br/>
+		1 bordereau IA Sport+ MAIF<br/>
+		<br/>
+		<b>Pour les mineurs :</b>
+		1 attestation de natation de 25 m et d’immersion<br/>
+		<a href="#">1 fiche sanitaire de liaison</a><br/>
+		<a href="#">1 autorisation parentale (déplacements)</a><br/>
+		<br/>
 	</p>
 	<p>Vous pouvez :<br/>
 		<a href="{{ path('aviron_membre_licences_telecharger_fiche_inscription') }}" class="btn btn-info" title="Envoyer le login par mail">
-			<i class="glyphicon glyphicon-search"></i>
+			<i class="glyphicon glyphicon-floppy-save"></i>
 			Télécharger votre fiche d'inscription
-		</a><br/>
+		</a><br/><br/>
 
 
 		<a href="{{ path('aviron_membre_licences_preinscription') }}" class="btn btn-default">

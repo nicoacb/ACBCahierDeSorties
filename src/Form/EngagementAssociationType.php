@@ -31,28 +31,46 @@ class EngagementAssociationType extends AbstractType
                 'required'  => false
             ))
             ->add('brevetSecourisme', TextType::class, array(
-                'label'         => 'Brevet de secourisme (baignade, plongée, 1er  secours,..), précisez ',
-                'required'  => false
+                'label'         => 'Brevet de secourisme',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Baignade, plongée, 1er  secours...'
+                )
             ))
             ->add('encadrementSportif', TextType::class, array(
-                'label'         => 'Encadrement sportif (brevet  fédéral,…), précisez',
-                'required'  => false
+                'label'         => 'Encadrement sportif',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Brevets  fédéraux, licences STAPS, BPJEPS...'
+                )
             ))
             ->add('communication', TextType::class, array(
-                'label'         => 'Communication (rédaction, flyer, photo, vidéo,…), précisez',
-                'required'  => false
+                'label'         => 'Communication',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Rédaction, flyer, photo, vidéo...'
+                )
             ))
             ->add('informatique', TextType::class, array(
-                'label'         => 'Informatique (développement, réseau,…), précisez',
-                'required'  => false
+                'label'         => 'Informatique',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Développement, réseau...'
+                )
             ))
             ->add('technique', TextType::class, array(
-                'label'         => 'Technique (mécanique nautique, soudure,…), précisez',
-                'required'  => false
+                'label'         => 'Technique',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Peinture, mécanique nautique, soudure...'
+                )
             ))
             ->add('autres', TextType::class, array(
-                'label'         => 'Autres, précisez',
-                'required'  => false
+                'label'         => 'Autres',
+                'required'  => false,
+                'attr'   => array(
+                    'placeholder' => 'Précisez'
+                )
             ))
         ;
     }

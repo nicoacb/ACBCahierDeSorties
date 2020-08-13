@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * User
@@ -210,6 +211,11 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\MembreNationalite")
      */
     private $nationalite;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FrequencePratique", inversedBy="membre")
+     */
+    private $frequencePratique;
 
     /**
      * Get id
@@ -733,6 +739,49 @@ class User implements UserInterface
     public function setNationalite(?MembreNationalite $nationalite): self
     {
         $this->nationalite = $nationalite;
+
+        return $this;
+    }
+
+    /**
+     * @Assert\Callback(groups={"flow_preinscription_step2"})
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (($this->getLibelleVoie() == null || $this->getLibelleVoie() == '') && ($this->getLieuDit() == null || $this->getLieuDit() == ''))
+        {
+            $context->buildViolation('L\'adresse est un champ obligatoire.')
+            ->atPath('libelleVoie')
+            ->addViolation();
+        }
+        if (($this->getLibelleVoie() != null || $this->getTypeVoie() != null)  && $this->getNumeroVoie() == null)
+        {
+            $context->buildViolation('Le numéro de la voie est obligatoire.')
+            ->atPath('numeroVoie')
+            ->addViolation();
+        }
+        if (($this->getNumeroVoie() != null || $this->getTypeVoie() != null)  && $this->getLibelleVoie() == null)
+        {
+            $context->buildViolation('Le nom de la voie est obligatoire.')
+            ->atPath('libelleVoie')
+            ->addViolation();
+        }
+        if (($this->getNumeroVoie() != null || $this->getLibelleVoie() != null)  && $this->getTypeVoie() == null)
+        {
+            $context->buildViolation('Le type de voie est obligatoire.')
+            ->atPath('typeVoie')
+            ->addViolation();
+        }
+    }
+
+    public function getFrequencePratique(): ?FrequencePratique
+    {
+        return $this->frequencePratique;
+    }
+
+    public function setFrequencePratique(?FrequencePratique $frequencePratique): self
+    {
+        $this->frequencePratique = $frequencePratique;
 
         return $this;
     }

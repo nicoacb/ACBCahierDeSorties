@@ -15,7 +15,11 @@ class AttestationType extends AbstractType
     {
         $builder
             ->add('accepteReglementInterieur', CheckboxType::class, array(
-                'label'     => 'J\'ai pris connaissance du règlement intérieur et l\'accepte sans réserve',
+                'label'     => 'J\'ai pris connaissance/mon enfant a pris connaissance du règlement intérieur et l\'accepte sans réserve',
+                'required'  => true
+            ))
+            ->add('declareSavoirNager', CheckboxType::class, array(
+                'label'     => 'Je sais nager/mon enfant sait nager',
                 'required'  => true
             ))
             ->add('autoriseDroitImage', ChoiceType::class, array(
@@ -26,7 +30,7 @@ class AttestationType extends AbstractType
                 'expanded'  => true,
                 'multiple'  => false,
                 'required'  => true,
-                'label'     => 'Droit à l\image'
+                'label'     => 'Droit à l\'image*'
             ));
     }
 

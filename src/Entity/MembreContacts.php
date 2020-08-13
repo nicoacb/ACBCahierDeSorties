@@ -18,11 +18,6 @@ class MembreContacts
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $telephone;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="contacts")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -33,21 +28,19 @@ class MembreContacts
      */
     private $typeContact;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nomContact;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephoneEmail;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(string $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
     }
 
     public function getUser(): ?user
@@ -70,6 +63,30 @@ class MembreContacts
     public function setTypeContact(int $typeContact): self
     {
         $this->typeContact = $typeContact;
+
+        return $this;
+    }
+
+    public function getNomContact(): ?string
+    {
+        return $this->nomContact;
+    }
+
+    public function setNomContact(?string $nomContact): self
+    {
+        $this->nomContact = $nomContact;
+
+        return $this;
+    }
+
+    public function getTelephoneEmail(): ?string
+    {
+        return $this->telephoneEmail;
+    }
+
+    public function setTelephoneEmail(?string $telephoneEmail): self
+    {
+        $this->telephoneEmail = $telephoneEmail;
 
         return $this;
     }
