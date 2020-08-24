@@ -32,10 +32,6 @@
 						<td>{{ demande.membre.nom }}</td>
 						<td>{{ demande.membre.datenaissance | date('d/m/Y') }}</td>
 						<td class="text-nowrap">
-							<a href="{{ path('aviron_membre_licences_voir_fiche_inscription', {'id': demande.id}) }}" class="btn btn-info" title="Envoyer le login par mail">
-								<i class="glyphicon glyphicon-search"></i>
-								Voir la fiche d'inscription
-							</a>
 							<a href="{{ path('aviron_membre_licences_valider_inscription', {'id': demande.id}) }}" class="btn btn-success" title="Valider l'inscription">
 								<i class="glyphicon glyphicon-pencil"></i>
 								Valider l'inscription
@@ -55,6 +51,13 @@
 	</div>
 
 	<h2 class="page-header">Licences à saisir</h2>
+
+	<p>
+		<a href="{{ path('aviron_membre_licences_export_licences_a_saisir') }}" class="btn btn-success">
+			<i class="glyphicon glyphicon-download-alt"></i>
+			Télécharger le ficher d'import FFA
+		</a>
+	</p>
 
 	<div class="table-responsive">
 		<table class="table table-striped">
