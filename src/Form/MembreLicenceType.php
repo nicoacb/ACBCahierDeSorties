@@ -41,12 +41,20 @@ class MembreLicenceType extends AbstractType
                 'label'     => 'Avec MAIF IA Sport+',
                 'required'  => false
             ))
-            ->add('dateCerficatPratique', DateType::class, array(
+            ->add('dateCertificatPratique', DateType::class, array(
                 'label'     => 'Date du certificat médical de pratique',
+                'required'  => false
+            ))
+            ->add('avecAttestationPratique', CheckboxType::class, array(
+                'label'     => 'ou Attestation pour la pratique (renouvellement)',
                 'required'  => false
             ))
             ->add('dateCertificatCompetition', DateType::class, array(
                 'label'     => 'Date du certificat médical de compétition',
+                'required'  => false
+            ))
+            ->add('avecAttestationCompetition', CheckboxType::class, array(
+                'label'     => 'ou Attestation pour la compétition (renouvellement)',
                 'required'  => false
             ))
             ->add('save', SubmitType::class, array(

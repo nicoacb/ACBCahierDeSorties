@@ -30,7 +30,7 @@ class MembreLicences
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateCerficatPratique;
+    private $dateCertificatPratique;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -99,6 +99,16 @@ class MembreLicences
      */
     private $declareSavoirNager;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $avecAttestationPratique;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $avecAttestationCompetition;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,14 +138,14 @@ class MembreLicences
         return $this;
     }
 
-    public function getDateCerficatPratique(): ?\DateTimeInterface
+    public function getdateCertificatPratique(): ?\DateTimeInterface
     {
-        return $this->dateCerficatPratique;
+        return $this->dateCertificatPratique;
     }
 
-    public function setDateCerficatPratique(?\DateTimeInterface $dateCerficatPratique): self
+    public function setdateCertificatPratique(?\DateTimeInterface $dateCertificatPratique): self
     {
-        $this->dateCerficatPratique = $dateCerficatPratique;
+        $this->dateCertificatPratique = $dateCertificatPratique;
 
         return $this;
     }
@@ -292,6 +302,30 @@ class MembreLicences
     public function setDeclareSavoirNager(?bool $declareSavoirNager): self
     {
         $this->declareSavoirNager = $declareSavoirNager;
+
+        return $this;
+    }
+
+    public function getAvecAttestationPratique(): ?bool
+    {
+        return $this->avecAttestationPratique;
+    }
+
+    public function setAvecAttestationPratique(?bool $avecAttestationPratique): self
+    {
+        $this->avecAttestationPratique = $avecAttestationPratique;
+
+        return $this;
+    }
+
+    public function getAvecAttestationCompetition(): ?bool
+    {
+        return $this->avecAttestationCompetition;
+    }
+
+    public function setAvecAttestationCompetition(?bool $avecAttestationCompetition): self
+    {
+        $this->avecAttestationCompetition = $avecAttestationCompetition;
 
         return $this;
     }
