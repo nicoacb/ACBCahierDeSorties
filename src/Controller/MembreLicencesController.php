@@ -8,8 +8,10 @@ use App\Entity\User;
 use App\Form\MembreLicenceType;
 use App\Form\NumeroLicenceType;
 use App\Form\PreinscriptionFlow;
+use App\Form\ReinscriptionFlow;
 use App\Repository\MembreLicencesRepository;
 use App\Repository\SaisonRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\IOFactory;
@@ -24,12 +26,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MembreLicencesController extends AbstractController
 {
+    private $membreRepository;
     private $membreLicencesRepository;
     private $saisonRepository;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
+    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
     {
+        $this->membreRepository = $userRepository;
         $this->membreLicencesRepository = $membreLicencesRepository;
         $this->saisonRepository = $saisonRepository;
         $this->entityManager = $entityManager;
@@ -71,6 +75,50 @@ class MembreLicencesController extends AbstractController
         }
 
         return $this->render('membre_licences/preinscription.html.twig', [
+            'form' => $form->createView(),
+            'flow' => $flow,
+        ]);
+    }
+
+    public function reinscription(ReinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session)
+    {
+        $membre = $this->getUser();
+
+        if ($membre->getContacts()->Count() == 0) {
+            $contactPortable = new MembreContacts();
+            $contactPortable->setTypeContact(1);
+            $membre->addContact($contactPortable);
+
+            $contactUrgence = new MembreContacts();
+            $contactUrgence->setTypeContact(2);
+            $membre->addContact($contactUrgence);
+        }
+
+        $licence = new MembreLicences();
+        $membre->addLicence($licence);
+
+        $flow->bind($membre);
+
+        $form = $flow->createForm();
+        if ($flow->isValid($form)) {
+            $flow->saveCurrentStepData($form);
+
+            if ($flow->nextStep()) {
+                $form = $flow->createForm();
+            } else {
+                $newEncodedPassword = $encoder->encodePassword($membre, $membre->getPassword());
+                $membre->setPassword($newEncodedPassword);
+                $this->EnregistreMembre($membre);
+
+                $session->set('idFicheInscription', $licence->getId());
+
+                $flow->reset();
+
+                return $this->render('membre_licences/preinscriptionenvoyee.html.twig');
+            }
+        }
+
+        return $this->render('membre_licences/reinscription.html.twig', [
             'form' => $form->createView(),
             'flow' => $flow,
         ]);

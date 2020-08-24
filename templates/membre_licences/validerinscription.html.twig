@@ -1,20 +1,134 @@
 {% extends "layout.html.twig" %}
 
+{% form_theme form with ['bootstrap_3_horizontal_layout.html.twig', _self] %}
+
+{% block form_label_class -%}
+col-sm-4
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+col-sm-8
+{%- endblock form_group_class %}
+
 {% block title %}
-  Valider l'inscription de {{demande.membre.prenomnom}} - {{ parent() }}
+	Valider l'inscription de
+	{{demande.membre.prenomnom}}
+	-
+	{{ parent() }}
 {% endblock %}
 
 {% block body %}
 
-  <h2 class="page-header">Valider l'inscription de {{demande.membre.prenomnom}}</h2>
+	<h2 class="page-header">Valider l'inscription de
+		{{demande.membre.prenomnom}}</h2>
+	<p>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Civilité</label>
+			</div>
+			<div class="col-sm-9">
+				{% if (demande.membre.civilite == 1) %}Madame
+				{% endif %}
+				{% if (demande.membre.civilite == 2) %}Monsieur
+				{% endif %}
+				{{demande.membre.prenomnom}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Date de naissance</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.datenaissance | date('d/m/Y') }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Nationalité</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.nationalite.nationalite}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Adresse</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.numeroVoie}}
+				{{demande.membre.typeVoie}}
+				{{demande.membre.libelleVoie}}<br/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Immeuble, bâtiment, résidence</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.immBatRes}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Appartement, étage, escalier</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.aptEtageEsc}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Lieu dit</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.lieuDit}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Code Postal / Ville</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.codePostal}}
+				{{demande.membre.ville}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Email</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.email}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Contacts</label>
+			</div>
+			<div class="col-sm-9">
+				{% for contact in demande.membre.contacts %}
+          {{contact.nomContact}}
+					{{contact.telephoneEmail}}<br/>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<label>Numéro de licence</label>
+			</div>
+			<div class="col-sm-9">
+				{{demande.membre.licence}}
+			</div>
+		</div>
+	</p>
 
-  {{ include("membre_licences/form.html.twig") }}
-  
-  <p>
-    <a href="{{ path('aviron_membre_licences_preinscriptions') }}" class="btn btn-default">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Retour à la liste des demandes d'inscription
-    </a>
-  </p>
+	{{ include("membre_licences/form.html.twig") }}
+
+	<p>
+		<a href="{{ path('aviron_membre_licences_preinscriptions') }}" class="btn btn-default">
+			<i class="glyphicon glyphicon-chevron-left"></i>
+			Retour à la liste des demandes d'inscription
+		</a>
+	</p>
 
 {% endblock %}

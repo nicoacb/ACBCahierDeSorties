@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,9 +19,10 @@ class UserModificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('prenom', TextType::class, array(
-            'label'         => 'Prénom'
-        ))
+        $builder
+            ->add('prenom', TextType::class, array(
+                'label'         => 'Prénom'
+            ))
             ->add('nom', TextType::class, array(
                 'label'         => 'Nom'
             ))
@@ -63,7 +65,7 @@ class UserModificationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\User'
+            'data_class' => User::class
         ));
     }
 
