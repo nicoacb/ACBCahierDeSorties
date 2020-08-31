@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\IOFactory;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -22,24 +23,24 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MembreLicencesController extends AbstractController
 {
-    private $membreRepository;
     private $membreLicencesRepository;
     private $saisonRepository;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
+    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
     {
-        $this->membreRepository = $userRepository;
         $this->membreLicencesRepository = $membreLicencesRepository;
         $this->saisonRepository = $saisonRepository;
         $this->entityManager = $entityManager;
     }
 
-    public function preinscription(PreinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session)
+    public function preinscription(PreinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session, MailerInterface $mailer)
     {
         $membre = new User();
         $contactPortable = new MembreContacts();
@@ -69,6 +70,17 @@ class MembreLicencesController extends AbstractController
                 $session->set('idFicheInscription', $licence->getId());
 
                 $flow->reset();
+
+                $email = (new TemplatedEmail())
+                    ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
+                    ->to($membre->getEmail())
+                    ->subject('Demande d\'inscription reçue')
+                    ->htmlTemplate('membre_licences/emailpreinscription.html.twig')
+                    ->context([
+                        'membre' => $membre
+                    ]);
+
+                $mailer->send($email);
 
                 return $this->render('membre_licences/preinscriptionenvoyee.html.twig');
             }

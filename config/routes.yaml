@@ -44,6 +44,10 @@ aviron_membre_licences_preinscription:
     path:       /preinscription
     controller: App\Controller\MembreLicencesController:preinscription
 
+aviron_membre_licences_reinscription:
+    path:       /reinscription
+    controller: App\Controller\MembreLicencesController:reinscription
+
 aviron_membre_licences_preinscriptions:
     path:       /membres/preinscriptions
     controller: App\Controller\MembreLicencesController:preinscriptions
@@ -63,6 +67,12 @@ aviron_membre_licences_supprimer_inscription:
 aviron_membre_licences_marquer_comme_saisie:
     path:       /membres/marquercommesaisie/{id}
     controller: App\Controller\MembreLicencesController:marquerCommeSaisie
+    requirements:
+        id: \d+
+
+aviron_membre_licences_export_licences_a_saisir:
+    path:       /membres/exportlicencesasaisir
+    controller: App\Controller\ExportExcelController:exportLicencesASaisir
     requirements:
         id: \d+
 

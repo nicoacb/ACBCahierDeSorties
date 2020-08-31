@@ -1,0 +1,23 @@
+<div class="well">
+	<p>
+		Nous communiquons essentiellement par mail, une à deux fois par mois, pour vous proposer des activités et vous tenir informé de la vie du Club.<br/>
+		Nous donnons également cette adresse à la Fédération Française d'Aviron afin qu'elle vous fasse parvenir votre licence de façon dématérialisée.<br/>
+		En aucun cas nous ne donnons votre adresse mail à l'un de nos partenaires.
+	</p>
+	<p>
+		Dans quelques rares cas, nous communiquons également par téléphone.<br/>
+		Vos numéros ne sont ni communiqués à la Fédération Française d'Aviron ni à nos partenaires.<br/>
+		Sentez-vous libre d'ajouter autant de numéros que nécessaire.
+	</p>
+</div>
+{{ form_row(form.email) }}
+
+<ul class="contacts list-group" data-prototype="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}">
+	{% for contact in form.contacts %}
+		<li class="list-group-item">
+			{{ form_row(contact.typeContact) }}
+			{{ form_row(contact.nomContact) }}
+			{{ form_row(contact.telephoneEmail) }}
+		</li>
+	{% endfor %}
+</ul>

@@ -30,21 +30,21 @@ class MembreContactsType extends AbstractType
                 'multiple'      => false,
                 'required'      => true,
                 'placeholder'   => 'Faites votre choix',
-                'label'         => 'Type de contact*'
+                'label'         => 'Type de contact*',
+                'attr'          => array(
+                    'class'     => 'typeContact',
+                    'onchange'  => 'ChangeLabelTelephoneEmail(this)'
+                )
             ))
             ->add('nomContact', TextType::class, array(
-                'label'         => 'Nom du contact*',
-                'attr'          => array(
-                    'placeholder' => 'Nom du contact'
-                )
+                'label'         => 'Nom du contact*'
             ))
             ->add('telephoneEmail', TextType::class, array(
                 'label'         => 'Numéro de téléphone ou email*',
-                'attr'          => array(
-                    'placeholder' => 'Numéro de téléphone ou email'
+                'label_attr'    => array(
+                    'class'         => 'telephoneOuMail'
                 )
-            ))
-        ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

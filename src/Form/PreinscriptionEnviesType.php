@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\EnviesPratique;
+use App\Entity\FrequencePratique;
 use App\Entity\User;
 use App\Form\EngagementAssociationType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,18 +20,21 @@ class PreinscriptionEnviesType extends AbstractType
     {
         $builder
             ->add('enviesPratiques', EntityType::class, array(
-                'class'         => 'App:EnviesPratique',
+                'class'         => EnviesPratique::class,
                 'choice_label'  => 'envie',
                 'expanded'      => true,
                 'multiple'      => true,
-                'label'         => 'Je m\'inscris au Club pour'
+                'label'         => 'Je m\'inscris au Club pour',
+                'required'      => false
             ))
             ->add('frequencePratique', EntityType::class, array(
-                'class'         => 'App:FrequencePratique',
+                'class'         => FrequencePratique::class,
                 'choice_label'  => 'frequence',
                 'expanded'      => true,
                 'multiple'      => false,
-                'label'         => 'Je pense venir au Club'
+                'label'         => 'Je pense venir au Club',
+                'required'      => false,
+                'placeholder'   => 'je ne sais pas encore'
             ))
             ->add('engagementAssociation', EngagementAssociationType::class, array(
                 'label'         => 'Mon engagement dans l\'association'

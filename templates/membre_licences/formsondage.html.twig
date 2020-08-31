@@ -1,0 +1,34 @@
+<div class="well">
+	<p>
+		Notre objectif est que chacun trouve sa place dans notre association. <br/>
+		Ce petit sondage nous permet de mieux connaitre nos adhérents et de vous proposer des activités en concéquence.
+	</p>
+</div>
+{{ form_row(form.enviesPratiques) }}
+{{ form_row(form.frequencePratique) }}
+<div class="well">
+	<p>
+		L'Aviron Club de Bourges fonctionne grâce au dévouement de gentils bénévoles.<br/>
+		Vous pouvez aider votre Club ! Donnez nous vos compétences :
+	</p>
+</div>
+<div class="form-group">
+		<label for="aPermisBateauEauxInterieures" class="col-sm-3 control-label required">Permis bateau</label>
+		<div class="col-sm-9">
+			{{ form_widget(form.engagementAssociation.aPermisBateauEauxInterieures) }}
+		</div>
+	</div>
+{{ form_row(form.engagementAssociation.aPermisBateauCotier) }}
+<div class="form-group">
+		<label for="aPermisBateauEauxInterieures" class="col-sm-3 control-label required">Permis remorque</label>
+		<div class="col-sm-9">
+			{{ form_widget(form.engagementAssociation.aPermisRemorqueEB) }}
+		</div>
+	</div>
+{{ form_row(form.engagementAssociation.aPermisRemorqueB96) }}
+{{ form_row(form.engagementAssociation.brevetSecourisme) }}
+{{ form_row(form.engagementAssociation.encadrementSportif) }}
+{{ form_row(form.engagementAssociation.communication) }}
+{{ form_row(form.engagementAssociation.informatique) }}
+{{ form_row(form.engagementAssociation.technique) }}
+{{ form_row(form.engagementAssociation.autres) }}

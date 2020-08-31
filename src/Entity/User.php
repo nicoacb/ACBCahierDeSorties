@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @UniqueEntity(
  *  fields={"username"},
  *  message="Un membre utilise déjà ce login, merci d'en choisir un autre",
- *  groups={"flow_preinscription_step1"}
+ *  groups={"flow_preinscription_step1", "flow_reinscription_step0"}
  * )
  */
 class User implements UserInterface

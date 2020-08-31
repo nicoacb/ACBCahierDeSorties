@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -35,17 +36,11 @@ class PreinscriptionIdentiteType extends AbstractType
             ))
             ->add('prenom', TextType::class, array(
                 'label'     => 'Prénom*',
-                'required'  => true,
-                'attr'   => array(
-                    'placeholder' => 'Prénom'
-                )
+                'required'  => true
             ))
             ->add('nom', TextType::class, array(
                 'label'     => 'Nom*',
-                'required'  => true,
-                'attr'   => array(
-                    'placeholder' => 'Nom'
-                )
+                'required'  => true
             ))
             ->add('datenaissance', BirthdayType::class, array(
                 'label'         => 'Date de naissance*',
@@ -57,11 +52,11 @@ class PreinscriptionIdentiteType extends AbstractType
                 'choice_label'  => 'nationalite',
                 'expanded'      => false,
                 'multiple'      => false,
-                'label'         => 'Nationalité* (1)',
+                'label'         => 'Nationalité*',
                 'required'      => true
             ))
             ->add('numeroVoie', TextType::class, array(
-                'label'     => 'Adresse* (2)',
+                'label'     => 'Adresse*',
                 'required'  => false,
                 'attr'   => array(
                     'placeholder' => 'N°'
@@ -125,7 +120,7 @@ class PreinscriptionIdentiteType extends AbstractType
                 'required'  => false
             ))
             ->add('lieuDit', TextType::class, array(
-                'label'     => 'Lieu dit* (2)',
+                'label'     => 'Lieu dit*',
                 'required'  => false
             ))
             ->add('codePostal', TextType::class, array(
@@ -140,7 +135,7 @@ class PreinscriptionIdentiteType extends AbstractType
                 'label'     => 'Numéro de licence',
                 'required'  => false,
                 'attr'   => array(
-                    'placeholder' => 'Numéro de licence (uniquement si vous avez déjà pris une licence dans un autre club)'
+                    'placeholder' => 'Uniquement si vous avez déjà pris une licence dans un autre club'
                 )
             ));
     }
@@ -151,7 +146,7 @@ class PreinscriptionIdentiteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\User'
+            'data_class' => User::class
         ));
     }
 

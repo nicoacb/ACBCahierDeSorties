@@ -1,0 +1,43 @@
+<div class="well">
+	<p>
+		Une fois votre inscription validée, ces données seront transmises à la Fédération Française d'Aviron pour la création de votre licence-assurance.<br/>
+		L'assurance est souscrite auprès de la MAIF. Il est important de remplir les champs obligatoires avec précision.
+	</p>
+</div>
+{{ form_row(form.civilite) }}
+{{ form_row(form.nom) }}
+{{ form_row(form.prenom) }}
+{{ form_row(form.datenaissance) }}
+<div class="form-group">
+	{{ form_label(form.nationalite) }}
+	<div class="col-sm-9">
+		{{ form_widget(form.nationalite) }}
+		Si vous avez plusieurs nationalités, dont la nationalité française, merci de sélectionner la France.<br/>
+		En effet, la nationalité a une incidence sur la possibilité de participer aux épreuves nationales.
+	</div>
+</div>
+<div class="form-group">
+	{{ form_label(form.numeroVoie) }}
+	<div class="col-sm-1">
+		{{ form_widget(form.numeroVoie) }}
+	</div>
+	<div class="col-sm-3">
+		{{ form_widget(form.typeVoie) }}
+	</div>
+	<div class="col-sm-5">
+		{{ form_widget(form.libelleVoie) }}
+	</div>
+	<div class="col-sm-3"></div>
+	<div class="col-sm-9">
+		Adresse / Lieu dit : une seule des deux lignes est obligatoire.
+	</div>
+</div>
+{{ form_row(form.immBatRes) }}
+{{ form_row(form.aptEtageEsc) }}
+<div class="form-group">
+	{{ form_label(form.lieuDit) }}
+	<div class="col-sm-9">
+		{{ form_widget(form.lieuDit) }}
+		Adresse / Lieu dit : une seule des deux lignes est obligatoire.
+	</div>
+</div>

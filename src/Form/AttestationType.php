@@ -22,15 +22,9 @@ class AttestationType extends AbstractType
                 'label'     => 'Je sais nager/mon enfant sait nager',
                 'required'  => true
             ))
-            ->add('autoriseDroitImage', ChoiceType::class, array(
-                'choices'   => array(
-                    'J\'autorise l\'Aviron Club de Bourges à disposer de mon droit à l\'image pour la promotion de son activité.'    => true,
-                    'Je n\'autorise pas l\'Aviron Club de Bourges à disposer de mon droit à l\'image pour la promotion de son activité.'  => false
-                ),
-                'expanded'  => true,
-                'multiple'  => false,
-                'required'  => true,
-                'label'     => 'Droit à l\'image*'
+            ->add('autoriseDroitImage', CheckboxType::class, array(
+                'label'   => 'J\'autorise l\'Aviron Club de Bourges à disposer de mon droit à l\'image pour la promotion de son activité.',
+                'required'  => true
             ));
     }
 
