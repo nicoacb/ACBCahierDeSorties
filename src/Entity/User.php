@@ -124,7 +124,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180)
      */
     private $email;
-    
+
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -225,7 +225,7 @@ class User implements UserInterface
     {
         return $this->id;
     }
-    
+
     /**
      * @see UserInterface
      */
@@ -239,6 +239,15 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole($role)
+    {
+        if (!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }
@@ -280,7 +289,6 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        
     }
 
     /**
@@ -747,29 +755,25 @@ class User implements UserInterface
      */
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        if (($this->getLibelleVoie() == null || $this->getLibelleVoie() == '') && ($this->getLieuDit() == null || $this->getLieuDit() == ''))
-        {
+        if (($this->getLibelleVoie() == null || $this->getLibelleVoie() == '') && ($this->getLieuDit() == null || $this->getLieuDit() == '')) {
             $context->buildViolation('L\'adresse est un champ obligatoire.')
-            ->atPath('libelleVoie')
-            ->addViolation();
+                ->atPath('libelleVoie')
+                ->addViolation();
         }
-        if (($this->getLibelleVoie() != null || $this->getTypeVoie() != null)  && $this->getNumeroVoie() == null)
-        {
+        if (($this->getLibelleVoie() != null || $this->getTypeVoie() != null)  && $this->getNumeroVoie() == null) {
             $context->buildViolation('Le numéro de la voie est obligatoire.')
-            ->atPath('numeroVoie')
-            ->addViolation();
+                ->atPath('numeroVoie')
+                ->addViolation();
         }
-        if (($this->getNumeroVoie() != null || $this->getTypeVoie() != null)  && $this->getLibelleVoie() == null)
-        {
+        if (($this->getNumeroVoie() != null || $this->getTypeVoie() != null)  && $this->getLibelleVoie() == null) {
             $context->buildViolation('Le nom de la voie est obligatoire.')
-            ->atPath('libelleVoie')
-            ->addViolation();
+                ->atPath('libelleVoie')
+                ->addViolation();
         }
-        if (($this->getNumeroVoie() != null || $this->getLibelleVoie() != null)  && $this->getTypeVoie() == null)
-        {
+        if (($this->getNumeroVoie() != null || $this->getLibelleVoie() != null)  && $this->getTypeVoie() == null) {
             $context->buildViolation('Le type de voie est obligatoire.')
-            ->atPath('typeVoie')
-            ->addViolation();
+                ->atPath('typeVoie')
+                ->addViolation();
         }
     }
 

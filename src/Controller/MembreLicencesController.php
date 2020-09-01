@@ -169,6 +169,11 @@ class MembreLicencesController extends AbstractController
             if ($form->isValid()) {
                 $licence->setDateValidationInscription(new \DateTime("now"));
                 $licence->setUserValidationInscription($this->getUser());
+
+                $membre = $licence->getMembre();
+                $membre->addRole('ROLE_USER');
+
+                $this->EnregistreMembre($membre);
                 $this->EnregistreLicence($licence);
 
                 $this->addFlash('success', 'Inscription validée : licence à saisir.');
