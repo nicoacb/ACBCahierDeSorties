@@ -60,11 +60,13 @@
 		Ces documents sont disponibles sur notre site :
 		<a href="https://www.aviron-bourges.org/ramer-a-bourges/" target="_blank">https://www.aviron-bourges.org/ramer-a-bourges/</a>
 	</p>
-	<p>Vous pouvez :<br/>
-		<br/>
-		<a href="{{ path('aviron_membre_licences_preinscription') }}" class="btn btn-default">
-			<i class="glyphicon glyphicon-plus"></i>
-			Effectuer une nouvelle demande pour une autre personne
-		</a>
-	</p>
+	{% if reinscription == false %}
+		<p>Vous pouvez :<br/>
+			<br/>
+			<a href="{{ path('aviron_membre_licences_preinscription') }}" class="btn btn-default">
+				<i class="glyphicon glyphicon-plus"></i>
+				Effectuer une nouvelle demande pour une autre personne
+			</a>
+		</p>
+	{% endif %}
 {% endblock %}

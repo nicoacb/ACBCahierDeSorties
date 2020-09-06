@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PreinscriptionIdentiteType extends AbstractType
@@ -138,6 +140,13 @@ class PreinscriptionIdentiteType extends AbstractType
                     'placeholder' => 'Uniquement si vous avez déjà pris une licence dans un autre club'
                 )
             ));
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $nom = $event->getData()->getNom();
+            $event->getForm()->add('nom', TextType::class, array('disabled' => ($nom !== null)));
+            $prenom  = $event->getData()->getNom();
+            $event->getForm()->add('prenom', TextType::class, array('disabled' => ($prenom !== null)));
+        });
     }
 
     /**

@@ -71,18 +71,14 @@ class MembreLicencesController extends AbstractController
 
                 $flow->reset();
 
-                $email = (new TemplatedEmail())
-                    ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
-                    ->to($membre->getEmail())
-                    ->subject('Demande d\'inscription reçue')
-                    ->htmlTemplate('membre_licences/emailpreinscription.html.twig')
-                    ->context([
-                        'membre' => $membre
-                    ]);
+                $this->EnvoyerMailInscription($mailer, $membre);
 
-                $mailer->send($email);
-
-                return $this->render('membre_licences/preinscriptionenvoyee.html.twig');
+                return $this->render(
+                    'membre_licences/preinscriptionenvoyee.html.twig',
+                    array(
+                        'reinscription'   => false
+                    )
+                );
             }
         }
 
@@ -92,7 +88,7 @@ class MembreLicencesController extends AbstractController
         ]);
     }
 
-    public function reinscription(ReinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session)
+    public function reinscription(ReinscriptionFlow $flow, UserPasswordEncoderInterface $encoder, SessionInterface $session, MailerInterface $mailer)
     {
         $membre = $this->getUser();
 
@@ -125,8 +121,15 @@ class MembreLicencesController extends AbstractController
                 $session->set('idFicheInscription', $licence->getId());
 
                 $flow->reset();
+                
+                $this->EnvoyerMailInscription($mailer, $membre);
 
-                return $this->render('membre_licences/preinscriptionenvoyee.html.twig');
+                return $this->render(
+                    'membre_licences/preinscriptionenvoyee.html.twig',
+                    array(
+                        'reinscription'   => true
+                    )
+                );
             }
         }
 
@@ -297,5 +300,19 @@ class MembreLicencesController extends AbstractController
     {
         $this->entityManager->persist($membre);
         $this->entityManager->flush();
+    }
+
+    private function EnvoyerMailInscription($mailer, $membre)
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
+            ->to($membre->getEmail())
+            ->subject('Demande d\'inscription reçue')
+            ->htmlTemplate('membre_licences/emailpreinscription.html.twig')
+            ->context([
+                'membre' => $membre
+            ]);
+
+        $mailer->send($email);
     }
 }

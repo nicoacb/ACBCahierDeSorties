@@ -165,7 +165,7 @@ class UserController extends AbstractController
         $membre = $this->DonneMembre($id);
 
         $email = (new TemplatedEmail())
-            ->from(new Address('noreply@mytrainingbook.fr', 'Aviron Club de Bourges'))
+            ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
             ->to($membre->getEmail())
             ->subject('Votre compte Aviron Club de Bourges')
             ->htmlTemplate('user/envoyerloginparmail.html.twig')
@@ -174,7 +174,7 @@ class UserController extends AbstractController
             ]);
 
         /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
-        $sentEmail = $mailer->send($email);
+        $mailer->send($email);
 
         $this->addFlash('success', 'Mail envoyé à ' & $membre->getPrenomNom() & '.');
 
