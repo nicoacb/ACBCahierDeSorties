@@ -109,6 +109,11 @@ class MembreLicences
      */
     private $avecAttestationCompetition;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateImpressionFiche;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -326,6 +331,18 @@ class MembreLicences
     public function setAvecAttestationCompetition(?bool $avecAttestationCompetition): self
     {
         $this->avecAttestationCompetition = $avecAttestationCompetition;
+
+        return $this;
+    }
+
+    public function getDateImpressionFiche(): ?\DateTimeInterface
+    {
+        return $this->dateImpressionFiche;
+    }
+
+    public function setDateImpressionFiche(?\DateTimeInterface $dateImpressionFiche): self
+    {
+        $this->dateImpressionFiche = $dateImpressionFiche;
 
         return $this;
     }

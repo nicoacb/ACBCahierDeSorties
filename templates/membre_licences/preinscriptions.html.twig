@@ -115,4 +115,60 @@
 			</tbody>
 		</table>
 	</div>
+
+	<h2 class="page-header">Fiches d'inscription à imprimer</h2>
+
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Pr&eacute;nom</th>
+					<th>Nom</th>
+					<th>Email</th>
+					<th>Date de naissance</th>
+					<th>Type de licence</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for demande in fichesaimprimer %}
+					<tr>
+						<td>{{ demande.membre.prenom }}</td>
+						<td>{{ demande.membre.nom }}</td>
+						<td>{{ demande.membre.email }}</td>
+						<td>{{ demande.membre.datenaissance | date('d/m/Y') }}</td>
+						<td>
+							{% if (demande.typelicence == 1) %}Licence A
+							{% endif %}
+							{% if (demande.typelicence == 2) %}Licence U
+							{% endif %}
+							{% if (demande.typelicence == 3) %}D7
+							{% endif %}
+							{% if (demande.typelicence == 4) %}D30
+							{% endif %}
+							{% if (demande.typelicence == 5) %}D90
+							{% endif %}
+						</td>
+						<td class="text-nowrap">
+							<a href="{{ path('aviron_membre_licences_voir_fiche_inscription', {'id': demande.id}) }}" class="btn btn-info" title="Envoyer le login par mail">
+								<i class="glyphicon glyphicon-search"></i>
+								Voir la fiche d'inscription
+							</a>
+							<a href="{{ path('aviron_membre_licences_marquer_comme_imprimee', {'id': demande.id}) }}" class="btn btn-success" title="Marquer comme imprimée">
+								<i class="glyphicon glyphicon-ok"></i>
+								Marquer comme imprimée
+							</a>
+							<a href="{{ path('aviron_membre_licences_supprimer_inscription', {'id': demande.id}) }}" class="btn btn-danger" title="Supprimer la demande d'inscription">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">Pas (encore !) de fiche d'inscription à imprimer</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endblock %}
