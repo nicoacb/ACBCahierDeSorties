@@ -20,7 +20,7 @@ class EnviesPratique
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="enviesPratiques")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="enviesPratiques", cascade={"persist", "remove"})
      * @ORM\JoinTable(name="gestion_aviron_envies_pratique_membre")
      */
     private $membre;
@@ -53,6 +53,8 @@ class EnviesPratique
         if (!$this->membre->contains($membre)) {
             $this->membre[] = $membre;
         }
+
+        $membre->addEnviesPratique($this);
 
         return $this;
     }

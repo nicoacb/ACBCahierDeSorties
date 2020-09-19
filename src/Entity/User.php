@@ -196,7 +196,7 @@ class User implements UserInterface
     private $entrepriseProfessionEcole;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\EnviesPratique", mappedBy="membre")
+     * @ORM\ManyToMany(targetEntity="App\Entity\EnviesPratique", inversedBy="membre")
      * @ORM\JoinTable(name="gestion_aviron_envies_pratique_membre")
      */
     private $enviesPratiques;
