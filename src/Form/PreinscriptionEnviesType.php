@@ -34,7 +34,8 @@ class PreinscriptionEnviesType extends AbstractType
                 'multiple'      => false,
                 'label'         => 'Je pense venir au Club',
                 'required'      => false,
-                'placeholder'   => 'je ne sais pas encore'
+                'placeholder'   => 'je ne sais pas encore',
+                'by_reference'  => false
             ))
             ->add('engagementAssociation', EngagementAssociationType::class, array(
                 'label'         => 'Mon engagement dans l\'association'
