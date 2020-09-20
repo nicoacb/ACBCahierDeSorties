@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\MotDePasseOublieType;
 use App\Form\MotDePasseType;
 use App\Form\NouveauMotDePasseType;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -14,11 +14,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthentificationController extends AbstractController
 {
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -133,6 +141,9 @@ class AuthentificationController extends AbstractController
 
             $this->addFlash('success', 'Votre mot de passe à bien été changé !');
 
+            $token = new UsernamePasswordToken($membre, null, 'main', $membre->getRoles());
+            $this->get('security.token_storage')->setToken($token);
+
             return $this->redirectToRoute('aviron_accueil');
         }
 
@@ -143,22 +154,12 @@ class AuthentificationController extends AbstractController
 
     private function DonneMembreParUsername($username)
     {
-        $membre = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(User::class)
-            ->findOneByUsername($username);
-
-        return $membre;
+        return $this->userRepository->findOneByUsername($username);
     }
 
     private function DonneMembreParToken($token)
     {
-        $membre = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(User::class)
-            ->findOneByConfirmationToken($token);
-
-        return $membre;
+        return $this->userRepository->findOneByConfirmationToken($token);
     }
 
     private function GenereToken()
