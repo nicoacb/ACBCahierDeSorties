@@ -122,6 +122,10 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180)
+     * @Assert\Email(
+     *     message = "{{ value }} n'est pas une adresse email valide.",
+     *     groups={"flow_preinscription_step3", "flow_reinscription_step2"}
+     * )
      */
     private $email;
 
