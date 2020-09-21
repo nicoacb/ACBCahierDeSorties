@@ -324,7 +324,7 @@ class User implements UserInterface
      */
     public function getNom()
     {
-        return $this->nom;
+        return mb_convert_case($this->nom, MB_CASE_TITLE);
     }
 
     /**
@@ -348,7 +348,7 @@ class User implements UserInterface
      */
     public function getPrenom()
     {
-        return $this->prenom;
+        return mb_convert_case($this->prenom, MB_CASE_TITLE);
     }
 
     /**
@@ -358,7 +358,7 @@ class User implements UserInterface
      */
     public function getPrenomNom()
     {
-        return $this->prenom . ' ' . $this->nom;
+        return mb_convert_case($this->prenom . ' ' . $this->nom, MB_CASE_TITLE);
     }
 
     /**
