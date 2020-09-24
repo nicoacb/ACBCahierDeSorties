@@ -176,7 +176,7 @@ class UserController extends AbstractController
         /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
         $mailer->send($email);
 
-        $this->addFlash('success', 'Mail envoyé à ' & $membre->getPrenomNom() & '.');
+        $this->addFlash('success', 'Mail envoyé à ' . $membre->getPrenomNom() . ' (' . $membre->getEmail() . ').');
 
         // On redirige vers la liste des membres
         return $this->redirectToRoute('aviron_users_liste');
