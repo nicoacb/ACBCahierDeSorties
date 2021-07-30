@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserModificationType;
 use App\Helper\ChainesHelper;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,16 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class UserController extends AbstractController
 {
+    private $entityManager;
+    private $userRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+        UserRepository $userRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -28,10 +40,7 @@ class UserController extends AbstractController
 
         $nbParPage = $this->getParameter('nbUsersParPage');
 
-        $listeUsers = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:User')
-            ->getMembres($page, $nbParPage);
+        $listeUsers = $this->userRepository->getMembres($page, $nbParPage);
 
         // On calcule le nombre total de pages grâces au count($listeUsers) qui retourne 
         // le nombre total de membres
@@ -78,7 +87,7 @@ class UserController extends AbstractController
                 $user->setEnabled(1);
                 $user->setPassword($encoder->encodePassword($user, bin2hex(random_bytes(12))));
 
-                $this->persistUser($user);
+                $this->EnregistreMembre($user);
 
                 $this->addFlash('success', 'Membre bien ajouté.');
 
@@ -112,7 +121,7 @@ class UserController extends AbstractController
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
                 // On enregistre l'objet $user en base de données
-                $this->persistUser($user);
+                $this->EnregistreMembre($user);
 
                 $this->addFlash('success', 'Membre bien modifié.');
 
@@ -138,7 +147,7 @@ class UserController extends AbstractController
         $user->setDatesupp(new \DateTime("now"));
 
         // On enregistre l'objet $user en base de données
-        $this->persistUser($user);
+        $this->EnregistreMembre($user);
 
         $this->addFlash('success', 'Membre bien supprimé.');
 
@@ -185,10 +194,7 @@ class UserController extends AbstractController
     private function DonneMembre($id)
     {
         // On récupère l'entité du membre correspondante à l'id $id
-        $user = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:User')
-            ->find($id);
+        $user = $this->userRepository->find($id);
 
         // Si $user est null, l'id n'existe pas
         if (null == $user) {
@@ -198,10 +204,9 @@ class UserController extends AbstractController
         return $user;
     }
 
-    private function persistUser($user)
+    private function EnregistreMembre($user)
     {
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

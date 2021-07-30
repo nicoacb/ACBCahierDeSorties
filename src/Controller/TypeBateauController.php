@@ -4,13 +4,25 @@ namespace App\Controller;
 
 use App\Entity\TypeBateau;
 use App\Form\TypeBateauType;
+use App\Repository\TypeBateauRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class TypeBateauController extends Controller
+class TypeBateauController extends AbstractController
 {
+    private $entityManager;
+    private $typeBateauRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+        TypeBateauRepository $typeBateauRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->typeBateauRepository = $typeBateauRepository;
+    }
+
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
@@ -22,9 +34,7 @@ class TypeBateauController extends Controller
             throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
         }
 
-        $typesbateau = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('App:TypeBateau')
+        $typesbateau = $this->typeBateauRepository
     	    ->getListeTypesBateau();
 
         return $this->render('typebateau/index.html.twig', array('listTypesBateau' => $typesbateau));
@@ -49,7 +59,7 @@ class TypeBateauController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $typebateau en base de données
-                $this->persistTypeBateau($typebateau);
+                $this->EnregistreTypeBateau($typebateau);
 
                 $this->addFlash('success', 'Type de bateau bien ajouté.');
 
@@ -68,10 +78,7 @@ class TypeBateauController extends Controller
     */
     public function modifier(Request $request, $id)
     {
-        // On récupère l'entité du type de bateau correspondante à l'id $id
-        $typebateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:TypeBateau')
+        $typebateau = $this->typeBateauRepository
             ->find($id);
 
         // Si $typebateau est null, l'id n'existe pas
@@ -90,7 +97,7 @@ class TypeBateauController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $typebateau en base de données
-                $this->persistTypeBateau($typebateau);
+                $this->EnregistreTypeBateau($typebateau);
 
                 $this->addFlash('success', 'Type de bateau bien enregistré.');
 
@@ -103,10 +110,9 @@ class TypeBateauController extends Controller
                         array('form' => $form->createView()));
     }
 
-    private function persistTypeBateau($typebateau)
+    private function EnregistreTypeBateau($typebateau)
     {
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($typebateau);
-        $em->flush();
+        $this->entityManager->persist($typebateau);
+        $this->entityManager->flush();
     }
 }

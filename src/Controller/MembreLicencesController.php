@@ -33,7 +33,9 @@ class MembreLicencesController extends AbstractController
     private $saisonRepository;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, MembreLicencesRepository $membreLicencesRepository, SaisonRepository $saisonRepository)
+    public function __construct(EntityManagerInterface $entityManager,
+        MembreLicencesRepository $membreLicencesRepository,
+        SaisonRepository $saisonRepository)
     {
         $this->membreLicencesRepository = $membreLicencesRepository;
         $this->saisonRepository = $saisonRepository;
@@ -138,6 +140,15 @@ class MembreLicencesController extends AbstractController
         return $this->render('membre_licences/reinscription.html.twig', [
             'form' => $form->createView(),
             'flow' => $flow,
+        ]);
+    }
+
+    public function inscriptionRecue()
+    {
+        $membre = $this->getUser();
+
+        return $this->render('membre_licences/inscriptionrecue.html.twig', [
+            'membre' => $membre
         ]);
     }
 

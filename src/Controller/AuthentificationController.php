@@ -6,6 +6,7 @@ use App\Form\MotDePasseOublieType;
 use App\Form\MotDePasseType;
 use App\Form\NouveauMotDePasseType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -20,10 +21,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthentificationController extends AbstractController
 {
+    private $entityManager;
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $entityManager, 
+        UserRepository $userRepository)
     {
+        $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
     }
 
@@ -54,7 +58,6 @@ class AuthentificationController extends AbstractController
 
     public function changerMotDePasse(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
-        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $form = $this->createForm(MotDePasseType::class, $user);
 
@@ -66,8 +69,7 @@ class AuthentificationController extends AbstractController
                 $newEncodedPassword = $encoder->encodePassword($user, $form->get('nouveauMotDePasse')->getData());
                 $user->setPassword($newEncodedPassword);
 
-                $em->persist($user);
-                $em->flush();
+                $this->EnregistreMembre($user);
 
                 $this->addFlash('success', 'Votre mot de passe à bien été changé !');
 
@@ -95,9 +97,7 @@ class AuthentificationController extends AbstractController
             if (null != $membre) {
                 $token = $this->GenereToken();
                 $membre->setConfirmationToken($token);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($membre);
-                $em->flush();
+                $this->EnregistreMembre($membre);
 
                 $email = (new TemplatedEmail())
                     ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
@@ -135,9 +135,7 @@ class AuthentificationController extends AbstractController
             $membre->setPassword($newEncodedPassword);
             $membre->setConfirmationToken(null);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($membre);
-            $em->flush();
+            $this->EnregistreMembre($membre);
 
             $this->addFlash('success', 'Votre mot de passe à bien été changé !');
 
@@ -160,6 +158,12 @@ class AuthentificationController extends AbstractController
     private function DonneMembreParToken($token)
     {
         return $this->userRepository->findOneByConfirmationToken($token);
+    }
+
+    private function EnregistreMembre($membre)
+    {
+        $this->entityManager->persist($membre);
+        $this->entityManager->flush();
     }
 
     private function GenereToken()

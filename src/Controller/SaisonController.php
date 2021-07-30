@@ -4,21 +4,32 @@ namespace App\Controller;
 
 use App\Entity\Saison;
 use App\Form\SaisonType;
+use App\Repository\SaisonRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class SaisonController extends Controller
+class SaisonController extends AbstractController
 {
+    private $entityManager;
+    private $saisonRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+        SaisonRepository $saisonRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->saisonRepository = $saisonRepository;
+    }
+
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
     public function index()
     {
-    	$listeSaisons = $this->getDoctrine()
-    	->getManager()
-    	->getRepository('App:Saison')
-    	->findAll();
+    	$listeSaisons = $this->saisonRepository
+    	    ->findAll();
     	
         return $this->render('saison/index.html.twig', array('listeSaisons' => $listeSaisons));
     }
@@ -32,9 +43,7 @@ class SaisonController extends Controller
         $form   = $this->get('form.factory')->create(SaisonType::class, $saison);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($saison);
-            $em->flush();
+            $this->EnregistreSaison($saison);
 
             $this->addFlash('success', 'Saison bien enregistrée.');
 
@@ -42,7 +51,7 @@ class SaisonController extends Controller
         }
 
         return $this->render('saison/ajouter.html.twig', array(
-        'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -51,10 +60,7 @@ class SaisonController extends Controller
     */
     public function modifier(Request $request, $id)
     {
-        // On récupère l'entité de la saison correspondant à l'id $id
-        $saison = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Saison')
+        $saison = $this->saisonRepository
             ->find($id);
 
         // Si $saison est null, l'id n'existe pas
@@ -72,10 +78,7 @@ class SaisonController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $saison en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($saison);
-                $em->flush();
+                $this->EnregistreSaison($saison);
 
                 $this->addFlash('success', 'Saison bien enregistrée.');
 
@@ -92,10 +95,7 @@ class SaisonController extends Controller
     */
     public function supprimer(Request $request, $id)
     {
-        // On récupère l'entité de la saison correspondante à l'id $id
-        $saison = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Saison')
+        $saison = $this->saisonRepository
             ->find($id);
 
         // Si $saison est null, l'id n'existe pas
@@ -103,14 +103,23 @@ class SaisonController extends Controller
             throw new NotFoundHttpException("La saison d'id ".$id." n'existe pas.");
         }
 
-        // On supprime l'objet $saison en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->remove($saison);
-        $em->flush();
+        $this->SupprimeSaison($saison);
 
         $this->addFlash('success', 'Saison bien supprimée.');
 
         // On redirige vers la liste des saisons
         return $this->redirectToRoute('aviron_sortie_saison_liste');
+    }
+
+    private function EnregistreSaison($saison)
+    {
+        $this->entityManager->persist($saison);
+        $this->entityManager->flush();
+    }
+
+    private function SupprimeSaison($saison)
+    {
+        $this->entityManager->remove($saison);
+        $this->entityManager->flush();
     }
 }

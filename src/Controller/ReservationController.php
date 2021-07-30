@@ -6,31 +6,41 @@ use App\Entity\Entrainement;
 use App\Entity\Reservation;
 use App\Form\EntrainementType;
 use App\Form\ReservationType;
+use App\Repository\EntrainementRepository;
+use App\Repository\ReservationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ReservationController extends Controller
+class ReservationController extends AbstractController
 {
+    private $entityManager;
+    private $entrainementRepository;
+    private $reservationRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+        EntrainementRepository $entrainementRepository,
+        ReservationRepository $reservationRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->entrainementRepository = $entrainementRepository;
+        $this->reservationRepository = $reservationRepository;
+    }
+
     /**
      * @Security("has_role('ROLE_USER')")
      */
     public function listerEntrainementsAVenir()
     {
-        $listeEntrainementsAVenir = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Entrainement')
+        $listeEntrainementsAVenir = $this->entrainementRepository
             ->DonneEntrainementsAVenir();
 
-        $listeEntrainementsPasses = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Entrainement')
+        $listeEntrainementsPasses = $this->entrainementRepository
             ->DonneEntrainementsPasses();
 
-        $reservations = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Reservation')
+        $reservations = $this->reservationRepository
             ->DonneReservations($this->getUser()->getId());
 
         $estInscrit = array();
@@ -59,9 +69,7 @@ class ReservationController extends Controller
 
     private function DonneNombreDeReservations($identrainement)
     {
-        return $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Reservation')
+        return $this->reservationRepository
             ->CompteNombreDeReservations($identrainement);
     }
 
@@ -131,9 +139,7 @@ class ReservationController extends Controller
         $reservation = new Reservation();
 
         // On récupère l'entité de la sortie correspondante à l'id $id
-        $reservation = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Reservation')
+        $reservation = $this->reservationRepository
             ->findOneBy([
                 'identrainement' => $identrainement,
                 'idut' => $idmembre,
@@ -157,9 +163,7 @@ class ReservationController extends Controller
      */
     public function participants($id)
     {
-        $participants =  $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Reservation')
+        $participants =  $this->reservationRepository
             ->findBy(
                 [
                     'identrainement' => $id,
@@ -255,24 +259,19 @@ class ReservationController extends Controller
 
     private function SauvegardeEntrainement($entrainement)
     {
-        // On enregistre l'objet $entrainement en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($entrainement);
-        $em->flush();
+        $this->entityManager->persist($entrainement);
+        $this->entityManager->flush();
     }
 
     private function persistReservation($reservation)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($reservation);
-        $em->flush();
+        $this->entityManager->persist($reservation);
+        $this->entityManager->flush();
     }
 
     private function DonneEntrainement($id)
     {
-        return $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Entrainement')
+        return $this->entrainementRepository
             ->find($id);
     }
 }

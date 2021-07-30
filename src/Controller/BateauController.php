@@ -4,22 +4,31 @@ namespace App\Controller;
 
 use App\Entity\Bateau;
 use App\Form\BateauType;
+use App\Repository\BateauRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BateauController extends Controller
+class BateauController extends AbstractController
 {
+    private $entityManager;
+    private $bateauRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, 
+        BateauRepository $bateauRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->bateauRepository = $bateauRepository;
+    }
+
     /**
     * @Security("has_role('ROLE_ADMIN')")
     */
     public function index()
     {
-        $listeBateaux = $this->getDoctrine()
-    	->getManager()
-    	->getRepository(Bateau::class)
-        ->getListeBateaux();
+        $listeBateaux = $this->bateauRepository->getListeBateaux();
 
         return $this->render('bateau/index.html.twig', array('listeBateaux' => $listeBateaux));
     }
@@ -43,7 +52,7 @@ class BateauController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $bateau en base de données
-                $this->persistBateau($bateau);
+                $this->EnregistreBateau($bateau);
 
                 $this->addFlash('notice', 'Bateau bien enregistré.');
 
@@ -74,7 +83,7 @@ class BateauController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $bateau en base de données
-                $this->persistBateau($bateau);
+                $this->EnregistreBateau($bateau);
 
                 $this->addFlash('success', 'Bateau bien enregistré.');
 
@@ -97,7 +106,7 @@ class BateauController extends Controller
         $bateau->setDatesupp(new \DateTime("now"));
 
         // On enregistre l'objet $bateau en base de données
-        $this->persistBateau($bateau);
+        $this->EnregistreBateau($bateau);
 
         $this->addFlash('success', 'Bateau bien supprimé.');
 
@@ -116,7 +125,7 @@ class BateauController extends Controller
         $bateau->setDatehorsservice(new \DateTime("now"));
 
         // On enregistre l'objet $bateau en base de données
-        $this->persistBateau($bateau);
+        $this->EnregistreBateau($bateau);
 
         $this->addFlash('success', 'Bateau mis hors-service.');
 
@@ -135,9 +144,9 @@ class BateauController extends Controller
         $bateau->setDatehorsservice(null);
 
         // On enregistre l'objet $bateau en base de données
-        $this->persistBateau($bateau);
+        $this->EnregistreBateau($bateau);
 
-        $this->addFlash('success', 'Bateau mis hors-service.');
+        $this->addFlash('success', 'Bateau remis en service.');
 
         // On redirige vers la liste des bateaux
         return $this->redirectToRoute('aviron_bateaux_home');
@@ -145,13 +154,8 @@ class BateauController extends Controller
 
     private function getBateauById($id)
     {
-         // On récupère l'entité du bateau correspondant à l'id $id
-         $bateau = $this->getDoctrine()
-         ->getManager()
-         ->getRepository('App:Bateau')
-         ->find($id);
+        $bateau = $this->bateauRepository->find($id);
 
-        // Si $bateau est null, l'id n'existe pas
         if(null == $bateau) {
             throw new NotFoundHttpException("Le bateau d'id ".$id." n'existe pas.");
         }
@@ -159,11 +163,9 @@ class BateauController extends Controller
         return $bateau;
     }
 
-    private function persistBateau($bateau)
+    private function EnregistreBateau($bateau)
     {
-        // On enregistre l'objet $bateau en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($bateau);
-        $em->flush();
+        $this->entityManager->persist($bateau);
+        $this->entityManager->flush();
     }
 }

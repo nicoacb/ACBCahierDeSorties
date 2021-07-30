@@ -8,13 +8,33 @@ use App\Form\SortieAddType;
 use App\Form\SortieEndType;
 use App\Statistiques\StatistiquesSorties;
 use App\Entity\User;
+use App\Repository\BateauRepository;
+use App\Repository\SortieRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class SortieController extends Controller
+class SortieController extends AbstractController
 {
+    private $entityManager;
+    private $sortieRepository;
+    private $bateauRepository;
+    private $userRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+        SortieRepository $sortieRepository, 
+        BateauRepository $bateauRepository,
+        UserRepository $userRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->sortieRepository = $sortieRepository;
+        $this->bateauRepository = $bateauRepository;
+        $this->userRepository = $userRepository;
+    }
+
     /**
     * @Security("has_role('ROLE_USER')")
     */
@@ -40,16 +60,12 @@ class SortieController extends Controller
         // On récupère la liste des sorties en cours si on est sur la première page
         $listsorties = NULL;
         if ($page == 1) {
-            $listsorties = $this->getDoctrine()
-    	        ->getManager()
-    	        ->getRepository('App:Sortie')
+            $listsorties = $this->sortieRepository
                 ->getSortiesEnCours();
         }
         
         // On récupère la liste des sorties terminées
-        $listSortiesTerminees = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('App:Sortie')
+        $listSortiesTerminees = $this->sortieRepository
     	    ->getSortiesTerminees($page, $nbParPage);
 
         // On calcule le nombre total de pages grâces au count($listSortiesTerminees) qui retourne 
@@ -139,10 +155,7 @@ class SortieController extends Controller
     */
     public function membre(Request $request, $idmembre)
     {
-        // On récupère l'entité du membre correspondante à l'id $idmembre
-        $membre = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:User')
+        $membre = $this->userRepository
             ->find($idmembre);
 
         // Si $membre est null, l'id n'existe pas
@@ -151,9 +164,7 @@ class SortieController extends Controller
         }
 
         // On récupère la liste des sorties terminées
-        $sorties = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('App:Sortie')
+        $sorties = $this->sortieRepository
             ->getSortiesMembre($idmembre);
 
         return $this->render('sortie/membre.html.twig',
@@ -168,10 +179,7 @@ class SortieController extends Controller
     */
     public function bateau(Request $request, $idbateau)
     {
-        // On récupère l'entité du membre correspondante à l'id $idmembre
-        $bateau = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Bateau')
+        $bateau = $this->bateauRepository
             ->find($idbateau);
 
         // Si $membre est null, l'id n'existe pas
@@ -180,9 +188,7 @@ class SortieController extends Controller
         }
 
         // On récupère la liste des sorties terminées
-        $sorties = $this->getDoctrine()
-    	    ->getManager()
-    	    ->getRepository('App:Sortie')
+        $sorties = $this->sortieRepository
             ->getSortiesBateau($idbateau);
 
         return $this->render('sortie/bateau.html.twig',
@@ -214,10 +220,7 @@ class SortieController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $sortie en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($sortie);
-                $em->flush();
+                $this->EnregistreSortie($sortie);
 
                 $this->addFlash('success', 'Sortie bien enregistrée.');
 
@@ -235,19 +238,15 @@ class SortieController extends Controller
     */
     public function terminer(Request $request, $id)
     {
-        // On récupère l'entité de la sortie correspondante à l'id $id
-        $sortie = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Sortie')
-            ->find($id);
-
-        // On initialise l'heure de retour à maintenant pour aider à la saisie
-        $sortie->setHretour($this->upMinutesTime(new \DateTime, 5));
+        $sortie = $this->getSortieById($id);
 
         // Si sortie est null, l'id n'existe pas
         if(null == $sortie) {
             throw new NotFoundHttpException("La sortie d'id ".$id." n'existe pas.");
         }
+
+        // On initialise l'heure de retour à maintenant pour aider à la saisie
+        $sortie->setHretour($this->upMinutesTime(new \DateTime, 5));       
 
         // On génère le formulaire
         $form = $this->createForm(SortieEndType::class, $sortie);
@@ -259,10 +258,7 @@ class SortieController extends Controller
 
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
-                // On enregistre l'objet $sortie en base de données
-                $em = $this->GetDoctrine()->getManager();
-                $em->persist($sortie);
-                $em->flush();
+                $this->EnregistreSortie($sortie);
 
                 $this->addFlash('success', 'Sortie bien enregistrée.');
 
@@ -283,20 +279,12 @@ class SortieController extends Controller
     */
     public function view($id)
     {
-        // On récupère le repository
-        $reposity = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('App:Sortie');
+        $sortie = $this->getSortieById($id);
 
-        // On récupère l'entité de la sortie correspondante à l'id $id
-        $sortie = $reposity->find($id);
-
-        // Si sortie est null, l'id n'existe pas
         if(null == $sortie) {
             throw new NotFoundHttpException("La sortie d'id ".$id." n'existe pas.");
         }
 
-        // On renvoie la vue en réponse
         return $this->render('sortie/view.html.twig', array('sortie' => $sortie));
     }
 
@@ -319,7 +307,7 @@ class SortieController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if($form->isValid()) {
                 // On enregistre l'objet $sortie en base de données
-                $this->persistSortie($sortie);
+                $this->EnregistreSortie($sortie);
 
                 $this->addFlash('success', 'Sortie bien modifiée.');
 
@@ -342,7 +330,7 @@ class SortieController extends Controller
         $sortie->setDatesupp(new \DateTime("now"));
 
         // On enregistre l'objet $sortie en base de données
-        $this->persistSortie($sortie);
+        $this->EnregistreSortie($sortie);
 
         $this->addFlash('success', 'Sortie bien supprimée.');
 
@@ -352,18 +340,14 @@ class SortieController extends Controller
 
     private function getSortieById($id)
     {
-        return $this->getDoctrine()
-        ->getManager()
-        ->getRepository('App:Sortie')
-        ->find($id);
+        return $this->sortieRepository
+            ->find($id);
     }
 
-    private function persistSortie($sortie)
+    private function EnregistreSortie($sortie)
     {
-        // On enregistre l'objet $sortie en base de données
-        $em = $this->GetDoctrine()->getManager();
-        $em->persist($sortie);
-        $em->flush();
+        $this->entityManager->persist($sortie);
+        $this->entityManager->flush();
     }
 
     private function upMinutesTime($datetime, $interval)
