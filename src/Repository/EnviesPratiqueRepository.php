@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\EnviesPratique;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method EnviesPratique|null find($id, $lockMode = null, $lockVersion = null)
