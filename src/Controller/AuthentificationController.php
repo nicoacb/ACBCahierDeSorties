@@ -71,7 +71,7 @@ class AuthentificationController extends AbstractController
 
                 $this->EnregistreMembre($user);
 
-                $this->addFlash('success', 'Votre mot de passe à bien été changé !');
+                $this->addFlash('success', 'Votre mot de passe a bien été changé !');
 
                 return $this->redirectToRoute('aviron_accueil');
             } else {
@@ -137,7 +137,7 @@ class AuthentificationController extends AbstractController
 
             $this->EnregistreMembre($membre);
 
-            $this->addFlash('success', 'Votre mot de passe à bien été changé !');
+            $this->addFlash('success', 'Votre mot de passe a bien été changé !');
 
             $token = new UsernamePasswordToken($membre, null, 'main', $membre->getRoles());
             $this->get('security.token_storage')->setToken($token);

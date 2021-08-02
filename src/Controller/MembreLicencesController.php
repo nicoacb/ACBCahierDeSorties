@@ -118,8 +118,6 @@ class MembreLicencesController extends AbstractController
             if ($flow->nextStep()) {
                 $form = $flow->createForm();
             } else {
-                $newEncodedPassword = $encoder->encodePassword($membre, $membre->getPassword());
-                $membre->setPassword($newEncodedPassword);
                 $this->EnregistreMembre($membre);
 
                 $session->set('idFicheInscription', $licence->getId());
