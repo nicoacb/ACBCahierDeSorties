@@ -70,6 +70,12 @@ aviron_membre_licences_marquer_comme_saisie:
     requirements:
         id: \d+
 
+aviron_membre_licences_marquer_comme_imprimee:
+    path:       /membres/marquercommeimprimee/{id}
+    controller: App\Controller\MembreLicencesController:marquerCommeImprimee
+    requirements:
+        id: \d+
+
 aviron_membre_licences_export_licences_a_saisir:
     path:       /membres/exportlicencesasaisir
     controller: App\Controller\ExportExcelController:exportLicencesASaisir
