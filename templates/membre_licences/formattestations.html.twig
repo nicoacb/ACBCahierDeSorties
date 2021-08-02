@@ -1,38 +1,46 @@
-<div class="well">
-	<p>
-		L'Aviron Club de Bourges est une association de forme loi 1901. Nous avons un <a href="https://www.aviron-bourges.org/lassociation/reglement-interieur/" target="_blank">règlement intérieur que vous devez consulter</a>.
-	</p>
-</div>
 {% for licence in form.licences %}
-	<div class="form-group">
-		<label for="accepteReglementInterieur" class="col-sm-3 control-label required">Règlement intérieur*</label>
-		<div class="col-sm-9">
+	{% if not licence.declareSavoirNager.vars.checked %}
+		<div class="well">
+			<p>
+				L'Aviron Club de Bourges est une association de forme loi 1901. Nous avons un <a href="https://www.aviron-bourges.org/lassociation/reglement-interieur/" target="_blank">règlement intérieur que vous devez consulter</a>.
+			</p>
+		</div>
+		<div class="form-group">
+			<label for="accepteReglementInterieur" class="col-sm-3 control-label required">Règlement intérieur*</label>
+			<div class="col-sm-9">
+				{{ form_widget(licence.accepteReglementInterieur) }}
+			</div>
+		</div>
+		<div class="well">
+			<p>
+				Même si nous sommes essentiellement sur l'eau et non dans l'eau, il est possible de chavirer. Il est donc impératif de savoir nager !<br/>
+				Pour les mineurs, il faut fournir une attestation de natation de 25 m et d’immersion qu'il est possible d'obtenir dans une piscine auprès d'un maître nageur.
+			</p>
+		</div>
+		<div class="form-group">
+			<label for="declareSavoirNager" class="col-sm-3 control-label required">Savoir Nager*</label>
+			<div class="col-sm-9">
+				{{ form_widget(licence.declareSavoirNager) }}
+			</div>
+		</div>
+		<div class="well">
+			<p>
+				L'Aviron Club de Bourges est une petite communauté.<br/>
+				Pour l'animer nous prenons des photos que nous publions sur notre site Internet et sur les réseaux sociaux (Facebook, Instagram).<br/>
+				En adhérant à l'Aviron Club de Bourges, vous consentez à nous accorder gratuitement votre droit à l'image. 
+			</p>
+		</div>
+		<div class="form-group">
+			<label for="declareSavoirNager" class="col-sm-3 control-label required">Droit à l'image*</label>
+			<div class="col-sm-9">
+				{{ form_widget(licence.autoriseDroitImage) }}
+			</div>
+		</div>
+	{% else %}
+		<div class="hidden">
 			{{ form_widget(licence.accepteReglementInterieur) }}
-		</div>
-	</div>
-<div class="well">
-	<p>
-		Même si nous sommes essentiellement sur l'eau et non dans l'eau, il est possible de chavirer. Il est donc impératif de savoir nager !<br/>
-		Pour les mineurs, il faut fournir une attestation de natation de 25 m et d’immersion qu'il est possible d'obtenir dans une piscine auprès d'un maître nageur.
-	</p>
-</div>
-	<div class="form-group">
-		<label for="declareSavoirNager" class="col-sm-3 control-label required">Savoir Nager*</label>
-		<div class="col-sm-9">
 			{{ form_widget(licence.declareSavoirNager) }}
-		</div>
-	</div>
-<div class="well">
-	<p>
-		L'Aviron Club de Bourges est une petite communauté.<br/>
-		Pour l'animer nous prenons des photos que nous publions sur notre site Internet et sur les réseaux sociaux (Facebook, Instagram).<br/>
-		En adhérant à l'Aviron Club de Bourges, vous consentez à nous accorder gratuitement votre droit à l'image. 
-	</p>
-</div>
-	<div class="form-group">
-		<label for="declareSavoirNager" class="col-sm-3 control-label required">Droit à l'image*</label>
-		<div class="col-sm-9">
 			{{ form_widget(licence.autoriseDroitImage) }}
 		</div>
-	</div>
+	{% endif %}
 {% endfor %}
