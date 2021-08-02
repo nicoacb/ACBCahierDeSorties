@@ -28,9 +28,10 @@ class MembreLicenceType extends AbstractType
                 'choices'   => array(
                     'Licence A' => 1,
                     'Licence U' => 2,
-                    'D7'        => 3,
-                    'D30'       => 4,
-                    'D90'       => 5
+                    'Licence I' => 3,
+                    'D90'       => 4,
+                    'D30'       => 5,
+                    'D7'        => 6
                 ),
                 'expanded'  => false,
                 'multiple'  => false,
