@@ -32,3 +32,6 @@ services:
 
     app.form.flow.preinscription:
         class: App\Form\PreinscriptionFlow
+
+    app.form.flow.reinscription:
+        class: App\Form\ReinscriptionFlow
