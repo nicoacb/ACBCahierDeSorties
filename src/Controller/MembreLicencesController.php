@@ -448,6 +448,7 @@ class MembreLicencesController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
             ->to($membre->getEmail())
+            ->bcc('contact@aviron-bourges.org')
             ->subject('Demande d\'inscription reçue')
             ->htmlTemplate('membre_licences/emailpreinscription.html.twig')
             ->context([
