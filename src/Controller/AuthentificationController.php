@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Form\MotDePasseOublieType;
 use App\Form\MotDePasseType;
 use App\Form\NouveauMotDePasseType;
+use App\Form\ReinscriptionType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -150,6 +152,76 @@ class AuthentificationController extends AbstractController
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function envoyerLienReinscriptionParMail(Request $request, MailerInterface $mailer, $idmembre)
+    {
+        $membre = $this->DonneMembreParId($idmembre);
+
+        $token = $this->GenereToken();
+        $membre->setReinscriptionToken($token);
+        $this->EnregistreMembre($membre);
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('nepasrepondre@avironclub.fr', 'Aviron Club de Bourges'))
+            ->to($membre->getEmail())
+            ->subject('Nouvelle saison - votre lien pour vour réinscrire')
+            ->htmlTemplate('authentification/emailenvoyerlienreinscription.html.twig')
+            ->context([
+                'membre' => $membre
+            ]);
+
+        /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
+        $mailer->send($email);
+
+        $this->addFlash('success', 'Mail envoyé à ' . $membre->getPrenomNom() . ' (' . $membre->getEmail() . ').');
+
+        // On redirige vers la liste des membres
+        return $this->redirectToRoute('aviron_users_liste');
+    }
+
+    public function reinscriptionToken(Request $request, $token)
+    {
+        $membre = $this->DonneMembreParReinscriptionToken($token);
+
+        if (null == $membre) {
+            throw new NotFoundHttpException("Ce lien a déjà été utilisé.");
+        }
+
+        $form = $this->createForm(ReinscriptionType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if(trim(strtoupper($form->get('email')->getData())) == trim(strtoupper($membre->getEmail())))
+            {
+                $sessionToken = new UsernamePasswordToken($membre, null, 'main', $membre->getRoles());
+                $this->get('security.token_storage')->setToken($sessionToken);
+
+                return $this->redirectToRoute('aviron_membre_licences_reinscription');
+            }
+            else
+            {
+                $this->addFlash('danger', 'L\'email saisi ne correpond pas à celui de votre compte !');
+            }
+        }
+
+        return $this->render('authentification/reinscription.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    private function DonneMembreParId($id)
+    {
+        $membre = $this->userRepository->find($id);
+
+        if (null == $membre) {
+            throw new NotFoundHttpException("Le membre d'id " . $id . " n'existe pas.");
+        }
+
+        return $membre;
+    }
+
     private function DonneMembreParUsername($username)
     {
         return $this->userRepository->findOneByUsername($username);
@@ -158,6 +230,11 @@ class AuthentificationController extends AbstractController
     private function DonneMembreParToken($token)
     {
         return $this->userRepository->findOneByConfirmationToken($token);
+    }
+
+    private function DonneMembreParReinscriptionToken($reinscriptionToken)
+    {
+        return $this->userRepository->findOneByReinscriptionToken($reinscriptionToken);
     }
 
     private function EnregistreMembre($membre)

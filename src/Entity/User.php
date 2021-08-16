@@ -221,6 +221,11 @@ class User implements UserInterface
     private $frequencePratique;
 
     /**
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $reinscriptionToken;
+
+    /**
      * Get id
      *
      * @return int
@@ -789,6 +794,18 @@ class User implements UserInterface
     public function setFrequencePratique(?FrequencePratique $frequencePratique): self
     {
         $this->frequencePratique = $frequencePratique;
+
+        return $this;
+    }
+
+    public function getReinscriptionToken(): ?string
+    {
+        return $this->reinscriptionToken;
+    }
+
+    public function setReinscriptionToken(?string $reinscriptionToken): self
+    {
+        $this->reinscriptionToken = $reinscriptionToken;
 
         return $this;
     }

@@ -114,6 +114,19 @@ authentification_nouveaumotdepasse:
     requirements:
         token: .+
 
+authentification_reinscription_token:
+    path:       /reinscription/{token}
+    controller: App\Controller\AuthentificationController:reinscriptionToken
+    requirements:
+        token: .+
+
+authentification_reinscription_lien_par_mail:
+    path:       /membres/envoyerlienreinscriptionparmail/{idmembre}
+    controller: App\Controller\AuthentificationController:envoyerLienReinscriptionParMail
+    requirements:
+        idmembre: \d+
+
+
 aviron_accueil:
     path:     /accueil
     controller: App\Controller\SortieController:accueil
