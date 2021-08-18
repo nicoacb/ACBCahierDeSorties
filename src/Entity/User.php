@@ -46,12 +46,6 @@ class User implements UserInterface
     protected $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Saison", cascade={"persist"})
-     * @ORM\JoinTable(name="gestion_aviron_saison_user")
-     */
-    private $saisons;
-
-    /**
      * @ORM\Column(name="nom", type="string", length=255)
      *
      * @Assert\NotBlank(message="Merci de renseigner votre nom.", groups={"Registration", "Profile"})
@@ -388,40 +382,6 @@ class User implements UserInterface
     public function getDatesupp()
     {
         return $this->datesupp;
-    }
-
-    /**
-     * Add saison
-     *
-     * @param \App\Entity\Saison $saison
-     *
-     * @return User
-     */
-    public function addSaison(\App\Entity\Saison $saison)
-    {
-        $this->saisons[] = $saison;
-
-        return $this;
-    }
-
-    /**
-     * Remove saison
-     *
-     * @param \App\Entity\Saison $saison
-     */
-    public function removeSaison(\App\Entity\Saison $saison)
-    {
-        $this->saisons->removeElement($saison);
-    }
-
-    /**
-     * Get saisons
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSaisons()
-    {
-        return $this->saisons;
     }
 
     public function getLastLogin(): ?\DateTimeInterface

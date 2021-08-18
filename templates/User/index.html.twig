@@ -4,14 +4,39 @@
   Liste des membres - {{ parent() }}
 {% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    function filtrer()
+    {
+        var route = '{{ path(app.request.attributes.get('_route')) }}';
+        var saison = document.getElementById("saison");
+        var valSaison = saison.options[saison.selectedIndex].value;
+        if (valSaison > 0)
+        {
+            route += '/1/' + valSaison;
+        }
+        window.location.href = route;
+    }
+</script>
+{% endblock %}
+
 {% block body %}
 
   <h2 class="page-header">Liste des membres du Club</h2>
   <p>
-    <a href="{{ path('aviron_users_ajouter') }}" class="btn btn-default">
+    <a href="{{ path('aviron_users_ajouter') }}" class="btn btn-default pull-left">
       <i class="glyphicon glyphicon-plus"></i>
       Ajouter un membre
     </a>
+    <div class="form-group pull-right">
+        <select id="saison" name="saison" class="form-control" onchange="filtrer()">
+            <option value="0">Saison</option>
+            {% for saison in saisons %}
+              <option {% if saison.id == saisonSelectionnee %} selected{% endif %} value="{{saison.id}}">{{saison.nom}}</option>
+            {% endfor %}
+        </select>
+    </div>
   </p>
 
   <div class="table-responsive">
@@ -48,7 +73,7 @@
               title="Supprimer le membre">
               <i class="glyphicon glyphicon-trash"></i>
             </a>            
-            <a href="{{ path('authentification_reinscription_lien_par_mail', {'id': user.id}) }}" class="btn btn-info" 
+            <a href="{{ path('authentification_reinscription_lien_par_mail', {'idmembre': user.id}) }}" class="btn btn-info" 
               title="Envoyer le lien de réinscription par mail">
               <i class="glyphicon glyphicon-envelope"></i>
             </a>
@@ -65,7 +90,7 @@
     <ul class="pagination">
     {% for p in range(1, nbPages) %}
       <li{% if p == page %} class="active"{% endif %}>
-        <a href="{{ path('aviron_users_liste', {'page': p}) }}">{{ p }}</a>
+        <a href="{{ path('aviron_users_liste', {'page': p, 'saison': saisonSelectionnee}) }}">{{ p }}</a>
       </li>
     {% endfor %}
     </ul>

@@ -27,4 +27,12 @@ class SaisonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function DonneSaisons()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nom', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserModificationType;
 use App\Helper\ChainesHelper;
+use App\Repository\SaisonRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,42 +22,48 @@ class UserController extends AbstractController
 {
     private $entityManager;
     private $userRepository;
+    private $saisonRepository;
 
     public function __construct(EntityManagerInterface $entityManager,
-        UserRepository $userRepository)
+        UserRepository $userRepository, SaisonRepository $saisonRepository)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
+        $this->saisonRepository = $saisonRepository;
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function index($page)
+    public function index($page, $saison)
     {
         if ($page < 1) {
             throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
-
         $nbParPage = $this->getParameter('nbUsersParPage');
 
-        $listeUsers = $this->userRepository->getMembres($page, $nbParPage);
+        $listeUsers = $this->userRepository->DonneMembres($page, $nbParPage, $saison);
 
         // On calcule le nombre total de pages grâces au count($listeUsers) qui retourne 
         // le nombre total de membres
         $nbPages = ceil(count($listeUsers) / $nbParPage);
+        if ($nbPages == 0) $nbPages = 1;
 
         // Si la page n'existe pas, on lève une erreur 404
         if ($page > $nbPages) {
             throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
 
+        $saisons = $this->DonneSaisons();
+
         return $this->render(
             'user/index.html.twig',
             array(
-                'listeUsers'    => $listeUsers,
-                'nbPages'       => $nbPages,
-                'page'          => $page
+                'listeUsers'            => $listeUsers,
+                'nbPages'               => $nbPages,
+                'page'                  => $page,
+                'saisons'               => $saisons,
+                'saisonSelectionnee'    => $saison
             )
         );
     }
@@ -208,5 +215,10 @@ class UserController extends AbstractController
     {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+    }
+
+    private function DonneSaisons()
+    {
+        return $this->saisonRepository->DonneSaisons();
     }
 }

@@ -29,11 +29,24 @@ class UserRepository extends ServiceEntityRepository
             ->addOrderBy('u.nom');
     }
 
-    public function getMembres($page, $nbParPage)
+    public function DonneMembres($page, $nbParPage, $saison)
     {
-        $query = $this->createQueryBuilder('u')
-                    ->where('u.datesupp is null')
-                    ->orderBy('u.prenom')
+        $query = $this->createQueryBuilder('u');
+
+        if ($saison > 0)
+        {
+            $query = $query->join('u.licences', 'l');
+        }
+
+        $query = $query->where('u.datesupp is null');
+
+        if ($saison > 0)
+        {
+            $query = $query->andWhere('l.saison = :idsaison')
+                ->setParameter('idsaison', $saison);
+        }
+
+        $query = $query->orderBy('u.prenom')
                     ->addOrderBy('u.nom')
                     ->setFirstResult(($page-1)*$nbParPage)
                     ->setMaxResults($nbParPage);
