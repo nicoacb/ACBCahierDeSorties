@@ -36,7 +36,7 @@
               <option {% if saison.id == saisonSelectionnee %} selected{% endif %} value="{{saison.id}}">{{saison.nom}}</option>
             {% endfor %}
         </select>
-    </div>
+    </div>       
   </p>
 
   <div class="table-responsive">
@@ -94,6 +94,9 @@
       </li>
     {% endfor %}
     </ul>
+    <div class="pagination pull-right">
+      Nombre de membres : {{listeUsers|length}}
+    </div>
   </div>
 
 {% endblock %}
