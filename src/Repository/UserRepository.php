@@ -33,33 +33,35 @@ class UserRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('u');
 
-        if ($saison > 0)
-        {
+        if ($saison > 0) {
             $query = $query->join('u.licences', 'l');
         }
 
         $query = $query->where('u.datesupp is null');
 
-        if ($saison > 0)
-        {
+        if ($saison > 0) {
             $query = $query->andWhere('l.saison = :idsaison')
                 ->setParameter('idsaison', $saison);
         }
 
         $query = $query->orderBy('u.prenom')
-                    ->addOrderBy('u.nom')
-                    ->setFirstResult(($page-1)*$nbParPage)
-                    ->setMaxResults($nbParPage);
+            ->addOrderBy('u.nom')
+            ->setFirstResult(($page - 1) * $nbParPage)
+            ->setMaxResults($nbParPage);
 
         return new Paginator($query, true);
     }
 
-    public function findLikePrenomNom($q)
+    public function ExisteUser($prenom, $nom)
     {
         return $this->createQueryBuilder('u')
-            ->where('u.prenom LIKE :query')
-            ->setParameter(':query', $q)
+            ->select('COUNT(u)')
+            ->where('u.datesupp is null')
+            ->andWhere('UPPER(u.prenom) LIKE UPPER(:prenom)')
+            ->andWhere('UPPER(u.nom) LIKE UPPER(:nom)')
+            ->setParameter(':prenom', $prenom)
+            ->setParameter(':nom', $nom)
             ->getQuery()
-            ->getResult();
+            ->getSingleScalarResult() > 0;
     }
 }

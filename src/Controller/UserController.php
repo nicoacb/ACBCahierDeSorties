@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\MembreLicences;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserModificationType;
@@ -93,12 +94,28 @@ class UserController extends AbstractController
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
 
+                // On vérifie si l'utilisateur n'existe pas déjà
+                if ($this->ExisteUser($user->getPrenom(), $user->getNom()))
+                {                    
+                    $this->addFlash('danger', 'Ce membre a déjà été ajouté auparavant.');
+
+                    // On redirige vers l'ajout de membre pour en saisir un nouveau
+                    return $this->render(
+                        'user/ajouter.html.twig',
+                        array('form' => $form->createView())
+                    );
+                }
+
                 $login = ChainesHelper::getLoginFromPrenomNom($user->getPrenom(), $user->getNom());
                 $user->setUsername($login);
                 $email = $login . '@aviron-bourges.org';
                 $user->setEmail($email);
                 $user->setEnabled(1);
                 $user->setPassword($encoder->encodePassword($user, bin2hex(random_bytes(12))));
+
+                $licence = new MembreLicences();
+                $licence->setSaison($this->DonneDerniereSaison());
+                $user->addLicence($licence);
 
                 $this->EnregistreMembre($user);
 
@@ -231,5 +248,10 @@ class UserController extends AbstractController
     private function DonneDerniereSaison()
     {
         return $this->saisonRepository->DonneDerniereSaison();
+    }
+
+    private function ExisteUser($prenom, $nom)
+    {
+        return $this->userRepository->ExisteUser($prenom, $nom);
     }
 }
