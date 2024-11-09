@@ -12,7 +12,7 @@
         var route = '{{ path(app.request.attributes.get('_route')) }}';
         var saison = document.getElementById("saison");
         var valSaison = saison.options[saison.selectedIndex].value;
-        if (valSaison > 0)
+        if (valSaison > 0 || valSaison == -1)
         {
             route += '/1/' + valSaison;
         }
@@ -31,10 +31,10 @@
     </a>
     <div class="form-group pull-right">
         <select id="saison" name="saison" class="form-control" onchange="filtrer()">
-            <option value="0">Saison</option>
             {% for saison in saisons %}
               <option {% if saison.id == saisonSelectionnee %} selected{% endif %} value="{{saison.id}}">{{saison.nom}}</option>
             {% endfor %}
+            <option {% if -1 == saisonSelectionnee %} selected{% endif %} value="-1">Toutes les saisons</option>
         </select>
     </div>       
   </p>

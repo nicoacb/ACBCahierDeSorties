@@ -6,7 +6,7 @@ aviron_users_liste:
         saison: 0
     requirements:
         page: \d+
-        saison: \d+
+        saison: -?\d+
 
 aviron_users_ajouter:
     path:       /membres/ajouter

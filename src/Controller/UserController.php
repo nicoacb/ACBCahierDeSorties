@@ -24,9 +24,11 @@ class UserController extends AbstractController
     private $userRepository;
     private $saisonRepository;
 
-    public function __construct(EntityManagerInterface $entityManager,
-        UserRepository $userRepository, SaisonRepository $saisonRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        SaisonRepository $saisonRepository
+    ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->saisonRepository = $saisonRepository;
@@ -40,7 +42,11 @@ class UserController extends AbstractController
         if ($page < 1) {
             throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
-        $nbParPage = $this->getParameter('nbUsersParPage');
+        $nbParPage = $this->getParameter('nbUsersParPage');        
+
+        if ($saison == 0) {
+            $saison = $this->DonneDerniereSaison()->GetId();
+        }
 
         $listeUsers = $this->userRepository->DonneMembres($page, $nbParPage, $saison);
 
@@ -220,5 +226,10 @@ class UserController extends AbstractController
     private function DonneSaisons()
     {
         return $this->saisonRepository->DonneSaisons();
+    }
+
+    private function DonneDerniereSaison()
+    {
+        return $this->saisonRepository->DonneDerniereSaison();
     }
 }
